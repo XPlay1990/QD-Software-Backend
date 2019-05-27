@@ -1,0 +1,58 @@
+server:
+  port: 9020
+management:
+  server:
+    port: 9020
+#    endpoint:
+#      shutdown:
+#        enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+spring:
+  application:
+    name: catalog
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none #create-drop
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/abbino?serverTimezone=UTC&useSSL=false
+    username: asdfg
+    password: asdfg
+#  flyway:
+#    locations: classpath:db/migration
+#    url: jdbc:mysql://localhost:3306?serverTimezone=UTC&useSSL=false
+#    user: catalog
+#    password: pw
+#    schemas: catalog
+#  h2:
+#    console:
+#      enabled: true
+#  security:
+#    user:
+#      name: Jan
+#      password: password
+logging:
+  level:
+    root:
+      info #debug
+#jwt:
+#  signing:
+#    key:
+#      secret: mySecret
+#  get:
+#    token:
+#      uri: /authenticate  # jwt.get.token.uri
+#  refresh:
+#    token:
+#      uri: /refresh       # jwt.refresh.token.uri
+#  http:
+#    request:
+#      header: Authorization
+#  token:
+#    expiration:
+#      in:
+#        seconds: 604800
