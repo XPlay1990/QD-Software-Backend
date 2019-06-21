@@ -25,14 +25,14 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     @PostMapping
     fun createTest(): ResponseEntity<EdiConnection> {
 
-        val organization = Organization(0, "testOrg", 300, "test@testorg.de", null, null, null)
+        val organization = Organization("testOrg", 300, "test@testorg.de", null, null, null)
         organizationRepository.save(organization)
 
         val textMessage = TextMessage(null, "test", "test")
         val phoneMessage = PhoneMessage(null, "test", "test")
 
         val list = mutableSetOf<Message>(textMessage, phoneMessage)
-        val ediConnection = EdiConnection(0, "test", organization, organization, null, list)
+        val ediConnection = EdiConnection("test", organization, organization, null, list)
 
         val storedConnection = ediConnectionRepository.save(ediConnection)
 

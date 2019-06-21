@@ -2,6 +2,9 @@ package com.nicando.ediportal.database.model.user
 
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.Role
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.*
 
 /**
@@ -10,18 +13,24 @@ import javax.persistence.*
 @Entity
 data class User(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
-
         val userName: String,
         val password: String,
         val email: String,
 
-        @OneToMany(fetch = FetchType.LAZY)
+        @OneToMany
         val roles: List<Role>,
 
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne
         @JoinColumn
         val organization: Organization
-)
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+
+    @CreationTimestamp
+    var creationTime: LocalDateTime? = null
+
+    @UpdateTimestamp
+    var updateTime: LocalDateTime? = null
+}

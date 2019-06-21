@@ -7,13 +7,12 @@ import javax.persistence.*
  */
 @Entity
 data class Role(
-
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
-
         val role: RoleName
-)
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+}
 
 enum class RoleName {
     ADMIN,

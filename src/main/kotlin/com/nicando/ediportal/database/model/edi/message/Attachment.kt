@@ -13,9 +13,6 @@ import javax.persistence.*
  */
 @Entity
 data class Attachment(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
 
         var fileName: String,
         var fileType: String,
@@ -25,6 +22,10 @@ data class Attachment(
         @Lob
         var Attachment: ByteArray
 ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

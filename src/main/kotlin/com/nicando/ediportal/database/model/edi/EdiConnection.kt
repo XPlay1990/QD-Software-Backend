@@ -2,6 +2,9 @@ package com.nicando.ediportal.database.model.edi
 
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.organization.Organization
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.*
 
 /**
@@ -9,9 +12,6 @@ import javax.persistence.*
  */
 @Entity
 data class EdiConnection(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
 
         var status: String,
 
@@ -26,4 +26,15 @@ data class EdiConnection(
 
         @OneToMany(cascade = [CascadeType.ALL])
         var messages: MutableSet<Message>
-)
+) {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+
+    @CreationTimestamp
+    var creationTime: LocalDateTime? = null
+
+    @UpdateTimestamp
+    var updateTime: LocalDateTime? = null
+}

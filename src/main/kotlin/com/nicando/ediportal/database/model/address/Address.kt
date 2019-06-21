@@ -10,9 +10,6 @@ import javax.persistence.Id
  */
 @Entity
 data class Address(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
 
         val street: String,
         val houseNumber: Int,
@@ -20,4 +17,8 @@ data class Address(
         val city: String,
         val postcode: String,
         val country: String
-)
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+}
