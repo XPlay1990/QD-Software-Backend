@@ -42,11 +42,11 @@ class EdiConnectionController(private val ediConnectionRepository: EdiConnection
 
     @GetMapping("/customer")
     fun getEdiConnectionsForCustomer(@RequestParam id: Long): ResponseEntity<Unit> {
-        return ResponseEntity.ok(ediConnectionRepository.findEdiConnectionByCustomerId(id))
+        return ResponseEntity.ok(ediConnectionRepository.findEdiConnectionsByCustomerId(id))
     }
 
     @GetMapping("/supplier")
     fun getEdiConnectionsForSupplier(@RequestParam id: Long): ResponseEntity<Unit> {
-        return ResponseEntity.ok(ediConnectionRepository.findEdiConnectionBySupplierId(id))
+        return ResponseEntity.ok(ediConnectionRepository.findEdiConnectionsBySupplierId(id))
     }
 }
