@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.*
 class OrganizationController(private val organizationRepository: OrganizationRepository) {
 
     @PostMapping
-    fun createOrg(): ResponseEntity<Organization> {
+    fun createOrganization(): ResponseEntity<Organization> {
         val organization = Organization(0, "HH", 300000, "test@HH.eu",
                 null, null, null)
-        organizationRepository.save(organization)
-        return ResponseEntity.ok(organization)
+        val storedOrganization = organizationRepository.save(organization)
+        return ResponseEntity.ok(storedOrganization)
     }
 
     @GetMapping
-    fun getOrgById(@RequestParam id:Long): ResponseEntity<Organization> {
-        return organizationRepository.findById(id).map { org ->
-            ResponseEntity.ok(org)
+    fun getOrganizationById(@RequestParam id: Long): ResponseEntity<Organization> {
+        return organizationRepository.findById(id).map { organization ->
+            ResponseEntity.ok(organization)
         }.orElse(ResponseEntity.notFound().build())
     }
 }
