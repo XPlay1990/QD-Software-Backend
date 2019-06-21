@@ -28,8 +28,8 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val organization = Organization(0, "testOrg", 300, "test@testorg.de", null, null, null)
         organizationRepository.save(organization)
 
-        val textMessage = TextMessage(0, null, "test", "test", readByCustomer = true, readByNicando = true, readBySupplier = true)
-        val phoneMessage = PhoneMessage(0, null, "test", "test", readByCustomer = true, readByNicando = true, readBySupplier = true)
+        val textMessage = TextMessage(null, "test", "test")
+        val phoneMessage = PhoneMessage(null, "test", "test")
 
         val list = mutableSetOf<Message>(textMessage, phoneMessage)
         val ediConnection = EdiConnection(0, "test", organization, organization, null, list)
@@ -40,7 +40,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     }
 
     @GetMapping
-    fun getTest():ResponseEntity<EdiConnection>{
+    fun getTest(): ResponseEntity<EdiConnection> {
         return ResponseEntity.ok(ediConnectionRepository.findAll()[0])
     }
 }
