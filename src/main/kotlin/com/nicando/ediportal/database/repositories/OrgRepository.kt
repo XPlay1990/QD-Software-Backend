@@ -1,6 +1,6 @@
 package com.nicando.ediportal.database.repositories
 
-import com.nicando.ediportal.database.models.user.Organization
+import com.nicando.ediportal.database.model.organization.Organization
 import org.springframework.data.jpa.repository.JpaRepository
 
 /**

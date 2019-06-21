@@ -1,4 +1,4 @@
-package com.nicando.ediportal.database.models.user
+package com.nicando.ediportal.database.model.address
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

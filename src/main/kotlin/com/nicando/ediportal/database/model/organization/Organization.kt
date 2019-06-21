@@ -1,5 +1,8 @@
-package com.nicando.ediportal.database.models.user
+package com.nicando.ediportal.database.model.organization
 
+import com.nicando.ediportal.database.model.address.Address
+import com.nicando.ediportal.database.model.address.Location
+import com.nicando.ediportal.database.model.user.User
 import javax.persistence.*
 
 /**

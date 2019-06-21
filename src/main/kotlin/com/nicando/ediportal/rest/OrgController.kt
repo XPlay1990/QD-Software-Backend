@@ -1,6 +1,6 @@
 package com.nicando.ediportal.rest
 
-import com.nicando.ediportal.database.models.user.Organization
+import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.repositories.OrgRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

@@ -1,4 +1,4 @@
-package com.nicando.ediportal.database.models.user
+package com.nicando.ediportal.database.model.role
 
 import javax.persistence.*
 

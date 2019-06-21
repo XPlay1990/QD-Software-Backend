@@ -1,8 +1,8 @@
 package com.nicando.ediportal.rest
 
-import com.nicando.ediportal.database.models.user.Role
-import com.nicando.ediportal.database.models.user.RoleName
-import com.nicando.ediportal.database.models.user.User
+import com.nicando.ediportal.database.model.role.Role
+import com.nicando.ediportal.database.model.role.RoleName
+import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.OrgRepository
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository

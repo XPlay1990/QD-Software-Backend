@@ -1,5 +1,6 @@
-package com.nicando.ediportal.database.models.user
+package com.nicando.ediportal.database.model.address
 
+import com.nicando.ediportal.database.model.organization.Organization
 import javax.persistence.*
 
 /**
@@ -11,14 +12,10 @@ data class Location(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long,
 
+        @OneToOne
+        val address: Address,
+
         val type: LocationType,
-
-        val street: String,
-        val houseNumber: Int,
-
-        val city: String,
-        val postcode: String,
-        val country: String,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn
