@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/org")
 class OrganizationController(private val organizationRepository: OrganizationRepository) {
 
-    @PostMapping
-    fun createOrganization(): ResponseEntity<Organization> {
-        val organization = Organization(0, "HH", 300000, "test@HH.eu",
-                null, null, null)
-        val storedOrganization = organizationRepository.save(organization)
-        return ResponseEntity.ok(storedOrganization)
-    }
+//    @PostMapping
+//    fun createOrganization(): ResponseEntity<Organization> {
+//        val organization = Organization(0, "HH", 300000, "test@HH.eu",
+//                null, null, null)
+//        val storedOrganization = organizationRepository.save(organization)
+//        return ResponseEntity.ok(storedOrganization)
+//    }
 
     @GetMapping
     fun getOrganizationById(@RequestParam id: Long): ResponseEntity<Organization> {

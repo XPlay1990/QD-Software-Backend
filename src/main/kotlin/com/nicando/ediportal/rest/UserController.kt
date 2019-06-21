@@ -31,14 +31,9 @@ class UserController(private val userRepository: UserRepository, private val org
         }.orElse(ResponseEntity.notFound().build())
     }
 
-    @PostMapping
-    fun createDummyUser(): ResponseEntity<User> {
-        val adminRole = Role(0, RoleName.ADMIN)
-        roleRepository.save(adminRole)
-        val user = User(0, "Jan", "test",
-                "j.adamczyk@nicando.com", roleRepository.findAll(), organizationRepository.findById(1).get()
-        )
-        userRepository.save(user)
-        return ResponseEntity.ok(user)
-    }
+//    @PostMapping
+//    fun createUser(): ResponseEntity<User> {
+//        userRepository.save(user)
+//        return ResponseEntity.ok(user)
+//    }
 }
