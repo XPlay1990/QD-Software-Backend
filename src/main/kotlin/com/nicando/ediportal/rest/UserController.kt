@@ -3,7 +3,7 @@ package com.nicando.ediportal.rest
 import com.nicando.ediportal.database.model.role.Role
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.OrgRepository
+import com.nicando.ediportal.database.repositories.OrganizationRepository
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import org.slf4j.LoggerFactory
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userRepository: UserRepository, private val orgRepository: OrgRepository, private val roleRepository: RoleRepository) {
+class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository, private val roleRepository: RoleRepository) {
     var LOGGER = LoggerFactory.getLogger(this.javaClass)
 
 
@@ -36,7 +36,7 @@ class UserController(private val userRepository: UserRepository, private val org
         val adminRole = Role(0, RoleName.ADMIN)
         roleRepository.save(adminRole)
         val user = User(0, "Jan", "test",
-                "j.adamczyk@nicando.com", roleRepository.findAll(), orgRepository.findById(1).get()
+                "j.adamczyk@nicando.com", roleRepository.findAll(), organizationRepository.findById(1).get()
         )
         userRepository.save(user)
         return ResponseEntity.ok(user)

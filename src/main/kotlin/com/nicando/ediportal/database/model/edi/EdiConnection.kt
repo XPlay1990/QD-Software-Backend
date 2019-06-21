@@ -22,8 +22,8 @@ data class EdiConnection(
         var supplier: Organization,
 
         @OneToOne
-        var questionCatalog: QuestionCatalog,
+        var questionCatalog: QuestionCatalog?,
 
-        @OneToMany
+        @OneToMany(cascade = [CascadeType.ALL])
         var messages: MutableSet<Message>
 )

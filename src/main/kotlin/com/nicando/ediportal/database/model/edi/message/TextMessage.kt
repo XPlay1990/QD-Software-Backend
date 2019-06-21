@@ -9,7 +9,7 @@ import javax.persistence.*
 @Entity
 data class TextMessage(
         override var id: Long,
-        override var sender: User,
+        override var sender: User?,
         override var subject: String,
         override var text: String,
         override var readByCustomer: Boolean,

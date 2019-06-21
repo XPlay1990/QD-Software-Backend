@@ -14,7 +14,7 @@ open class Message(
         open var id: Long,
 
         @ManyToOne
-        open var sender: User,
+        open var sender: User?,
         open var subject: String,
         open var text: String,
         open var readByCustomer: Boolean,
