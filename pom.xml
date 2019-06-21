@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repositories -->
 	</parent>
 	<groupId>com.nicando</groupId>
-	<artifactId>catalog</artifactId>
+	<artifactId>ediportal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>catalog</name>
-	<description>Nicando Catalog Project</description>
+	<name>ediportal</name>
+	<description>Nicando Edi-Portal Project</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -24,10 +24,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>

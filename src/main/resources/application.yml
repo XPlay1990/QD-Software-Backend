@@ -12,22 +12,22 @@ management:
 #        include: "*"
 spring:
   application:
-    name: catalog
+    name: ediportal
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none #create-drop
+      ddl-auto: create #create-drop
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/abbino?serverTimezone=UTC&useSSL=false
-    username: asdfg
-    password: asdfg
+    url: jdbc:mysql://localhost:3307/ediportal?serverTimezone=UTC&useSSL=false
+    username: root
+    password: Psmcg4t1PElyyKs3VHVF]
 #  flyway:
 #    locations: classpath:db/migration
 #    url: jdbc:mysql://localhost:3306?serverTimezone=UTC&useSSL=false
-#    user: catalog
+#    user: ediportal
 #    password: pw
-#    schemas: catalog
+#    schemas: ediportal
 #  h2:
 #    console:
 #      enabled: true

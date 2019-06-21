@@ -1,4 +1,4 @@
-package com.nicando.catalog.database.models.buyer
+package com.nicando.ediportal.database.models.user
 
 import javax.persistence.*
 
@@ -18,5 +18,11 @@ data class Organization(
         val fallBackEmail: String,
 
         @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val members: List<Buyer>
+        val members: List<User>?,
+
+        @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        val address : Address?,
+
+        @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        val locations: List<Location>?
 )

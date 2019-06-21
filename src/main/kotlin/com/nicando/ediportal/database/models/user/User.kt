@@ -1,13 +1,12 @@
-package com.nicando.catalog.database.models.buyer
+package com.nicando.ediportal.database.models.user
 
-import com.nicando.catalog.database.models.shop.Cart
 import javax.persistence.*
 
 /**
  * Created by Jan Adamczyk on 22.05.2019.
  */
 @Entity
-data class Buyer(
+data class User(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +16,10 @@ data class Buyer(
         val password: String,
         val email: String,
 
-//        @OneToMany
-//        val roles:List<Role>
+        @OneToMany(fetch = FetchType.LAZY)
+        val roles: List<Role>,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn
-        val organization: Organization,
-
-        @OneToOne
-        val cart: Cart
+        val organization: Organization
 )
