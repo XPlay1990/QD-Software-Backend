@@ -13,23 +13,23 @@ import javax.persistence.*
 @Entity
 data class User(
 
-        val userName: String,
-        val password: String,
-        val email: String,
+        var userName: String,
+        var password: String,
+        var email: String,
 
         @OneToMany
-        val roles: List<Role>,
+        var roles: List<Role>,
 
         @ManyToOne
         @JoinColumn
-        val organization: Organization
+        var organization: Organization
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
     @CreationTimestamp
-    var creationTime: LocalDateTime? = null
+    val creationTime: LocalDateTime? = null
 
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null

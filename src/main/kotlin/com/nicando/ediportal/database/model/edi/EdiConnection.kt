@@ -1,6 +1,7 @@
 package com.nicando.ediportal.database.model.edi
 
 import com.nicando.ediportal.database.model.edi.message.Message
+import com.nicando.ediportal.database.model.edi.questions.QuestionCatalog
 import com.nicando.ediportal.database.model.organization.Organization
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
