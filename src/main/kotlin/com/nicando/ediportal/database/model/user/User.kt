@@ -26,7 +26,6 @@ data class User(
         @Email
         var email: String,
 
-        @Transient //Do NEVER print out password
         @NotBlank
         @Size(min = 6, max = 100)
         var password: String,
