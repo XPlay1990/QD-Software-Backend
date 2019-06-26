@@ -1,5 +1,8 @@
 package com.nicando.ediportal.rest
 
+import com.nicando.ediportal.database.model.address.Address
+import com.nicando.ediportal.database.model.address.Location
+import com.nicando.ediportal.database.model.address.LocationType
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.PhoneMessage
@@ -25,7 +28,10 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     @PostMapping
     fun createTest(): ResponseEntity<EdiConnection> {
 
-        val organization = Organization("testOrg", 300, "test@testorg.de", null, null, null)
+        val address = Address("Komturstr.", 5, "Berlin", "12169", "Deutschland")
+        val location = Location(address, LocationType.LOCATIONTYPE_PLANT, null)
+        val organization = Organization("testOrg", 300, "test@testorg.de", null, null, mutableListOf(location))
+        location.organization = organization
         organizationRepository.save(organization)
 
         val textMessage = TextMessage(null, "test", "test")

@@ -14,17 +14,17 @@ import org.springframework.security.core.GrantedAuthority
  * Created by Jan Adamczyk on 24.06.2019.
  */
 @Service
-class UserDetailsServiceImp(private val userRepository: UserRepository) : UserDetailsService {
+class CustomUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
 
     @Transactional(readOnly = true)
     override fun loadUserByUsername(userName: String): UserDetails {
         val user = userRepository.findByUsername(userName)
 
         val grantedAuthorities = HashSet<GrantedAuthority>()
-        for (role in user.roles) {
-            grantedAuthorities.add(SimpleGrantedAuthority(role.role.name))
+        for (role in user!!.roles) {
+            grantedAuthorities.add(SimpleGrantedAuthority(role.roleName.name))
         }
 
-        return org.springframework.security.core.userdetails.User(user.userName, user.password, grantedAuthorities)
+        return org.springframework.security.core.userdetails.User(user.username, user.password, grantedAuthorities)
     }
 }

@@ -37,4 +37,13 @@ data class Organization(
 
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
+
+    var isActive: Boolean = true
+        set(value: Boolean) {
+            if (!value) {
+                //deactivate members if organization is set to inactive
+                members!!.forEach { it.isActive = false }
+            }
+            field = value
+        }
 }

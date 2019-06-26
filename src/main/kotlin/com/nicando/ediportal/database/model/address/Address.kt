@@ -16,7 +16,7 @@ data class Address(
 
         val city: String,
         val postcode: String,
-        val country: String
+        val country: String //TODO: Enumerize
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

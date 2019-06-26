@@ -12,14 +12,15 @@ import javax.persistence.*
 @Entity
 data class Location(
 
-        @OneToOne
+        @OneToOne(cascade = [CascadeType.ALL])
         val address: Address,
 
-        val type: LocationType,
+        @Enumerated(EnumType.STRING)
+        var type: LocationType,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn
-        val organization: Organization
+        var organization: Organization?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +34,5 @@ data class Location(
 }
 
 enum class LocationType {
-    PLANT, HEADQUARTER
+    LOCATIONTYPE_PLANT, LOCATIONTYPE_HEADQUARTER
 }

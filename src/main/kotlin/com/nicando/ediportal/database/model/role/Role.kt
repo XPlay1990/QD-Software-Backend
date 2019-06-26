@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.role
 
+import org.hibernate.annotations.NaturalId
 import javax.persistence.*
 
 /**
@@ -7,7 +8,10 @@ import javax.persistence.*
  */
 @Entity
 data class Role(
-        val role: RoleName
+        @Enumerated(EnumType.STRING)
+        @NaturalId
+        @Column(length = 60)
+        val roleName: RoleName
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +19,9 @@ data class Role(
 }
 
 enum class RoleName {
-    ADMIN,
-    EDI_READ,
-    EDI_CREATE
+    ROLE_NONE,
+    ROLE_ADMIN,
+    ROLE_USER,
+    ROLE_EDI_READ,
+    ROLE_EDI_CREATE
 }

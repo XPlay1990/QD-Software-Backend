@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.validation.constraints.Email
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 /**
  * Created by Jan Adamczyk on 22.05.2019.
@@ -13,9 +16,23 @@ import javax.persistence.*
 @Entity
 data class User(
 
-        var userName: String,
+        @Column(unique = true, length = 40)
+        @NotBlank
+        @Size(max = 30)
+        var username: String,
+
+        @Transient //Do NEVER print out password
+        @NotBlank
+        @Size(min = 6, max = 100)
         var password: String,
+
+        @NotBlank
+        @Size(max = 40)
+        @Email
         var email: String,
+
+        var firstName: String,
+        var lastName: String,
 
         @OneToMany
         var roles: List<Role>,
@@ -33,4 +50,6 @@ data class User(
 
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
+
+    var isActive: Boolean = true
 }
