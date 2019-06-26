@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository
  * Created by Jan Adamczyk on 21.05.2019.
  */
 interface RoleRepository : JpaRepository<Role, Long> {
-    fun findRoleByRoleName(roleName: RoleName)
+    fun findByRoleName(roleName: RoleName): Role?
 }

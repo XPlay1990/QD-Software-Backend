@@ -21,7 +21,7 @@ data class Role(
 enum class RoleName {
     ROLE_NONE,
     ROLE_ADMIN,
-    ROLE_USER,
+    ROLE_REGISTERED_USER,
     ROLE_EDI_READ,
     ROLE_EDI_CREATE
 }

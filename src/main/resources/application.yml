@@ -1,5 +1,10 @@
 server:
   port: 9020
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    min-response-size: 1024
 management:
   server:
     port: 9020
@@ -36,6 +41,12 @@ spring:
 #    user:
 #      name: Jan
 #      password: password
+  servlet:
+    multipart:
+      file-size-threshold: 2KB
+      location: /tmp
+      max-file-size: 50MB
+      max-request-size: 75MB
 logging:
   level:
     root:

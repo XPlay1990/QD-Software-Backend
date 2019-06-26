@@ -21,25 +21,25 @@ data class User(
         @Size(max = 30)
         var username: String,
 
-        @Transient //Do NEVER print out password
-        @NotBlank
-        @Size(min = 6, max = 100)
-        var password: String,
-
         @NotBlank
         @Size(max = 40)
         @Email
         var email: String,
 
+        @Transient //Do NEVER print out password
+        @NotBlank
+        @Size(min = 6, max = 100)
+        var password: String,
+
         var firstName: String,
         var lastName: String,
 
         @OneToMany
-        var roles: List<Role>,
+        var roles: List<Role>?,
 
         @ManyToOne
         @JoinColumn
-        var organization: Organization
+        var organization: Organization?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -46,7 +46,11 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     }
 
     @GetMapping
-    fun getTest(): ResponseEntity<EdiConnection> {
-        return ResponseEntity.ok(ediConnectionRepository.findAll()[0])
+    fun getTest(): ResponseEntity<EdiConnection>? {
+        val findAll = ediConnectionRepository.findAll()
+        if (findAll.size > 0) {
+            return ResponseEntity.ok(findAll[0])
+        }
+        return null
     }
 }
