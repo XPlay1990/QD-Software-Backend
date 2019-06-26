@@ -84,6 +84,8 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
+                .antMatchers("/error")
+                .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
                 .permitAll()
                 .anyRequest()
