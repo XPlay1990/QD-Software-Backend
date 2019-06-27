@@ -12,5 +12,5 @@ data class QuestionCatalog(
         val id: Long,
 
         @OneToMany(cascade = [CascadeType.ALL])
-        var messages: MutableSet<Answer>
+        var answers: MutableSet<Answer>
 )

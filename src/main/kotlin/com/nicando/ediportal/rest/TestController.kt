@@ -37,12 +37,12 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val textMessage = TextMessage(null, "test", "test")
         val phoneMessage = PhoneMessage(null, "test", "test")
 
-        val list = mutableSetOf<Message>(textMessage, phoneMessage)
-        val ediConnection = EdiConnection("test", organization, organization, null, list)
+        val messages = mutableSetOf<Message>(textMessage, phoneMessage)
+        val ediConnection = EdiConnection("test", organization, organization, null, messages)
 
-        val storedConnection = ediConnectionRepository.save(ediConnection)
+        val storedEdiConnection = ediConnectionRepository.save(ediConnection)
 
-        return ResponseEntity.ok(storedConnection)
+        return ResponseEntity.ok(storedEdiConnection)
     }
 
     @GetMapping

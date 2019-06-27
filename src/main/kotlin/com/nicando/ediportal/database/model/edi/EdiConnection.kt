@@ -22,7 +22,7 @@ data class EdiConnection(
         @ManyToOne
         var supplier: Organization,
 
-        @OneToOne
+        @OneToOne(cascade = [CascadeType.ALL])
         var questionCatalog: QuestionCatalog?,
 
         @OneToMany(cascade = [CascadeType.ALL])

@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.address
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.nicando.ediportal.database.model.organization.Organization
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -20,6 +21,7 @@ data class Location(
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn
+        @JsonIgnore
         var organization: Organization?
 ) {
     @Id
