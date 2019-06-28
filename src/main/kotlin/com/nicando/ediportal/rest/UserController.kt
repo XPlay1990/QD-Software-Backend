@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository, private val roleRepository: RoleRepository) {
+class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
+                     private val roleRepository: RoleRepository) {
     var LOGGER = LoggerFactory.getLogger(this.javaClass)
 
 
@@ -40,5 +41,6 @@ class UserController(private val userRepository: UserRepository, private val org
     fun resetUserPassword(@PathVariable id: Long) {
         val user = userRepository.findById(id)
 //        user.resetPassword();
+        TODO("not implemented")
     }
 }

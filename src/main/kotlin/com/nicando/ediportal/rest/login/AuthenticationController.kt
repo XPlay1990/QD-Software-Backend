@@ -26,7 +26,8 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/auth")
 class AuthenticationController(private val authenticationManager: AuthenticationManager, private val jwtTokenProvider: JwtTokenProvider,
-                               private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val passwordEncoder: PasswordEncoder) {
+                               private val userRepository: UserRepository, private val roleRepository: RoleRepository,
+                               private val passwordEncoder: PasswordEncoder) {
 
     @PostMapping("/login")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<*> {
