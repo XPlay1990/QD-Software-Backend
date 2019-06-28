@@ -18,7 +18,7 @@ data class User(
 
         @Column(unique = true, length = 40)
         @NotBlank
-        @Size(max = 30)
+        @Size(max = 40)
         var username: String,
 
         @NotBlank

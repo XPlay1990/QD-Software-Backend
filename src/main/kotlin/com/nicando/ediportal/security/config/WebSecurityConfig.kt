@@ -80,7 +80,7 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/**")
+                .antMatchers("/auth/**")
                 .permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
