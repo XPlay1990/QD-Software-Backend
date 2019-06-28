@@ -12,3 +12,19 @@ VALUES ('Nicando', 'edi-support@nicando.de', '$2a$10$LiREBwIdY3bXDy9M0OdzmOFj89X
         'Software', (SELECT id from organization where name = 'Nicando'), TRUE, NOW());
 INSERT IGNORE INTO user_roles(user_id, roles_id)
 VALUES ((SELECT id from user where username = 'Nicando'), (SELECT id from role where role_name = 'ROLE_ADMIN'));
+
+
+
+
+
+INSERT IGNORE INTO question(question_de, question_en)
+VALUES ('Sind Sie bereits an unsere Abbino Plattform angebunden?', 'Are you already connected to our Abbino Platform?');
+
+INSERT IGNORE INTO question(question_de, question_en)
+VALUES ('Welche Austauschformate unterstützen Sie?
+Bitte geben Sie die unterstützte Version des Standards mit an.
+Beispiele: SAP IDOC, EDIFACT, VDA, BEMIS',
+        'Which formats do you support?
+Please also write which Version you use.
+Examples are: SAP IDOC, EDIFACT, VDA, BEMIS');
+

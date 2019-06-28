@@ -1,4 +1,4 @@
-package com.nicando.ediportal.rest
+package com.nicando.ediportal.rest.edi
 
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.EdiConnectionRepository

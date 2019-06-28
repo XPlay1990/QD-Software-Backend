@@ -20,5 +20,5 @@ data class AttachmentMessage(
         override var text: String,
 
         @OneToMany
-        var attachments: List<Attachment>
+        var attachments: MutableSet<Attachment>
 ) : Message(sender, subject, text)

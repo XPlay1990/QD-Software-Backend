@@ -1,16 +1,16 @@
 package com.nicando.ediportal.database.model.edi.questions
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 /**
  * Created by Jan Adamczyk on 21.06.2019.
  */
 @Entity
 data class Question(
+        @Column(length = 1000)
         val question_de: String,
+
+        @Column(length = 1000)
         val question_en: String
 ) {
     @Id
