@@ -24,11 +24,11 @@ import javax.validation.Valid
  * Created by Jan Adamczyk on 24.06.2019.
  */
 @RestController
-@RequestMapping("/login")
-class LoginController(private val authenticationManager: AuthenticationManager, private val jwtTokenProvider: JwtTokenProvider,
-                      private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val passwordEncoder: PasswordEncoder) {
+@RequestMapping("/auth")
+class AuthenticationController(private val authenticationManager: AuthenticationManager, private val jwtTokenProvider: JwtTokenProvider,
+                               private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val passwordEncoder: PasswordEncoder) {
 
-    @PostMapping
+    @PostMapping("/login")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<*> {
 
         val authentication = authenticationManager.authenticate(

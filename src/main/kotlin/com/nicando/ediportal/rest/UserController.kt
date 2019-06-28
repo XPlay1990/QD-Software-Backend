@@ -25,15 +25,20 @@ class UserController(private val userRepository: UserRepository, private val org
     fun getAllUsers(): List<User> = userRepository.findAll()
 
     @GetMapping
-    fun getUserById(@RequestParam id:Long): ResponseEntity<User> {
+    fun getUserById(@RequestParam id: Long): ResponseEntity<User> {
         return userRepository.findById(id).map { user ->
             ResponseEntity.ok(user)
         }.orElse(ResponseEntity.notFound().build())
     }
 
-//    @PostMapping
+    //    @PostMapping
 //    fun createUser(): ResponseEntity<User> {
 //        userRepository.save(user)
 //        return ResponseEntity.ok(user)
 //    }
+    @PostMapping("/{id}/password/reset")
+    fun resetUserPassword(@PathVariable id: Long) {
+        val user = userRepository.findById(id)
+//        user.resetPassword();
+    }
 }
