@@ -3,6 +3,7 @@ package com.nicando.ediportal.database.model.user
 import com.fasterxml.jackson.annotation.*
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.Role
+import com.nicando.ediportal.database.model.role.RoleName
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -35,10 +36,6 @@ data class User(
         var firstName: String,
         var lastName: String,
 
-        @JsonIgnore
-        @OneToMany
-        var roles: List<Role>?,
-
         @ManyToOne
         @JoinColumn
         var organization: Organization?
@@ -52,6 +49,10 @@ data class User(
 
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
+
+    @JsonIgnore
+    @ManyToMany
+    var roles: MutableList<Role> = mutableListOf(Role(RoleName.ROLE_REGISTERED_USER))
 
     var isActive: Boolean = true
 }

@@ -63,7 +63,7 @@ class AuthenticationController(private val authenticationManager: Authentication
 
         // Creating user's account
         val user = User(registerRequest.username,
-                registerRequest.email, registerRequest.password, registerRequest.firstName, registerRequest.lastName, null, null)
+                registerRequest.email, registerRequest.password, registerRequest.firstName, registerRequest.lastName, null)
 
         user.password = passwordEncoder.encode(user.password)
 

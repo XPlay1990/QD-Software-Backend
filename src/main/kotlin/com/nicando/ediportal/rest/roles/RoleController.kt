@@ -1,46 +1,30 @@
 package com.nicando.ediportal.rest.roles
 
-import com.nicando.ediportal.database.model.role.Role
-import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.OrganizationRepository
-import com.nicando.ediportal.database.repositories.RoleRepository
-import com.nicando.ediportal.database.repositories.UserRepository
+import com.nicando.ediportal.logic.roles.RoleAssignerService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 /**
  * Created by Jan Adamczyk on 21.05.2019.
  */
 
-
+@PreAuthorize("hasRole('ROLE_ADMIN')") //TODO: Role_assigner role?
 @RestController
-@RequestMapping("/role")
-class RoleController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
-                     private val roleRepository: RoleRepository) {
+@RequestMapping("/addrole")
+class RoleController(private val roleAssignerService: RoleAssignerService) {
     var LOGGER = LoggerFactory.getLogger(this.javaClass)
 
 
-    @GetMapping("/all")
-    fun getAllUsers(): List<User> = userRepository.findAll()
-
-    @GetMapping
-    fun getUserById(@RequestParam id: Long): ResponseEntity<User> {
-        return userRepository.findById(id).map { user ->
-            ResponseEntity.ok(user)
-        }.orElse(ResponseEntity.notFound().build())
-    }
-
-    //    @PostMapping
-//    fun createUser(): ResponseEntity<User> {
-//        userRepository.save(user)
-//        return ResponseEntity.ok(user)
-//    }
-    @PostMapping("/{id}/password/reset")
-    fun resetUserPassword(@PathVariable id: Long) {
-        val user = userRepository.findById(id)
-//        user.resetPassword();
-        TODO("not implemented")
+    @PutMapping
+    fun assignRoleToUser(@RequestParam userId: Long, @RequestParam roleId: Long): ResponseEntity<String> {
+        LOGGER.info("Invoked assignRole Role: $roleId, User: $userId")
+        try {
+            roleAssignerService.assignRoleToUser(userId, roleId)
+        } catch (e: IllegalStateException) {
+            return ResponseEntity.badRequest().body(e.message)
+        }
+        return ResponseEntity.ok("Successfully assigned Role $roleId to user $userId!")
     }
 }
