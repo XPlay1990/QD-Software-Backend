@@ -19,12 +19,12 @@ spring:
   application:
     name: ediportal
   jpa:
-    show-sql: true
+#    show-sql: true
     hibernate:
-      ddl-auto: create #create-drop
+      ddl-auto: validate #create-drop
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://localhost:3307/edi_portal?serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3307/edi_portal?serverTimezone=UTC #&useSSL=false
     username: root
     password: Psmcg4t1PElyyKs3VHVF]
     initialization-mode: always
@@ -64,6 +64,8 @@ logging:
   level:
     root:
       info #debug
+    org.hibernate:
+        SQL: DEBUG
 #jwt:
 #  signing:
 #    key:

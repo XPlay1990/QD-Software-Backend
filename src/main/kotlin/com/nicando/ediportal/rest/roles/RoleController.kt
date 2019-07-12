@@ -1,5 +1,7 @@
-package com.nicando.ediportal.rest
+package com.nicando.ediportal.rest.roles
 
+import com.nicando.ediportal.database.model.role.Role
+import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.OrganizationRepository
 import com.nicando.ediportal.database.repositories.RoleRepository
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/user")
-class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
+@RequestMapping("/role")
+class RoleController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
                      private val roleRepository: RoleRepository) {
     var LOGGER = LoggerFactory.getLogger(this.javaClass)
 

@@ -1,8 +1,14 @@
 INSERT IGNORE INTO role(role_name)
+VALUES ('ROLE_ADMIN');
+
+INSERT IGNORE INTO role(role_name)
 VALUES ('ROLE_REGISTERED_USER');
 
 INSERT IGNORE INTO role(role_name)
-VALUES ('ROLE_ADMIN');
+VALUES ('ROLE_CUSTOMER');
+
+INSERT IGNORE INTO role(role_name)
+VALUES ('ROLE_SUPPLIER');
 
 INSERT IGNORE INTO organization(name, identifier_key, fall_back_email, is_active, creation_time)
 VALUES ('Nicando', 0, 'edi-support@nicando.de', TRUE, NOW());

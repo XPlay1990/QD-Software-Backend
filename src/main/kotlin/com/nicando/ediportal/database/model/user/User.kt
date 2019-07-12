@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.user
 
+import com.fasterxml.jackson.annotation.*
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.Role
 import org.hibernate.annotations.CreationTimestamp
@@ -28,11 +29,13 @@ data class User(
 
         @NotBlank
         @Size(min = 6, max = 100)
+        @JsonIgnore
         var password: String,
 
         var firstName: String,
         var lastName: String,
 
+        @JsonIgnore
         @OneToMany
         var roles: List<Role>?,
 

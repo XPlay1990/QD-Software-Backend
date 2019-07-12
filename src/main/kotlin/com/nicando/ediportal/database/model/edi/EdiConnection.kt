@@ -22,13 +22,7 @@ data class EdiConnection(
         var customer: Organization,
 
         @ManyToOne
-        var supplier: Organization,
-
-        @OneToOne(cascade = [CascadeType.ALL])
-        var questionCatalog: QuestionCatalog?,
-
-        @OneToMany(cascade = [CascadeType.ALL])
-        var messages: MutableSet<Message>
+        var supplier: Organization
 ) {
 
     @Id
@@ -46,4 +40,13 @@ data class EdiConnection(
 
     @OneToMany(cascade = [CascadeType.ALL])
     var attachments: MutableSet<Attachment>? = null
+
+    @OneToMany(cascade = [CascadeType.ALL])
+    var messages: MutableSet<Message>? = null
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    var questionCatalog: QuestionCatalog? = null
+
+    @OneToMany(cascade = [CascadeType.ALL])
+    var devComments: MutableSet<Message>? = null
 }

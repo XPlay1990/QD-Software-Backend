@@ -12,4 +12,6 @@ interface EdiConnectionRepository : JpaRepository<EdiConnection, Long> {
 
     fun findEdiConnectionsByCustomerName(customer_name: String)
     fun findEdiConnectionsBySupplierName(supplier_name: String)
+
+    fun findEdiConnectionsByCustomerIdOrSupplierId(customer_id: Long, supplier_id: Long) : List<EdiConnection>
 }

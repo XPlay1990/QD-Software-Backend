@@ -30,7 +30,8 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 
         val address = Address("Komturstr.", 5, "Berlin", "12169", "Deutschland")
         val location = Location(address, LocationType.LOCATIONTYPE_PLANT, null)
-        val organization = Organization("testOrg", 300, "test@testorg.de", null, null, mutableListOf(location))
+        val organization = Organization("testOrg", 300, "test@testorg.de", null)
+        organization.locations = mutableListOf(location)
         location.organization = organization
         organizationRepository.save(organization)
 
@@ -38,7 +39,8 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val phoneMessage = PhoneMessage(null, "test", "test")
 
         val messages = mutableSetOf<Message>(textMessage, phoneMessage)
-        val ediConnection = EdiConnection("test", organization, organization, null, messages)
+        val ediConnection = EdiConnection("test", organization, organization)
+        ediConnection.messages = messages
 
         val storedEdiConnection = ediConnectionRepository.save(ediConnection)
 

@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.organization
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.nicando.ediportal.database.model.address.Address
 import com.nicando.ediportal.database.model.address.Location
 import com.nicando.ediportal.database.model.user.User
@@ -19,18 +20,20 @@ data class Organization(
 
         val fallBackEmail: String,
 
-        @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val members: List<User>?,
-
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val address: Address?,
-
-        @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val locations: List<Location>?
+        val address: Address?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var members: List<User>? = null
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var locations: List<Location>? = null
 
     @CreationTimestamp
     var creationTime: LocalDateTime? = null
