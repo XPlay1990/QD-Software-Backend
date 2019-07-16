@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.stream.Collectors
 
-data class UserPrincipal(val id: Long?, private val username: String,
+data class UserPrincipal(val id: Long, private val username: String,
                          @field:JsonIgnore val email: String, @field:JsonIgnore private val password: String,
                          private val authorities: MutableList<SimpleGrantedAuthority>) : UserDetails {
 

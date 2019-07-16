@@ -4,6 +4,9 @@ import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.OrganizationRepository
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
+import com.nicando.ediportal.payload.UserSummary
+import com.nicando.ediportal.security.CurrentUser
+import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -17,8 +20,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/user")
 class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
                      private val roleRepository: RoleRepository) {
-    var LOGGER = LoggerFactory.getLogger(this.javaClass)
-
 
     @GetMapping("/all")
     fun getAllUsers(): List<User> = userRepository.findAll()
@@ -36,9 +37,19 @@ class UserController(private val userRepository: UserRepository, private val org
 //        return ResponseEntity.ok(user)
 //    }
     @PostMapping("/{id}/password/reset")
-    fun resetUserPassword(@PathVariable id: Long) {
-        val user = userRepository.findById(id)
+    fun resetUserPassword(@CurrentUser currentUser: UserPrincipal, @PathVariable id: Long) {
+        logger.info("Request for password reset from User: ${currentUser.username}")
 //        user.resetPassword();
         TODO("not implemented")
+    }
+
+    @GetMapping("/me")
+//    @PreAuthorize("hasRole('ROLE_REGISTERED_USER')")
+    fun getCurrentUser(@CurrentUser currentUser: UserPrincipal): UserSummary {
+        return UserSummary(currentUser.id, currentUser.username)
+    }
+
+    companion object { //static
+        private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }
