@@ -1,9 +1,13 @@
 package com.nicando.ediportal.rest.edi
 
+import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.common.EdiConnectionService
+import com.nicando.ediportal.common.PagedResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.repositories.EdiConnectionRepository
-import com.nicando.ediportal.security.service.AuthenticationInfoService
+import com.nicando.ediportal.security.CurrentUser
+import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -25,7 +29,8 @@ import javax.servlet.http.HttpServletRequest
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CUSTOMER') || hasRole('ROLE_SUPPLIER')")
 @RestController
 @RequestMapping("/edi_connection")
-class EdiConnectionController(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService) {
+class EdiConnectionController(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService,
+                              private val ediConnectionService: EdiConnectionService) {
 //    @PostMapping
 //    fun createEdiConnection(): ResponseEntity<EdiConnection> {
 //        var ediConnection:EdiConnection = null
@@ -41,23 +46,15 @@ class EdiConnectionController(private val ediConnectionRepository: EdiConnection
     }
 
     @GetMapping("/all", produces = ["application/json"])
-    fun getEdiConnections(request: HttpServletRequest): ResponseEntity<List<EdiConnection>> {
+    fun getEdiConnections(@CurrentUser currentUser: UserPrincipal, request: HttpServletRequest,
+                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int): PagedResponse<EdiConnection> {
+        logger.info("getEdiConnection Request by User: ${currentUser.username}")
+
         if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
-            logger.info("Admin requested all EDI-Connections")
-            return ResponseEntity.ok(ediConnectionRepository.findAll())
+            return ediConnectionService.findEdiConnectionsForAdmin(pageNumber, pageSize)
         }
 
-        return findEdiConnectionsForUser()
-    }
-
-    //TODO: move
-    private fun findEdiConnectionsForUser(): ResponseEntity<List<EdiConnection>> {
-        val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
-        logger.info("Getting all Edi-Connections for Organization with Id: $organizationIdFromAuthentication")
-        val ediConnections = ediConnectionRepository
-                .findEdiConnectionsByCustomerIdOrSupplierId(organizationIdFromAuthentication, organizationIdFromAuthentication)
-        logger.info("Found following EdiConnections: $ediConnections")
-        return ResponseEntity.ok(ediConnections)
+        return ediConnectionService.findEdiConnectionsForUser(pageNumber, pageSize)
     }
 
     @GetMapping("/customer")

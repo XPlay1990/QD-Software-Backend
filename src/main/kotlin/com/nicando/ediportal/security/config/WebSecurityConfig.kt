@@ -69,6 +69,12 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
+                .logout()
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("/auth/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+        http
                 .cors()
                 .and()
                 .csrf()

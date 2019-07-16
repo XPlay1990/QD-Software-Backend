@@ -1,4 +1,4 @@
-package com.nicando.ediportal.security.service
+package com.nicando.ediportal.common
 
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.exceptions.BadRequestException
@@ -19,5 +19,9 @@ class AuthenticationInfoService(private val userRepository: UserRepository) {
     fun getOrgIdFromAuthentication(): Long {
         val thisUser = userRepository.findById(getUserIdFromAuthentication()).get()
         return thisUser.organization!!.id
+    }
+
+    fun getUsernameFromAuthentication(): String {
+        return (SecurityContextHolder.getContext().authentication.principal as UserPrincipal).username
     }
 }

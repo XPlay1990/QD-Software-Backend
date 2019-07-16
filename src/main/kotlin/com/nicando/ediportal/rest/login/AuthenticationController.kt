@@ -44,11 +44,6 @@ class AuthenticationController(private val authenticationManager: Authentication
         return ResponseEntity.ok<Any>(JwtAuthenticationResponse(jwt))
     }
 
-    @PostMapping("/logout")
-    fun logout(){
-        TODO("not implemented")
-    }
-
     @PostMapping("/register")
     fun registerUser(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<*> {
         if (userRepository.existsByUsername(registerRequest.username)) {

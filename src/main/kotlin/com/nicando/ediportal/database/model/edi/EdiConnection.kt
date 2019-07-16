@@ -1,5 +1,7 @@
 package com.nicando.ediportal.database.model.edi
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.nicando.ediportal.database.model.edi.message.Attachment
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.questions.QuestionCatalog
@@ -29,24 +31,30 @@ data class EdiConnection(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
+    @JsonFormat(pattern="dd-MM-yyyy (HH:mm)")
     @CreationTimestamp
     var creationTime: LocalDateTime? = null
 
+    @JsonFormat(pattern="dd-MM-yyyy (HH:mm)")
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
 
     @ManyToOne
     var assignedDeveloper: User? = null
 
+    @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
     var attachments: MutableSet<Attachment>? = null
 
+    @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
     var messages: MutableSet<Message>? = null
 
+    @JsonIgnore
     @OneToOne(cascade = [CascadeType.ALL])
     var questionCatalog: QuestionCatalog? = null
 
+    @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
     var devComments: MutableSet<Message>? = null
 }

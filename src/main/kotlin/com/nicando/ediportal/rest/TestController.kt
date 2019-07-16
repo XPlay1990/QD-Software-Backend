@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
  * Created by Jan Adamczyk on 21.06.2019.
@@ -30,16 +31,22 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 
         val address = Address("Komturstr.", 5, "Berlin", "12169", "Deutschland")
         val location = Location(address, LocationType.LOCATIONTYPE_PLANT, null)
-        val organization = Organization("testOrg", 300, "test@testorg.de", null)
-        organization.locations = mutableListOf(location)
-        location.organization = organization
-        organizationRepository.save(organization)
+
+        val random = Random()
+        val customerName = Customer.values()[random.nextInt(Customer.values().size)].toString()
+        val supplierName = Supplier.values()[random.nextInt(Supplier.values().size)].toString()
+        val customer = Organization(customerName, 300, "test@testorg.de", null)
+        val supplier = Organization(supplierName, 300, "test@testorg.de", null)
+        customer.locations = mutableListOf(location)
+        location.organization = customer
+        organizationRepository.save(customer)
+        organizationRepository.save(supplier)
 
         val textMessage = TextMessage(null, "test", "test")
         val phoneMessage = PhoneMessage(null, "test", "test")
 
         val messages = mutableSetOf<Message>(textMessage, phoneMessage)
-        val ediConnection = EdiConnection("test", organization, organization)
+        val ediConnection = EdiConnection("test", customer, supplier)
         ediConnection.messages = messages
 
         val storedEdiConnection = ediConnectionRepository.save(ediConnection)
@@ -54,5 +61,24 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             return ResponseEntity.ok(findAll[0])
         }
         return null
+    }
+
+    enum class Customer{
+        WOLF,
+        KURTZ,
+        ERCO,
+        VAILLANT,
+        HH,
+        GARDENA,
+        KEUCO,
+        VAHLE
+    }
+
+    enum class Supplier{
+        Supplier1,
+        Supplier2,
+        Supplier3,
+        Supplier4,
+        Supplier5
     }
 }
