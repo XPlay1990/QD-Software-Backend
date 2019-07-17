@@ -57,4 +57,8 @@ data class EdiConnection(
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
     var devComments: MutableSet<Message>? = null
+
+    var readByCustomer: Boolean = false
+    var readBySupplier: Boolean = false
+    var readByNicando: Boolean = false
 }

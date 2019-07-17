@@ -27,31 +27,34 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     var LOGGER = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping
-    fun createTest(): ResponseEntity<EdiConnection> {
+    fun createTest(): ResponseEntity<MutableList<EdiConnection>> {
 
         val address = Address("Komturstr.", 5, "Berlin", "12169", "Deutschland")
         val location = Location(address, LocationType.LOCATIONTYPE_PLANT, null)
 
-        val random = Random()
-        val customerName = Customer.values()[random.nextInt(Customer.values().size)].toString()
-        val supplierName = Supplier.values()[random.nextInt(Supplier.values().size)].toString()
-        val customer = Organization(customerName, 300, "test@testorg.de", null)
-        val supplier = Organization(supplierName, 300, "test@testorg.de", null)
-        customer.locations = mutableListOf(location)
-        location.organization = customer
-        organizationRepository.save(customer)
-        organizationRepository.save(supplier)
+        val createdEdiConnections = mutableListOf<EdiConnection>()
+        repeat(30) {
+            val random = Random()
+            val customerName = Customer.values()[random.nextInt(Customer.values().size)].toString()
+            val supplierName = Supplier.values()[random.nextInt(Supplier.values().size)].toString()
+            val customer = Organization(customerName, 300, "test@testorg.de", null)
+            val supplier = Organization(supplierName, 300, "test@testorg.de", null)
+            customer.locations = mutableListOf(location)
+            location.organization = customer
+            organizationRepository.save(customer)
+            organizationRepository.save(supplier)
 
-        val textMessage = TextMessage(null, "test", "test")
-        val phoneMessage = PhoneMessage(null, "test", "test")
+            val textMessage = TextMessage(null, "test", "test")
+            val phoneMessage = PhoneMessage(null, "test", "test")
 
-        val messages = mutableSetOf<Message>(textMessage, phoneMessage)
-        val ediConnection = EdiConnection("test", customer, supplier)
-        ediConnection.messages = messages
+            val messages = mutableSetOf<Message>(textMessage, phoneMessage)
+            val ediConnection = EdiConnection("test", customer, supplier)
+            ediConnection.messages = messages
 
-        val storedEdiConnection = ediConnectionRepository.save(ediConnection)
+            createdEdiConnections.add(ediConnectionRepository.save(ediConnection))
+        }
 
-        return ResponseEntity.ok(storedEdiConnection)
+        return ResponseEntity.ok(createdEdiConnections)
     }
 
     @GetMapping
@@ -63,7 +66,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         return null
     }
 
-    enum class Customer{
+    enum class Customer {
         WOLF,
         KURTZ,
         ERCO,
@@ -74,7 +77,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         VAHLE
     }
 
-    enum class Supplier{
+    enum class Supplier {
         Supplier1,
         Supplier2,
         Supplier3,
