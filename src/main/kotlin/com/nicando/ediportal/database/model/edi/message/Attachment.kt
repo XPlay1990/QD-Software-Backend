@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.edi.message
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 /**
@@ -19,6 +20,7 @@ data class Attachment(
 
         var fileSize: Long,
 
+        @JsonIgnore
         @Lob
         var Attachment: ByteArray
 ) {

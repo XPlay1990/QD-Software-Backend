@@ -1,4 +1,4 @@
-package com.nicando.ediportal.common.apiResponse
+package com.nicando.ediportal.common.apiResponse.ediConnection
 
 import com.nicando.ediportal.database.model.edi.EdiConnection
 

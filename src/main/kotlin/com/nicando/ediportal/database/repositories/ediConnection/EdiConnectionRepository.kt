@@ -1,4 +1,4 @@
-package com.nicando.ediportal.database.repositories
+package com.nicando.ediportal.database.repositories.ediConnection
 
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import org.springframework.data.domain.Page

@@ -1,9 +1,10 @@
-package com.nicando.ediportal.common
+package com.nicando.ediportal.common.ediConnection
 
-import com.nicando.ediportal.common.apiResponse.EdiConnectionResponse
-import com.nicando.ediportal.common.apiResponse.PagedResponse
+import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
-import com.nicando.ediportal.database.repositories.EdiConnectionRepository
+import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.exceptions.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service
  * Created by Jan Adamczyk on 15.07.2019.
  */
 @Service
-class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService) {
+class EdiConnectionListService(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService) {
 
     //TODO: securitycheck, only if user is admin || isparticipant
     fun findEdiConnection(id: Long): EdiConnectionResponse {
@@ -25,7 +26,7 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun findEdiConnectionsForAdmin(pageNumber: Int, pageSize: Int): PagedResponse<EdiConnection> {
+    fun findEdiConnectionsForAdmin(pageNumber: Int, pageSize: Int): EdiConnectionListResponse<EdiConnection> {
         logger.info("Getting all Edi-Connections for Admin user.")
 
         val pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "updateTime")
@@ -35,7 +36,7 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
         return buildPagedResponse(ediConnectionsPage)
     }
 
-    fun findEdiConnectionsForUser(pageNumber: Int, pageSize: Int): PagedResponse<EdiConnection> {
+    fun findEdiConnectionsForUser(pageNumber: Int, pageSize: Int): EdiConnectionListResponse<EdiConnection> {
         val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
         logger.info("Getting all Edi-Connections for Organization with Id: $organizationIdFromAuthentication")
 
@@ -48,11 +49,11 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
         return buildPagedResponse(ediConnectionsPage)
     }
 
-    private fun buildPagedResponse(ediConnectionsPage: Page<EdiConnection>): PagedResponse<EdiConnection> {
+    private fun buildPagedResponse(ediConnectionsPage: Page<EdiConnection>): EdiConnectionListResponse<EdiConnection> {
         val ediConnections = ediConnectionsPage.content
         logger.info("Found ${ediConnections.size} matching EdiConnections")
 
-        return PagedResponse(ediConnections, ediConnectionsPage.number,
+        return EdiConnectionListResponse(ediConnections, ediConnectionsPage.number,
                 ediConnectionsPage.size, ediConnectionsPage.totalElements, ediConnectionsPage.totalPages, ediConnectionsPage.isLast)
     }
 

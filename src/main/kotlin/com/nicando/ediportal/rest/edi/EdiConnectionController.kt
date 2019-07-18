@@ -1,16 +1,13 @@
 package com.nicando.ediportal.rest.edi
 
-import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.EdiConnectionService
-import com.nicando.ediportal.common.apiResponse.EdiConnectionResponse
-import com.nicando.ediportal.common.apiResponse.PagedResponse
+import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.database.repositories.EdiConnectionRepository
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -27,8 +24,7 @@ import javax.servlet.http.HttpServletRequest
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CUSTOMER') || hasRole('ROLE_SUPPLIER')")
 @RestController
 @RequestMapping("/edi_connection")
-class EdiConnectionController(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService,
-                              private val ediConnectionService: EdiConnectionService) {
+class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService) {
 //    @PostMapping
 //    fun createEdiConnection(): ResponseEntity<EdiConnection> {
 //        var ediConnection:EdiConnection = null
@@ -38,19 +34,19 @@ class EdiConnectionController(private val ediConnectionRepository: EdiConnection
 
     @GetMapping("/{id}")
     fun getEdiConnection(@PathVariable("id") id: Long): EdiConnectionResponse {
-        return ediConnectionService.findEdiConnection(id)
+        return ediConnectionListService.findEdiConnection(id)
     }
 
     @GetMapping(produces = ["application/json"])
     fun getEdiConnections(@CurrentUser currentUser: UserPrincipal, request: HttpServletRequest,
-                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int): PagedResponse<EdiConnection> {
+                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 
         if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
-            return ediConnectionService.findEdiConnectionsForAdmin(pageNumber, pageSize)
+            return ediConnectionListService.findEdiConnectionsForAdmin(pageNumber, pageSize)
         }
 
-        return ediConnectionService.findEdiConnectionsForUser(pageNumber, pageSize)
+        return ediConnectionListService.findEdiConnectionsForUser(pageNumber, pageSize)
     }
 
     companion object { //static

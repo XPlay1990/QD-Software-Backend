@@ -4,11 +4,12 @@ import com.nicando.ediportal.database.model.address.Address
 import com.nicando.ediportal.database.model.address.Location
 import com.nicando.ediportal.database.model.address.LocationType
 import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.database.model.edi.message.AttachmentMessage
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.PhoneMessage
 import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
-import com.nicando.ediportal.database.repositories.EdiConnectionRepository
+import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.database.repositories.OrganizationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -44,10 +45,11 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             organizationRepository.save(customer)
             organizationRepository.save(supplier)
 
-            val textMessage = TextMessage(null, "test", "test")
-            val phoneMessage = PhoneMessage(null, "test", "test")
+            val textMessage = TextMessage(null, "testTitle", "testMsg")
+            val phoneMessage = PhoneMessage(null, "testTitle", "testPhoneMsg")
+//            val attachMentMessage = AttachmentMessage(null, "testTitle", "testPhoneMsg")
 
-            val messages = mutableSetOf<Message>(textMessage, phoneMessage)
+            val messages = mutableSetOf(textMessage, phoneMessage)
             val ediConnection = EdiConnection("test", customer, supplier)
             ediConnection.messages = messages
 
