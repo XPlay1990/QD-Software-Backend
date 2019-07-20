@@ -1,8 +1,8 @@
 package com.nicando.ediportal.database.model.edi.message
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.nicando.ediportal.database.model.user.User
 import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -22,11 +22,12 @@ open class Message(
     @GeneratedValue(strategy = GenerationType.TABLE)
     open var id: Long = 0
 
+    @JsonFormat(pattern = "dd-MM-yyyy (HH:mm)")
     @CreationTimestamp
     open var creationTime: LocalDateTime? = null
 
-    @UpdateTimestamp
-    open var updateTime: LocalDateTime? = null
+//    @UpdateTimestamp
+//    open var updateTime: LocalDateTime? = null
 
     open var readByCustomer: Boolean = false
     open var readBySupplier: Boolean = false
