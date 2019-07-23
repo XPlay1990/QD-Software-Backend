@@ -46,7 +46,7 @@ class UserController(private val userRepository: UserRepository, private val org
     @GetMapping("/me")
 //    @PreAuthorize("hasRole('ROLE_REGISTERED_USER')")
     fun getCurrentUser(@CurrentUser currentUser: UserPrincipal): UserSummary {
-        return UserSummary(currentUser.id, currentUser.username)
+        return UserSummary(currentUser.id, currentUser.username, currentUser.authorities)
     }
 
     companion object { //static

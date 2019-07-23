@@ -20,6 +20,7 @@ class EdiMessageController(private val ediConnectionService: EdiConnectionServic
 
     @PostMapping
     fun addMessage(@PathVariable ediConnectionId: Long, @RequestBody test: String) {
+//        hasUserAccess()
         TODO("not implemented")
     }
 
