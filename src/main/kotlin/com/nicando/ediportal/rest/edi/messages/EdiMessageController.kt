@@ -1,8 +1,7 @@
-package com.nicando.ediportal.rest.edi.Messages
+package com.nicando.ediportal.rest.edi.messages
 
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
-import com.nicando.ediportal.database.model.edi.message.Message
 import org.springframework.web.bind.annotation.*
 
 /**
