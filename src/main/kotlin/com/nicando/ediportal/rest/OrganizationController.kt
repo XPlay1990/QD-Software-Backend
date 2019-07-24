@@ -26,4 +26,9 @@ class OrganizationController(private val organizationRepository: OrganizationRep
             ResponseEntity.ok(organization)
         }.orElse(ResponseEntity.notFound().build())
     }
+
+    @GetMapping("/all")
+    fun getAllOrganizations(){
+        
+    }
 }

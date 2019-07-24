@@ -2,9 +2,11 @@ package com.nicando.ediportal.common.ediConnection
 
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageResponse
+import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
 class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository) {
@@ -18,6 +20,11 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
             ediMessageResponses.add(EdiMessageResponse(message, message.javaClass.toString()))
         }
         return EdiMessageListResponse(ediMessageResponses)
+    }
+
+    @Transactional
+    fun createEdiConnection(newEdiConnection: EdiConnection): EdiConnection {
+        return ediConnectionRepository.save(newEdiConnection)
     }
 
     companion object { //static

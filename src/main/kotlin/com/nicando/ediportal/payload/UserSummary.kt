@@ -8,5 +8,5 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 data class UserSummary(
         val id: Long,
         val username: String,
-        val authorities:  MutableList<SimpleGrantedAuthority>
+        val authorities:  MutableList<String>
 )

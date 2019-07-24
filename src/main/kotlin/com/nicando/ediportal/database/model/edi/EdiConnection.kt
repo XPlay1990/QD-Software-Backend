@@ -18,8 +18,6 @@ import javax.persistence.*
 @Entity
 data class EdiConnection(
 
-        var status: String,
-
         @ManyToOne
         var customer: Organization,
 
@@ -30,6 +28,9 @@ data class EdiConnection(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
+
+    @Enumerated(EnumType.STRING)
+    var status: EdiStatus = EdiStatus.NEW
 
     @JsonFormat(pattern="dd-MM-yyyy (HH:mm)")
     @CreationTimestamp
@@ -61,4 +62,12 @@ data class EdiConnection(
     var readByCustomer: Boolean = false
     var readBySupplier: Boolean = false
     var readByNicando: Boolean = false
+}
+
+enum class EdiStatus{
+    NEW,
+    DEVELOPMENT,
+    WAITING_FOR_CUSTOMER,
+    WAITING_FOR_SUPPLIER,
+    DONE
 }

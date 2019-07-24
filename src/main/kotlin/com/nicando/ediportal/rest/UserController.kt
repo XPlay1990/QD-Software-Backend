@@ -9,6 +9,7 @@ import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -46,7 +47,11 @@ class UserController(private val userRepository: UserRepository, private val org
     @GetMapping("/me")
 //    @PreAuthorize("hasRole('ROLE_REGISTERED_USER')")
     fun getCurrentUser(@CurrentUser currentUser: UserPrincipal): UserSummary {
-        return UserSummary(currentUser.id, currentUser.username, currentUser.authorities)
+        val roleStringList = mutableListOf<String>()
+        currentUser.authorities.forEach { authority: SimpleGrantedAuthority ->
+            roleStringList.add(authority.authority)
+        }
+        return UserSummary(currentUser.id, currentUser.username, roleStringList)
     }
 
     companion object { //static

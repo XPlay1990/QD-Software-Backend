@@ -4,13 +4,11 @@ import com.nicando.ediportal.database.model.address.Address
 import com.nicando.ediportal.database.model.address.Location
 import com.nicando.ediportal.database.model.address.LocationType
 import com.nicando.ediportal.database.model.edi.EdiConnection
-import com.nicando.ediportal.database.model.edi.message.AttachmentMessage
-import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.PhoneMessage
 import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
-import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.database.repositories.OrganizationRepository
+import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -50,7 +48,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 //            val attachMentMessage = AttachmentMessage(null, "testTitle", "testPhoneMsg")
 
             val messages = mutableSetOf(textMessage, phoneMessage)
-            val ediConnection = EdiConnection("test", customer, supplier)
+            val ediConnection = EdiConnection(customer, supplier)
             ediConnection.messages = messages
 
             createdEdiConnections.add(ediConnectionRepository.save(ediConnection))

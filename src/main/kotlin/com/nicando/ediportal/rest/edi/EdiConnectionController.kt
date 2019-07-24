@@ -3,6 +3,7 @@ package com.nicando.ediportal.rest.edi
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
+import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.security.CurrentUser
@@ -24,13 +25,11 @@ import javax.servlet.http.HttpServletRequest
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CUSTOMER') || hasRole('ROLE_SUPPLIER')")
 @RestController
 @RequestMapping("/edi_connection")
-class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService) {
-//    @PostMapping
-//    fun createEdiConnection(): ResponseEntity<EdiConnection> {
-//        var ediConnection:EdiConnection = null
-//        var storedEdiConnection = ediConnectionRepository.save(ediConnection)
-//        return ResponseEntity.ok(ediConnection)
-//    }
+class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService, private val ediConnectionService: EdiConnectionService) {
+    @PostMapping
+    fun createEdiConnection(@RequestBody newEdiConnection: EdiConnection): EdiConnection {
+        return ediConnectionService.createEdiConnection(newEdiConnection)
+    }
 
     @GetMapping("/{id}")
     fun getEdiConnection(@PathVariable("id") id: Long): EdiConnectionResponse {
