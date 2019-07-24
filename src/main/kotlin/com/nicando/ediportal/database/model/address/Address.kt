@@ -12,7 +12,7 @@ import javax.persistence.Id
 data class Address(
 
         val street: String,
-        val houseNumber: Int,
+        val houseNumber: String,
 
         val city: String,
         val postcode: String,

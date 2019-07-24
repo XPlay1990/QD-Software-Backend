@@ -19,7 +19,7 @@ spring:
   application:
     name: ediportal
   jpa:
-#    show-sql: true
+    #    show-sql: true
     hibernate:
       ddl-auto: validate #create-drop
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
@@ -65,7 +65,7 @@ logging:
     root:
       info #debug
     org.hibernate:
-        SQL: DEBUG
+      SQL: DEBUG
 #jwt:
 #  signing:
 #    key:

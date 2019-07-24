@@ -1,6 +1,7 @@
 package com.nicando.ediportal.database.model.edi.message
 
 import com.nicando.ediportal.database.model.user.User
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.OneToMany
 
@@ -19,6 +20,6 @@ data class AttachmentMessage(
         override var subject: String,
         override var text: String,
 
-        @OneToMany
+        @OneToMany(cascade = [CascadeType.ALL])
         var attachments: MutableSet<Attachment>
 ) : Message(sender, subject, text)
