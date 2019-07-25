@@ -65,7 +65,6 @@ class JwtTokenProvider {
     }
 
     companion object {
-
-        private val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
+        private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }

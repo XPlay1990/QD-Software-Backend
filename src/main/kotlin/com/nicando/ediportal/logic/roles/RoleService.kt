@@ -1,5 +1,7 @@
 package com.nicando.ediportal.logic.roles
 
+import com.nicando.ediportal.database.model.role.Role
+import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import org.springframework.stereotype.Service
@@ -9,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
  * Created by Jan Adamczyk on 12.07.2019.
  */
 @Service
-class RoleAssignerService(private val userRepository: UserRepository, private val roleRepository: RoleRepository) {
+class RoleService(private val userRepository: UserRepository, private val roleRepository: RoleRepository) {
 
     @Transactional
     fun assignRoleToUser(userId: Long, roleId: Long) {
@@ -18,8 +20,13 @@ class RoleAssignerService(private val userRepository: UserRepository, private va
         if (user.roles.contains(roleToAssign)) {
             throw IllegalStateException("Role already assigned!")
         } else {
-            user.roles.add(roleToAssign)
+            user.roles = mutableListOf(roleToAssign)
         }
     }
 
+    @Transactional
+    fun findRoleByName(roleName: RoleName): Role? {
+//        return roleRepository.findByRoleName(roleName) ?: return roleRepository.save(Role(roleName))
+        return roleRepository.findByRoleName(roleName)
+    }
 }

@@ -6,7 +6,7 @@ import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository) {

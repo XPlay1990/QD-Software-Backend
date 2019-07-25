@@ -13,7 +13,7 @@ import javax.persistence.*
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 open class Message(
         @ManyToOne
-        open var sender: User?,
+        open var sender: User,
         open var subject: String,
         open var text: String
 

@@ -16,7 +16,7 @@ import javax.persistence.OneToMany
  */
 @Entity
 data class AttachmentMessage(
-        override var sender: User?,
+        override var sender: User,
         override var subject: String,
         override var text: String,
 

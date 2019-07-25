@@ -1,9 +1,8 @@
 package com.nicando.ediportal.database.model.user
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.Role
-import com.nicando.ediportal.database.model.role.RoleName
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -17,7 +16,6 @@ import javax.validation.constraints.Size
  */
 @Entity
 data class User(
-
         @Column(unique = true, length = 40)
         @NotBlank
         @Size(max = 40)
@@ -51,8 +49,10 @@ data class User(
     var updateTime: LocalDateTime? = null
 
     @JsonIgnore
-    @ManyToMany
-    var roles: MutableList<Role> = mutableListOf(Role(RoleName.ROLE_REGISTERED_USER))
+    @ManyToMany(cascade = [CascadeType.ALL])
+    var roles: MutableList<Role?> = mutableListOf()
+
+    var languageSetting: String? = null
 
     var isActive: Boolean = true
 }

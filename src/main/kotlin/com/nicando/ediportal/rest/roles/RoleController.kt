@@ -1,12 +1,10 @@
 package com.nicando.ediportal.rest.roles
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.logic.roles.RoleAssignerService
-import com.nicando.ediportal.security.UserPrincipal
+import com.nicando.ediportal.logic.roles.RoleService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')") //TODO: Role_assigner role?
 @RestController
 @RequestMapping("/addrole")
-class RoleController(private val roleAssignerService: RoleAssignerService, private val authenticationInfoService: AuthenticationInfoService) {
+class RoleController(private val roleService: RoleService, private val authenticationInfoService: AuthenticationInfoService) {
 
     @PutMapping
     fun assignRoleToUser(@RequestParam userId: Long, @RequestParam roleId: Long): ResponseEntity<String> {
@@ -27,7 +25,7 @@ class RoleController(private val roleAssignerService: RoleAssignerService, priva
                 "User: ${authenticationInfoService.getUsernameFromAuthentication()} invoked assignRole Role: $roleId, User: $userId")
 
         try {
-            roleAssignerService.assignRoleToUser(userId, roleId)
+            roleService.assignRoleToUser(userId, roleId)
         } catch (e: IllegalStateException) {
             logger.warn(e.message)
             return ResponseEntity.badRequest().body(e.message)
