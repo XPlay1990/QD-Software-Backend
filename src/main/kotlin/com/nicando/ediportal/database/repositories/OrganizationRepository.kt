@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface OrganizationRepository : JpaRepository<Organization, Long> {
     fun findAllByIsCustomerTrueAndIsActiveTrueOrderByName(): List<Organization>
+    fun findAllByIsCustomerFalseAndIsActiveTrueOrderByName(): List<Organization>
 
     //TODO: those functions are only for TEST-Controller
     fun findOrganizationsByNameLike(name: String): List<Organization>

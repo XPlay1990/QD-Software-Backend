@@ -39,4 +39,9 @@ class OrganizationController(private val organizationService: OrganizationServic
     fun getAllCustomers(): List<Organization> {
         return organizationService.findAllCustomerOrgs()
     }
+
+    @GetMapping("/suppliers")
+    fun getAllSuppliers(): List<Organization> {
+        return organizationService.findAllSupplierOrgs()
+    }
 }

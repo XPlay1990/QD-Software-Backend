@@ -27,6 +27,12 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
         return organizationRepository.findAllByIsCustomerTrueAndIsActiveTrueOrderByName()
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun findAllSupplierOrgs(): List<Organization> {
+        logger.info("Getting all Customer-organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
+        return organizationRepository.findAllByIsCustomerFalseAndIsActiveTrueOrderByName()
+    }
+
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
 
