@@ -1,46 +1,38 @@
-# ERCO
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-VALUES ('Lüdenscheid', 'Germany', '80-82', '58507', 'Brockhauser Weg');
+    VALUE ('Lüdenscheid', 'Germany', '80-82', '58507', 'Brockhauser Weg');
 
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'ERCO', NOW(),
-        (SELECT id FROM address where street = 'Brockhauser Weg' and house_number = '80-82'));
+INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
+                               , address_id)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'ERCO',
+           (SELECT id FROM address where street = 'Brockhauser Weg' and house_number = '80-82'));
 
-# GARDENA
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'GARDENA', NOW(), null);
+INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'GARDENA');
 
-# HH
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'Harro Höfliger', NOW(), null);
+INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Harro Höfliger');
 
-# Keuco
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'KEUCO', NOW(), null);
+INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'KEUCO');
 
-# Kurtz
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-VALUES ('Kreuzwertheim', 'Germany', '2', '97892', 'Frankenstraße');
+    VALUE ('Kreuzwertheim', 'Germany', '2', '97892', 'Frankenstraße');
 
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'Kurtz-Ersa', NOW(),
-        (SELECT id FROM address where street = 'Frankenstraße' and house_number = '2'));
+INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
+                               , address_id)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Kurtz-Ersa',
+           (SELECT id FROM address where street = 'Frankenstraße' and house_number = '2'));
 
-# Vahle
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'Vahle', NOW(), null);
+INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Vahle');
 
-# Vaillant
-INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key,
-                                is_active, name, update_time, address_id)
-VALUES (NOW(), 'tmp@nicando.de', 0, true, 'Vaillant', NOW(), null);
+INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Vaillant');
 
-# Wolf
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-VALUES ('Mainburg', 'Germany', '1', '84048', 'Industriestraße');
+    VALUE ('Mainburg', 'Germany', '1', '84048', 'Industriestraße');
+
+INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
+                               , address_id)
+    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Wolf',
+           (SELECT id FROM address where street = 'Industriestraße' and house_number = '1'));

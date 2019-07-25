@@ -41,6 +41,8 @@ data class Organization(
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
 
+    var isCustomer: Boolean = false
+
     var isActive: Boolean = true
         set(value: Boolean) {
             if (!value) {
