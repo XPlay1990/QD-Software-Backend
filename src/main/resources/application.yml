@@ -67,6 +67,7 @@ logging:
       info #debug
     org.hibernate:
       SQL: DEBUG
+    web: DEBUG
 #jwt:
 #  signing:
 #    key:
