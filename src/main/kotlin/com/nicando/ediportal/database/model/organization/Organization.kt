@@ -5,6 +5,7 @@ import com.nicando.ediportal.database.model.address.Address
 import com.nicando.ediportal.database.model.address.Location
 import com.nicando.ediportal.database.model.user.User
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.NaturalId
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -15,6 +16,7 @@ import javax.persistence.*
 @Entity
 data class Organization(
 
+        @NaturalId
         val name: String,
         val identifierKey: Int,
 
