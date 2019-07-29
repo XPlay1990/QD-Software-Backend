@@ -3,7 +3,8 @@ package com.nicando.ediportal.common.organization
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.OrganizationRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationMemberRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,7 +16,8 @@ import java.util.*
  */
 @Service
 class OrganizationService(private val authenticationInfoService: AuthenticationInfoService,
-                          private val organizationRepository: OrganizationRepository) {
+                          private val organizationRepository: OrganizationRepository,
+                          private val organizationMemberRepository: OrganizationMemberRepository) {
 
     fun findOrganizationById(id: Long): Optional<Organization> {
         return organizationRepository.findById(id)
@@ -24,7 +26,7 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllOrganizationMembers(id: Long): List<User>? {
         logger.info("Getting all members from Organization with Id $id for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
-        return organizationRepository.findById(id).get().members
+        return organizationMemberRepository.findAllByOrganizationId(id)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

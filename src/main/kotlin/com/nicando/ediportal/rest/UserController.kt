@@ -1,7 +1,6 @@
 package com.nicando.ediportal.rest
 
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.OrganizationRepository
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.payload.UserSummary
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userRepository: UserRepository, private val organizationRepository: OrganizationRepository,
+class UserController(private val userRepository: UserRepository,
                      private val roleRepository: RoleRepository) {
 
     @GetMapping("/all")

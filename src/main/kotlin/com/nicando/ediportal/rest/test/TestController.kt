@@ -8,7 +8,7 @@ import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.OrganizationRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.logic.roles.RoleService
