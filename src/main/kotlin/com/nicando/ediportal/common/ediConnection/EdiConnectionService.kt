@@ -3,13 +3,17 @@ package com.nicando.ediportal.common.ediConnection
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository) {
+class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository,
+                           private val organizationRepository: OrganizationRepository,
+                           private val userRepository: UserRepository) {
 
     fun findEdiMessages(ediConnectionId: Long): EdiMessageListResponse {
         //TODO: Find better way to get Messages instead of pulling whole connection.
@@ -23,7 +27,19 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
     }
 
     @Transactional
-    fun createEdiConnection(newEdiConnection: EdiConnection): EdiConnection {
+    fun createEdiConnection(customerOrgId: Long, customerContactIdList: MutableList<Long>,
+                            supplierOrgId: Long, supplierContactIdList: MutableList<Long>): EdiConnection {
+        logger.info("Starting to create Ediconnection between Customer: $customerOrgId and Supplier: $supplierOrgId")
+
+        val customerOrg = organizationRepository.findById(customerOrgId).get()
+        val supplierOrg = organizationRepository.findById(supplierOrgId).get()
+        val customerContactList = userRepository.findAllById(customerContactIdList)
+        val supplierContactList = userRepository.findAllById(supplierContactIdList)
+
+        val newEdiConnection = EdiConnection(customerOrg, supplierOrg)
+        newEdiConnection.customerContacts = customerContactList
+        newEdiConnection.supplierContacts = supplierContactList
+
         return ediConnectionRepository.save(newEdiConnection)
     }
 

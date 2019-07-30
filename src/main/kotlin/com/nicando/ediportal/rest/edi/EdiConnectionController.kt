@@ -1,11 +1,12 @@
 package com.nicando.ediportal.rest.edi
 
-import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
-import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
+import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
+import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
@@ -27,8 +28,9 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/edi_connection")
 class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService, private val ediConnectionService: EdiConnectionService) {
     @PostMapping
-    fun createEdiConnection(@RequestBody newEdiConnection: EdiConnection): EdiConnection {
-        return ediConnectionService.createEdiConnection(newEdiConnection)
+    fun createEdiConnection(@RequestBody jsonInput: JsonInput): EdiConnection {
+        return ediConnectionService.createEdiConnection(jsonInput.customerOrgId, jsonInput.custmerContactIdList,
+                jsonInput.supplierOrgId, jsonInput.supplierContactIdList)
     }
 
     @GetMapping("/{id}")
@@ -52,3 +54,11 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }
+
+class JsonInput(
+        val customerOrgId: Long,
+        val custmerContactIdList: MutableList<Long>,
+        val supplierOrgId: Long,
+        val supplierContactIdList: MutableList<Long>
+)
+

@@ -44,10 +44,10 @@ data class EdiConnection(
     var assignedDeveloper: User? = null
 
     @ManyToMany
-    var customerContacts: MutableSet<User> = mutableSetOf()
+    var customerContacts: MutableList<User> = mutableListOf()
 
     @ManyToMany
-    var supplierContacts: MutableSet<User> = mutableSetOf()
+    var supplierContacts: MutableList<User> = mutableListOf()
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
