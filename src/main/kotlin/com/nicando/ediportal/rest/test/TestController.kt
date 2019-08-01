@@ -8,14 +8,15 @@ import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import com.nicando.ediportal.logic.roles.RoleService
 import com.thedeanda.lorem.Lorem
 import com.thedeanda.lorem.LoremIpsum
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.ResourceUtils
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,8 +30,11 @@ import java.util.*
  */
 @RestController
 @RequestMapping("/test")
-class TestController(private val ediConnectionRepository: EdiConnectionRepository, private val organizationRepository: OrganizationRepository,
-                     private val userRepository: UserRepository, private val roleService: RoleService) {
+class TestController(private val ediConnectionRepository: EdiConnectionRepository,
+                     private val organizationRepository: OrganizationRepository,
+                     private val userRepository: UserRepository,
+                     private val roleService: RoleService,
+                     private val passwordEncoder: PasswordEncoder) {
     @PostMapping
     @Transactional
     fun createTest(): ResponseEntity<MutableList<EdiConnection>> {
@@ -41,7 +45,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             val supplier = Organization(supplierName, 0, "test@testorg.de", null)
             val savedSupplier = organizationRepository.save(supplier)
             val supplierUser = User("$supplierName-User", lorem.email,
-                    supplierName, lorem.firstName, lorem.lastName, savedSupplier)
+                    passwordEncoder.encode("test"), lorem.firstName, lorem.lastName, savedSupplier)
             supplierUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             userRepository.save(supplierUser)
         }
