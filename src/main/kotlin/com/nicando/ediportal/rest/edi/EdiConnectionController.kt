@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest
  * This Code can not be copied and/or distributed without the express
  * permission of Jan Adamczyk
  */
-@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CUSTOMER') || hasRole('ROLE_SUPPLIER')")
+@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('REGISTERED_USER')")
 @RestController
 @RequestMapping("/edi_connection")
 class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService, private val ediConnectionService: EdiConnectionService) {
