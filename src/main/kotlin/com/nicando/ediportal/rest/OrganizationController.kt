@@ -4,6 +4,7 @@ import com.nicando.ediportal.common.organization.OrganizationService
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.user.User
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -36,6 +37,12 @@ class OrganizationController(private val organizationService: OrganizationServic
     @GetMapping("/{id}/members")
     fun getAllMembers(@PathVariable id: Long): List<User>? {
         return organizationService.findAllOrganizationMembers(id)
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/nicando/members")
+    fun getDevelopers(): List<User>? {
+        return organizationService.findAllDevelopers()
     }
 
     @GetMapping("/customers")

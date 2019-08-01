@@ -24,6 +24,12 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun findAllDevelopers(): List<User>? {
+        logger.info("Getting all Developers for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
+        return organizationMemberRepository.findAllByOrganizationName("Nicando")
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllOrganizationMembers(id: Long): List<User>? {
         logger.info("Getting all members from Organization with Id $id for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationId(id)

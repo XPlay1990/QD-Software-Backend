@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface OrganizationMemberRepository : JpaRepository<User, Long> {
     fun findAllByOrganizationId(organization_id: Long): List<User>
+    fun findAllByOrganizationName(organization_name: String): List<User>
 }
