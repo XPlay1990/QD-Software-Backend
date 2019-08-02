@@ -1,5 +1,6 @@
 package com.nicando.ediportal.rest.login
 
+import com.nicando.ediportal.common.apiResponse.register.RegisterResponse
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.RoleRepository
@@ -47,12 +48,12 @@ class AuthenticationController(private val authenticationManager: Authentication
     @PostMapping("/register")
     fun registerUser(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<*> {
         if (userRepository.existsByUsername(registerRequest.username)) {
-            return ResponseEntity(ApiResponse(false, "Username is already taken!"),
+            return ResponseEntity(RegisterResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST)
         }
 
         if (userRepository.existsByEmail(registerRequest.email)) {
-            return ResponseEntity(ApiResponse(false, "Email Address already in use!"),
+            return ResponseEntity(RegisterResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST)
         }
 
@@ -73,6 +74,6 @@ class AuthenticationController(private val authenticationManager: Authentication
                 .fromCurrentContextPath().path("/users/{username}")
                 .buildAndExpand(result.username).toUri()
 
-        return ResponseEntity.created(location).body<Any>(ApiResponse(true, "User registered successfully"))
+        return ResponseEntity.created(location).body<Any>(RegisterResponse(true, "User registered successfully"))
     }
 }

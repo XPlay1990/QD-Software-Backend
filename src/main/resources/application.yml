@@ -46,8 +46,9 @@ spring:
     multipart:
       file-size-threshold: 2KB
       location: /tmp
-      max-file-size: 50MB
-      max-request-size: 75MB
+      max-file-size: 500MB
+      max-request-size: 550MB
+      enabled: true
   mail:
     host: smtp.gmail.com
     port: 587
