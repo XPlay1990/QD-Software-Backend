@@ -6,7 +6,6 @@ import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
@@ -40,7 +39,9 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
 
     @GetMapping(produces = ["application/json"])
     fun getEdiConnections(@CurrentUser currentUser: UserPrincipal, request: HttpServletRequest,
-                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int): EdiConnectionListResponse<EdiConnection> {
+                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int,
+                          @RequestParam pageSorting: HashMap<String, String>,
+                          @RequestParam additiveSorting: Boolean): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 
         if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
@@ -61,4 +62,3 @@ class JsonInput(
         val supplierOrgId: Long,
         val supplierContactIdList: MutableList<Long>
 )
-

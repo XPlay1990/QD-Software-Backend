@@ -29,6 +29,10 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
     fun findEdiConnectionsForAdmin(pageNumber: Int, pageSize: Int): EdiConnectionListResponse<EdiConnection> {
         logger.info("Getting all Edi-Connections for Admin user.")
 
+//        val sort = Sort.by(
+//                Sort.Order.asc("name"),
+//                Sort.Order.desc("numberOfHands"))
+
         val pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "updateTime")
         val ediConnectionsPage = ediConnectionRepository
                 .findAll(pageable)
