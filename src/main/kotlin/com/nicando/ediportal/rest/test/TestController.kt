@@ -77,11 +77,11 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
                 val attachments: MutableSet<Attachment> = mutableSetOf()
                 val attachmentFile = ResourceUtils.getFile("classpath:EDI-Fragebogen.docx")
 
-                repeat(random.nextInt(2)) {
-                    val attachment = Attachment(lorem.name, ".docx",
-                            attachmentFile.length(), attachmentFile.readBytes())
-                    attachments.add(attachment)
-                }
+//                repeat(random.nextInt(2)) {
+//                    val attachment = Attachment(lorem.name, ".docx",
+//                            attachmentFile.length(), attachmentFile.readBytes())
+//                    attachments.add(attachment)
+//                }
                 val attachmentMessageUser = users[random.nextInt(users.size)]
                 val attachmentMessage = AttachmentMessage(attachmentMessageUser,
                         lorem.getTitle(random.nextInt(5)), lorem.getWords(random.nextInt(10)), attachments)

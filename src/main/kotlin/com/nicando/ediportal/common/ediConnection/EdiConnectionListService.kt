@@ -77,7 +77,7 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
 
-        @Value("\$app.Constants.PageResponse.MAX_SIZE")
+        @Value("\$app.constants.pageResponse.MAX_SIZE")
         private val MAX_PAGE_SIZE: Int = 50
     }
 }

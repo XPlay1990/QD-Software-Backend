@@ -19,36 +19,33 @@ import javax.servlet.http.HttpServletRequest
  **/
 
 @RestController
-class FileController(private val fileStorageService: FileStorageService) {
+class MessageAttachmentController(private val fileStorageService: FileStorageService) {
 
-    @PostMapping("/uploadFile")
-    fun uploadFile(@RequestParam("file") file: MultipartFile): UploadFileResponse {
-        val fileName = fileStorageService.storeFile(file)
+    @PostMapping("/upload/{messageId}")
+    fun uploadFile(@PathVariable messageId: Long, @RequestParam("file") file: MultipartFile): UploadFileResponse {
+        val fileName = fileStorageService.storeFile("messages/$messageId", file)
 
         val fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("/downloadFile/$messageId/")
                 .path(fileName)
                 .toUriString()
-
-        logger.warn(UploadFileResponse(fileName, fileDownloadUri,
-                file.contentType, file.size).toString())
 
         return UploadFileResponse(fileName, fileDownloadUri,
                 file.contentType, file.size)
     }
 
-    @PostMapping("/uploadMultipleFiles")
-    fun uploadMultipleFiles(@RequestParam("files") files: Array<MultipartFile>): MutableList<UploadFileResponse> {
+    @PostMapping("/uploadMultipleFiles/{messageId}")
+    fun uploadMultipleFiles(@PathVariable messageId: Long, @RequestParam("files") files: Array<MultipartFile>): MutableList<UploadFileResponse> {
         return files.toList()
                 .stream()
-                .map { file -> uploadFile(file) }
+                .map { file -> uploadFile(messageId, file) }
                 .collect(Collectors.toList())
     }
 
-    @GetMapping("/downloadFile/{fileName:.+}")
-    fun downloadFile(@PathVariable fileName: String, request: HttpServletRequest): ResponseEntity<Resource> {
+    @GetMapping("/downloadFile/{messageId}/{fileName:.+}")
+    fun downloadFile(@PathVariable messageId: Long, @PathVariable fileName: String, request: HttpServletRequest): ResponseEntity<Resource> {
         // Load file as Resource
-        val resource = fileStorageService.loadFileAsResource(fileName)
+        val resource = fileStorageService.loadFileAsResource("messages/$messageId", fileName)
 
         // Try to determine file's content type
         var contentType: String? = null
