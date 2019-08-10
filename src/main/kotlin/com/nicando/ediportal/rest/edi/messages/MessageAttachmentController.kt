@@ -2,6 +2,7 @@ package com.nicando.ediportal.rest.edi.messages
 
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.Resource
+import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -54,16 +55,23 @@ class MessageAttachmentController(private val fileStorageService: FileStorageSer
         } catch (ex: IOException) {
             logger.info("Could not determine file type.")
         }
-
         // Fallback to the default content type if type could not be determined
         if (contentType == null) {
             contentType = "application/octet-stream"
         }
+        val contentDisposition = ContentDisposition.builder("inline")
+                .filename(resource.filename!!)
+                .build()
+
+        val headers = HttpHeaders()
+        headers.contentDisposition = contentDisposition
+//        headers.accessControlExposeHeaders = mutableListOf(HttpHeaders.CONTENT_DISPOSITION)
 
         return ResponseEntity.ok()
+                .headers(headers)
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.filename + "\"")
-                .body<Resource>(resource)
+                .contentLength(resource.contentLength())
+                .body(resource)
     }
 
     companion object {

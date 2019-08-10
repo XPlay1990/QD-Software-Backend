@@ -46,8 +46,8 @@ spring:
     multipart:
       file-size-threshold: 2KB
       location: /tmp
-      max-file-size: 500MB
-      max-request-size: 550MB
+      max-file-size: 550MB
+      max-request-size: 600MB
       enabled: true
   mail:
     host: smtp.gmail.com
