@@ -9,6 +9,8 @@ import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -39,16 +41,14 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
 
     @GetMapping(produces = ["application/json"])
     fun getEdiConnections(@CurrentUser currentUser: UserPrincipal, request: HttpServletRequest,
-                          @RequestParam pageNumber: Int, @RequestParam pageSize: Int,
-                          @RequestParam pageSorting: HashMap<String, String>,
-                          @RequestParam additiveSorting: Boolean): EdiConnectionListResponse<EdiConnection> {
+                          @PageableDefault(size = 10, sort = ["updateTime"]) pageable: Pageable): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 
         if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
-            return ediConnectionListService.findEdiConnectionsForAdmin(pageNumber, pageSize)
+            return ediConnectionListService.findEdiConnectionsForAdmin(pageable)
         }
 
-        return ediConnectionListService.findEdiConnectionsForUser(pageNumber, pageSize)
+        return ediConnectionListService.findEdiConnectionsForUser(pageable)
     }
 
     companion object { //static

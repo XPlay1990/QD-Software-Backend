@@ -1,18 +1,18 @@
 package com.nicando.ediportal.common.ediConnection
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.exceptions.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
+
 
 /**
  * Created by Jan Adamczyk on 15.07.2019.
@@ -26,27 +26,23 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun findEdiConnectionsForAdmin(pageNumber: Int, pageSize: Int): EdiConnectionListResponse<EdiConnection> {
+    fun findEdiConnectionsForAdmin(pageable: Pageable)
+            : EdiConnectionListResponse<EdiConnection> {
         logger.info("Getting all Edi-Connections for Admin user.")
 
-//        val sort = Sort.by(
-//                Sort.Order.asc("name"),
-//                Sort.Order.desc("numberOfHands"))
-
-        val pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "updateTime")
         val ediConnectionsPage = ediConnectionRepository
                 .findAll(pageable)
 
         return buildPagedResponse(ediConnectionsPage)
     }
 
-    fun findEdiConnectionsForUser(pageNumber: Int, pageSize: Int): EdiConnectionListResponse<EdiConnection> {
+    fun findEdiConnectionsForUser(pageable: Pageable)
+            : EdiConnectionListResponse<EdiConnection> {
         val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
         logger.info("Getting all Edi-Connections for Organization with Id: $organizationIdFromAuthentication")
 
-        validatePageNumberAndSize(pageNumber, pageSize)
+        validatePageNumberAndSize(pageable.pageNumber, pageable.pageSize)
 
-        val pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "updateTime")
         val ediConnectionsPage = ediConnectionRepository
                 .findAllBySupplierIdOrCustomerId(organizationIdFromAuthentication, organizationIdFromAuthentication, pageable)
 
