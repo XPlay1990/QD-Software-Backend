@@ -63,20 +63,20 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
         }
     }
 
-    @Bean
-    fun switchUserFilter(): SwitchUserFilter {
-        val filter = SwitchUserFilter()
-        filter.setUserDetailsService(userDetailsServiceBean())
-        filter.setUsernameParameter("username")
-        filter.setSwitchUserUrl("/switchUser")
-        filter.setExitUserUrl("/switchUser/exit")
-//        filter.setTargetUrl("/")
-
-        //filter.setSuccessHandler(authenticationSuccessHandler);
-        //filter.setFailureHandler(authenticationFailureHandler());
-
-        return filter
-    }
+//    @Bean
+//    fun switchUserFilter(): SwitchUserFilter {
+//        val filter = SwitchUserFilter()
+//        filter.setUserDetailsService(userDetailsServiceBean())
+//        filter.setUsernameParameter("username")
+//        filter.setSwitchUserUrl("/switchUser")
+//        filter.setExitUserUrl("/switchUser/exit")
+////        filter.setTargetUrl("/")
+//
+//        filter.setSuccessHandler(authenticationSuccessHandler);
+//        //filter.setFailureHandler(authenticationFailureHandler());
+//
+//        return filter
+//    }
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
