@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
  * Created by Jan Adamczyk on 21.05.2019.
  */
 
-@PreAuthorize("hasRole('ADMIN')") //TODO: Role_assigner role?
+@PreAuthorize("hasRole('ROLE_ADMIN')") //TODO: Role_assigner role?
 @RestController
 @RequestMapping("/addrole")
 class RoleController(private val roleService: RoleService, private val authenticationInfoService: AuthenticationInfoService) {

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
  * Created by Jan Adamczyk on 24.06.2019.
  */
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 class AdminFunctionsController(private val adminFunctionsService: AdminFunctionsService) {
 

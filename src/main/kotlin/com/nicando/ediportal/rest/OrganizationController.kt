@@ -39,7 +39,7 @@ class OrganizationController(private val organizationService: OrganizationServic
         return organizationService.findAllOrganizationMembers(id)
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/nicando/members")
     fun getDevelopers(): List<User>? {
         return organizationService.findAllDevelopers()

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
  * @since : 10.08.2019, Sa.
  **/
 @Service
-@PreAuthorize("hasRole('ADMIN')||hasRole('PREVIOUS_ADMINISTRATOR')")
+@PreAuthorize("hasRole('ROLE_ADMIN')||hasRole('ROLE_PREVIOUS_ADMINISTRATOR')")
 class AdminFunctionsService(private val customUserDetailsService: CustomUserDetailsService) {
 //    public override fun attemptSwitchUser(request: HttpServletRequest): Authentication? {
 //        val current = SecurityContextHolder.getContext().authentication

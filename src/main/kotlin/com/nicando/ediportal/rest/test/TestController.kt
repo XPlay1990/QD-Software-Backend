@@ -46,7 +46,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             val savedSupplier = organizationRepository.save(supplier)
             val supplierUser = User("$supplierName-User", lorem.email,
                     passwordEncoder.encode("test"), lorem.firstName, lorem.lastName, savedSupplier)
-            supplierUser.roles = mutableListOf(roleService.findRoleByName(RoleName.REGISTERED_USER))
+            supplierUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             userRepository.save(supplierUser)
         }
 
@@ -54,7 +54,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         customers.forEach { customer ->
             val customerUser = User("${customer.name}-User", lorem.email,
                     customer.name, lorem.firstName, lorem.lastName, customer)
-            customerUser.roles = mutableListOf(roleService.findRoleByName(RoleName.REGISTERED_USER))
+            customerUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             userRepository.save(customerUser)
         }
 
