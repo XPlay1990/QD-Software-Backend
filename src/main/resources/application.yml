@@ -28,7 +28,7 @@ spring:
     username: root
     password: Psmcg4t1PElyyKs3VHVF]
     initialization-mode: never
-    data: classpath*:nicando.sql, classpath*:questionCatalogue.sql, classpath*:customerOrgs.sql
+    data: classpath*:roles.sql, classpath*:nicando.sql, classpath*:questionCatalogue.sql, classpath*:customerOrgs.sql
   #  flyway:
   #    locations: classpath:db/migration
   #    url: jdbc:mysql://localhost:3306?serverTimezone=UTC&useSSL=false
