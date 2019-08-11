@@ -23,25 +23,25 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
         return organizationRepository.findById(id)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun findAllDevelopers(): List<User>? {
         logger.info("Getting all Developers for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationName("Nicando")
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun findAllOrganizationMembers(id: Long): List<User>? {
         logger.info("Getting all members from Organization with Id $id for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationId(id)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun findAllCustomerOrgs(): List<Organization> {
         logger.info("Getting all Customer-organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationRepository.findAllByIsCustomerTrueAndIsActiveTrueOrderByName()
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun findAllSupplierOrgs(): List<Organization> {
         logger.info("Getting all Customer-organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationRepository.findAllByIsCustomerFalseAndIsActiveTrueOrderByName()

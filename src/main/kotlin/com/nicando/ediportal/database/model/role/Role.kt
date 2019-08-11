@@ -21,11 +21,11 @@ data class Role(
 }
 
 enum class RoleName {
-    ROLE_NONE,
-    ROLE_ADMIN,
-    ROLE_REGISTERED_USER,
-    ROLE_CUSTOMER,
-    ROLE_SUPPLIER,
-    ROLE_EDI_READ,
-    ROLE_EDI_CREATE
+    NONE,
+    ADMIN,
+    REGISTERED_USER,
+    CUSTOMER,
+    SUPPLIER,
+    EDI_READ,
+    EDI_CREATE
 }

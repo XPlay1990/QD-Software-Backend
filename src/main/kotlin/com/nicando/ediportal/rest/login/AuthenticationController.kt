@@ -63,7 +63,7 @@ class AuthenticationController(private val authenticationManager: Authentication
 
         user.password = passwordEncoder.encode(user.password)
 
-        val userRole = roleRepository.findByRoleName(RoleName.ROLE_REGISTERED_USER)
+        val userRole = roleRepository.findByRoleName(RoleName.REGISTERED_USER)
                 ?: throw ServerException("User Role not set.")
 
         user.roles = mutableListOf(userRole)

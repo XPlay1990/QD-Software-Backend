@@ -25,7 +25,7 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         return EdiConnectionResponse(ediConnectionRepository.findById(id).get())
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     fun findEdiConnectionsForAdmin(pageable: Pageable)
             : EdiConnectionListResponse<EdiConnection> {
         logger.info("Getting all Edi-Connections for Admin user.")

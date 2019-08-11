@@ -1,29 +1,21 @@
 package com.nicando.ediportal.rest.adminFunctions
 
-import com.nicando.ediportal.database.repositories.RoleRepository
-import com.nicando.ediportal.database.repositories.UserRepository
-import com.nicando.ediportal.security.JwtTokenProvider
+import com.nicando.ediportal.common.admin.AdminFunctionsService
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Created by Jan Adamczyk on 24.06.2019.
  */
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin")
-class AdminFunctionsController(private val authenticationManager: AuthenticationManager, private val jwtTokenProvider: JwtTokenProvider,
-                               private val userRepository: UserRepository, private val roleRepository: RoleRepository,
-                               private val passwordEncoder: PasswordEncoder) {
+class AdminFunctionsController(private val adminFunctionsService: AdminFunctionsService) {
 
-    @PostMapping("/switch/{userId}")
-    fun switchToUser(@PathVariable userId: Long) {
-//        jwtTokenProvider.generateToken()
-        TODO("not implemented")
-    }
+//    @GetMapping("/switch/{userName}")
+//    fun switchToUser(request: HttpServletRequest, @PathVariable userName: String) {
+////        jwtTokenProvider.generateToken()
+//        adminFunctionsService.attemptSwitchUser(request)
+//    }
 }

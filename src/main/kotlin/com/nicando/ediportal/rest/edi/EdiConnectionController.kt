@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest
  * This Code can not be copied and/or distributed without the express
  * permission of Jan Adamczyk
  */
-@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('REGISTERED_USER')")
+@PreAuthorize("hasRole('ADMIN') || hasRole('REGISTERED_USER')")
 @RestController
 @RequestMapping("/edi_connection")
 class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService, private val ediConnectionService: EdiConnectionService) {
@@ -44,7 +44,7 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
                           @PageableDefault(size = 10, sort = ["updateTime"]) pageable: Pageable): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 
-        if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
+        if (request.isUserInRole(RoleName.ADMIN.toString())) {
             return ediConnectionListService.findEdiConnectionsForAdmin(pageable)
         }
 

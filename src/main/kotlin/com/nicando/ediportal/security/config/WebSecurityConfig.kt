@@ -18,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
+
+
 
 
 /**
@@ -32,21 +35,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsService, private val unauthorizedHandler: JwtAuthenticationEntryPoint,
                         private val jwtAuthenticationFilter: JwtAuthenticationFilter) : WebSecurityConfigurerAdapter() {
-
-//    @Throws(Exception::class)
-//    override fun configure(http: HttpSecurity) {
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/registration").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/register")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//    }
 
     @Throws(Exception::class)
     public override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
@@ -64,6 +52,30 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    override fun userDetailsServiceBean(): UserDetailsService {
+        try {
+            return super.userDetailsServiceBean()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+    @Bean
+    fun switchUserFilter(): SwitchUserFilter {
+        val filter = SwitchUserFilter()
+        filter.setUserDetailsService(userDetailsServiceBean())
+        filter.setUsernameParameter("username")
+        filter.setSwitchUserUrl("/switchUser")
+        filter.setExitUserUrl("/switchUser/exit")
+//        filter.setTargetUrl("/")
+
+        //filter.setSuccessHandler(authenticationSuccessHandler);
+        //filter.setFailureHandler(authenticationFailureHandler());
+
+        return filter
     }
 
     @Throws(Exception::class)
@@ -92,10 +104,8 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .permitAll()
                 .antMatchers("/error")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/switchUser").hasRole("ADMIN")
+                .antMatchers("/switchUser/exit").hasRole("PREVIOUS_ADMINISTRATOR")
 
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
