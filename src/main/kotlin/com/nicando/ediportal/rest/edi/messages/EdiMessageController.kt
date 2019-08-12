@@ -1,5 +1,6 @@
 package com.nicando.ediportal.rest.edi.messages
 
+import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import org.springframework.web.bind.annotation.*
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/edi_connection/{ediConnectionId}/messages")
-class EdiMessageController(private val ediConnectionService: EdiConnectionService) {
+class EdiMessageController(private val ediConnectionService: EdiConnectionService,
+                           private val authenticationInfoService: AuthenticationInfoService) {
 
     @PostMapping
     fun addMessage(@PathVariable ediConnectionId: Long, @RequestBody test: String) {

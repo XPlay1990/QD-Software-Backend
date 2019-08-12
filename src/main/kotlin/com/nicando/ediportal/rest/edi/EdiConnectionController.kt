@@ -1,11 +1,14 @@
 package com.nicando.ediportal.rest.edi
 
+import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.common.EdiConnectionAccessService
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
+import com.nicando.ediportal.exceptions.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
@@ -27,16 +30,28 @@ import javax.servlet.http.HttpServletRequest
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_REGISTERED_USER')")
 @RestController
 @RequestMapping("/edi_connection")
-class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService, private val ediConnectionService: EdiConnectionService) {
+class EdiConnectionController(private val ediConnectionListService: EdiConnectionListService,
+                              private val ediConnectionService: EdiConnectionService,
+                              private val authenticationInfoService: AuthenticationInfoService,
+                              private val ediConnectionAccessService: EdiConnectionAccessService) {
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createEdiConnection(@RequestBody jsonInput: JsonInput): EdiConnection {
         return ediConnectionService.createEdiConnection(jsonInput.customerOrgId, jsonInput.custmerContactIdList,
                 jsonInput.supplierOrgId, jsonInput.supplierContactIdList)
     }
 
     @GetMapping("/{id}")
-    fun getEdiConnection(@PathVariable("id") id: Long): EdiConnectionResponse {
-        return ediConnectionListService.findEdiConnection(id)
+    fun getEdiConnection(request: HttpServletRequest, @PathVariable("id") id: Long): EdiConnectionResponse {
+        val foundEdiConnection = ediConnectionListService.findEdiConnection(id)
+
+        if (!ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection.content)) {
+            logger.warn("User ${authenticationInfoService.getUsernameFromAuthentication()} " +
+                    "tried to access Edi-Connection with id: ${foundEdiConnection.content.id} which he is not allowed to!")
+            throw ForbiddenException("You are not allowed to view this Edi-Connection!")
+        }
+
+        return foundEdiConnection
     }
 
     @GetMapping(produces = ["application/json"])
