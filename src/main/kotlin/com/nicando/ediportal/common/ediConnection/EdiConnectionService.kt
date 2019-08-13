@@ -3,6 +3,7 @@ package com.nicando.ediportal.common.ediConnection
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.database.model.edi.EdiStatus
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
@@ -41,6 +42,21 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
         newEdiConnection.supplierContacts = supplierContactList
 
         return ediConnectionRepository.save(newEdiConnection)
+    }
+
+    @Transactional
+    fun setDeveloperAndState(ediConnectionId: Long, assignedDeveloperId: Long, statusName: String) {
+        logger.info("Saving Developer: $assignedDeveloperId and Status: $statusName for $ediConnectionId.")
+        val ediConnection = ediConnectionRepository.findById(ediConnectionId).get()
+
+        val developer = userRepository.findById(assignedDeveloperId).get()
+        if (developer.organization.name != "Nicando") {
+            throw IllegalStateException("Tried to set Developer from other Organization than Nicando")
+        }
+        ediConnection.assignedDeveloper = developer
+        ediConnection.status = EdiStatus.valueOf(statusName)
+
+        ediConnectionRepository.save(ediConnection)
     }
 
     companion object { //static

@@ -10,22 +10,24 @@ import javax.validation.constraints.Size
 class RegisterRequest(
         @NotBlank
         @Size(min = 3, max = 15)
-        var username: String,
+        val username: String,
 
         @NotBlank
         @Size(max = 40)
         @Email
-        var email: String,
+        val email: String,
 
         @NotBlank
         @Size(min = 6, max = 20)
-        var password: String,
+        val password: String,
 
         @NotBlank
         @Size(min = 4, max = 40)
-        var firstName: String,
+        val firstName: String,
 
         @NotBlank
         @Size(min = 4, max = 40)
-        var lastName: String
+        val lastName: String,
+
+        val organizationId: Long
 )

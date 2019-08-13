@@ -1,10 +1,11 @@
 package com.nicando.ediportal.rest.login
 
-import com.nicando.ediportal.common.apiResponse.register.RegisterResponse
+import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
+import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import com.nicando.ediportal.exceptions.ServerException
 import com.nicando.ediportal.logic.register.RegisterRequest
 import com.nicando.ediportal.security.JwtTokenProvider
@@ -28,7 +29,10 @@ import javax.validation.Valid
 @RequestMapping("/auth")
 class AuthenticationController(private val authenticationManager: AuthenticationManager, private val jwtTokenProvider: JwtTokenProvider,
                                private val userRepository: UserRepository, private val roleRepository: RoleRepository,
+                               private val organizationRepository: OrganizationRepository,
                                private val passwordEncoder: PasswordEncoder) {
+
+    //TODO: refactor! repositorys in service instead of controller MVC
 
     @PostMapping("/login")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<*> {
@@ -48,18 +52,19 @@ class AuthenticationController(private val authenticationManager: Authentication
     @PostMapping("/register")
     fun registerUser(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<*> {
         if (userRepository.existsByUsername(registerRequest.username)) {
-            return ResponseEntity(RegisterResponse(false, "Username is already taken!"),
+            return ResponseEntity(ResponseMessage(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST)
         }
 
         if (userRepository.existsByEmail(registerRequest.email)) {
-            return ResponseEntity(RegisterResponse(false, "Email Address already in use!"),
+            return ResponseEntity(ResponseMessage(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST)
         }
 
         // Creating user's account
         val user = User(registerRequest.username,
-                registerRequest.email, registerRequest.password, registerRequest.firstName, registerRequest.lastName, null)
+                registerRequest.email, registerRequest.password, registerRequest.firstName, registerRequest.lastName,
+                organizationRepository.findById(registerRequest.organizationId).get())
 
         user.password = passwordEncoder.encode(user.password)
 
@@ -74,6 +79,6 @@ class AuthenticationController(private val authenticationManager: Authentication
                 .fromCurrentContextPath().path("/users/{username}")
                 .buildAndExpand(result.username).toUri()
 
-        return ResponseEntity.created(location).body<Any>(RegisterResponse(true, "User registered successfully"))
+        return ResponseEntity.created(location).body<Any>(ResponseMessage(true, "User registered successfully"))
     }
 }

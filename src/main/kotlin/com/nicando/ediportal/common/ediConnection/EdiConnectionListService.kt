@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service
  * Created by Jan Adamczyk on 15.07.2019.
  */
 @Service
-class EdiConnectionListService(private val ediConnectionRepository: EdiConnectionRepository, private val authenticationInfoService: AuthenticationInfoService) {
+class EdiConnectionListService(private val ediConnectionRepository: EdiConnectionRepository,
+                               private val authenticationInfoService: AuthenticationInfoService) {
 
-    //TODO: securitycheck, only if user is admin || isparticipant
     fun findEdiConnection(id: Long): EdiConnectionResponse {
         return EdiConnectionResponse(ediConnectionRepository.findById(id).get())
     }

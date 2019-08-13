@@ -2,11 +2,13 @@ package com.nicando.ediportal.rest.edi
 
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.EdiConnectionAccessService
+import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.database.model.edi.EdiStatus
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.exceptions.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
@@ -14,9 +16,12 @@ import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
+
 
 /**
  * Copyright (C) 2019-2019 Jan Adamczyk <j_adamczyk@hotmail.com>
@@ -66,6 +71,22 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
         return ediConnectionListService.findEdiConnectionsForUser(pageable)
     }
 
+
+    @GetMapping("/possibleStates")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getEdiConnectionStateList(): Array<EdiStatus> {
+        return EdiStatus.values()
+    }
+
+    @PostMapping("/saveDeveloperAndState")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun saveDeveloperAndState(@RequestBody saveDeveloperAndStateInput: SaveDeveloperAndStateInput): ResponseEntity<ResponseMessage> {
+        ediConnectionService.setDeveloperAndState(saveDeveloperAndStateInput.ediConnectionId,
+                saveDeveloperAndStateInput.developerId, saveDeveloperAndStateInput.state)
+        return ResponseEntity(ResponseMessage(true, "Successfully saved Developer and State!"),
+                HttpStatus.OK)
+    }
+
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
@@ -76,4 +97,10 @@ class JsonInput(
         val custmerContactIdList: MutableList<Long>,
         val supplierOrgId: Long,
         val supplierContactIdList: MutableList<Long>
+)
+
+class SaveDeveloperAndStateInput(
+        val ediConnectionId: Long,
+        val developerId: Long,
+        val state: String
 )

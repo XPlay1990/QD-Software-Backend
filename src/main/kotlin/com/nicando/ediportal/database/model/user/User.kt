@@ -36,7 +36,7 @@ data class User(
 
         @ManyToOne
         @JoinColumn
-        var organization: Organization?
+        var organization: Organization
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
