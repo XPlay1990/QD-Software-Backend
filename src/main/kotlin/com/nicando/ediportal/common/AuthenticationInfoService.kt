@@ -18,7 +18,7 @@ class AuthenticationInfoService(private val userRepository: UserRepository) {
 
     fun getOrgIdFromAuthentication(): Long {
         val thisUser = userRepository.findById(getUserIdFromAuthentication()).get()
-        return thisUser.organization!!.id
+        return thisUser.organization.id
     }
 
     fun getUsernameFromAuthentication(): String {

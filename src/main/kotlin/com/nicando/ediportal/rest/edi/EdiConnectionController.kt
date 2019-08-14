@@ -101,6 +101,6 @@ class JsonInput(
 
 class SaveDeveloperAndStateInput(
         val ediConnectionId: Long,
-        val developerId: Long,
+        val developerId: Long?,
         val state: String
 )

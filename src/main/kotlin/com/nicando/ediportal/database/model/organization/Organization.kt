@@ -49,7 +49,7 @@ data class Organization(
         set(value: Boolean) {
             if (!value) {
                 //deactivate members if organization is set to inactive
-                members!!.forEach { it.isActive = false }
+                members?.forEach { it.isActive = false }
             }
             field = value
         }
