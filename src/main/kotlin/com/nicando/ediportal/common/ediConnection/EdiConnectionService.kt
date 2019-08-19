@@ -16,17 +16,6 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
                            private val organizationRepository: OrganizationRepository,
                            private val userRepository: UserRepository) {
 
-    fun findEdiMessages(ediConnectionId: Long): EdiMessageListResponse {
-        //TODO: Find better way to get Messages instead of pulling whole connection.
-        //          BIDIRECTIONAL IS NOT!!! A BETTER SOLUTION! :>
-        val messages = ediConnectionRepository.findById(ediConnectionId).get().messages
-        val ediMessageResponses = mutableListOf<EdiMessageResponse>()
-        messages?.forEach { message ->
-            ediMessageResponses.add(EdiMessageResponse(message, message.javaClass.toString()))
-        }
-        return EdiMessageListResponse(ediMessageResponses)
-    }
-
     @Transactional
     fun createEdiConnection(customerOrgId: Long, customerContactIdList: MutableList<Long>,
                             supplierOrgId: Long, supplierContactIdList: MutableList<Long>): EdiConnection {

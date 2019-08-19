@@ -71,7 +71,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             repeat(random.nextInt(10)) {
                 val textMessageUser = users[random.nextInt(users.size)]
                 val textMessage = TextMessage(textMessageUser,
-                        lorem.getTitle(random.nextInt(5)), lorem.getWords(random.nextInt(10)))
+                        lorem.getWords(random.nextInt(10)))
 
                 // Attachments
                 val attachments: MutableSet<Attachment> = mutableSetOf()
@@ -84,7 +84,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 //                }
                 val attachmentMessageUser = users[random.nextInt(users.size)]
                 val attachmentMessage = AttachmentMessage(attachmentMessageUser,
-                        lorem.getTitle(random.nextInt(5)), lorem.getWords(random.nextInt(10)), attachments)
+                        lorem.getWords(random.nextInt(10)), attachments)
                 messages.add(textMessage)
                 messages.add(attachmentMessage)
             }

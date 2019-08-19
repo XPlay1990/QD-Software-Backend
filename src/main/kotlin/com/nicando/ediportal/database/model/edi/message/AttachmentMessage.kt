@@ -17,9 +17,9 @@ import javax.persistence.OneToMany
 @Entity
 data class AttachmentMessage(
         override var sender: User,
-        override var subject: String,
+//        override var subject: String,
         override var text: String,
 
         @OneToMany(cascade = [CascadeType.ALL])
         var attachments: MutableSet<Attachment>
-) : Message(sender, subject, text)
+) : Message(sender, text)

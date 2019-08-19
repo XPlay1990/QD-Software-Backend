@@ -14,7 +14,7 @@ import javax.persistence.*
 open class Message(
         @ManyToOne
         open var sender: User,
-        open var subject: String,
+//        open var subject: String,
         open var text: String
 
 ) {
