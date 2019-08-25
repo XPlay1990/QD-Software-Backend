@@ -55,7 +55,7 @@ data class EdiConnection(
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
-    var messages: MutableSet<Message> = mutableSetOf()
+    var messages: MutableList<Message> = mutableListOf()
 
     @JsonIgnore
     @OneToOne(cascade = [CascadeType.ALL])
@@ -63,7 +63,7 @@ data class EdiConnection(
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
-    var devComments: MutableSet<Message> = mutableSetOf()
+    var devComments: MutableList<Message> = mutableListOf()
 
     var readByCustomer: Boolean = false
     var readBySupplier: Boolean = false

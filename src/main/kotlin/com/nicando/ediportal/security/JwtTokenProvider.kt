@@ -46,6 +46,7 @@ class JwtTokenProvider {
     }
 
     fun validateToken(authToken: String): Boolean {
+        //TODO: errors as response to frontend
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken)
             return true

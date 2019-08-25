@@ -2,15 +2,15 @@ package com.nicando.ediportal.rest.edi.messages
 
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.EdiConnectionAccessService
+import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
-import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.common.ediConnection.message.EdiConnectionMessageService
 import com.nicando.ediportal.exceptions.ForbiddenException
-import com.nicando.ediportal.rest.edi.EdiConnectionController
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
@@ -31,7 +31,7 @@ class EdiMessageController(private val ediConnectionAccessService: EdiConnection
                            private val ediConnectionMessageService: EdiConnectionMessageService) {
 
     @PostMapping
-    fun addMessage(request: HttpServletRequest, @CurrentUser currentUser: UserPrincipal, @PathVariable ediConnectionId: Long, @RequestBody message: String) {
+    fun addMessage(request: HttpServletRequest, @CurrentUser currentUser: UserPrincipal, @PathVariable ediConnectionId: Long, @RequestBody message: String): ResponseEntity<ResponseMessage> {
         val foundEdiConnection = ediConnectionListService.findEdiConnection(ediConnectionId)
 
         if (!ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection.content)) {
@@ -40,6 +40,7 @@ class EdiMessageController(private val ediConnectionAccessService: EdiConnection
             throw ForbiddenException("You are not allowed to access this Edi-Connection!")
         }
         ediConnectionMessageService.saveMessage(foundEdiConnection.content, message, currentUser)
+        return ResponseEntity.ok(ResponseMessage(true, "Successfully saved your Message!"))
     }
 
     @GetMapping

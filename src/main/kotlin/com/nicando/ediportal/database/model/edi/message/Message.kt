@@ -15,8 +15,8 @@ open class Message(
         @ManyToOne
         open var sender: User,
 //        open var subject: String,
+        @Column(length = 2000)
         open var text: String
-
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

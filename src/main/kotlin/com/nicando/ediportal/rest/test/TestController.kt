@@ -1,8 +1,6 @@
 package com.nicando.ediportal.rest.test
 
 import com.nicando.ediportal.database.model.edi.EdiConnection
-import com.nicando.ediportal.database.model.edi.message.Attachment
-import com.nicando.ediportal.database.model.edi.message.AttachmentMessage
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
@@ -18,7 +16,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.util.ResourceUtils
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -66,27 +63,41 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             val customer = customers[random.nextInt(customers.size)]
             val supplier = suppliers[random.nextInt(suppliers.size)]
 
-            val messages = mutableSetOf<Message>()
+            val messages = mutableListOf<Message>()
 
             repeat(random.nextInt(10)) {
                 val textMessageUser = users[random.nextInt(users.size)]
+                val dummyText = "{\n" +
+                        "  \"blocks\": [\n" +
+                        "    {\n" +
+                        "      \"key\": \"13de6\",\n" +
+                        "      \"text\": \"PLACEHOLDER\",\n" +
+                        "      \"type\": \"unstyled\",\n" +
+                        "      \"depth\": 0,\n" +
+                        "      \"inlineStyleRanges\": [],\n" +
+                        "      \"entityRanges\": [],\n" +
+                        "      \"data\": {}\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"entityMap\": {}\n" +
+                        "}"
                 val textMessage = TextMessage(textMessageUser,
-                        lorem.getWords(random.nextInt(10)))
+                        dummyText.replace("PLACEHOLDER", lorem.getWords(random.nextInt(10))))
 
                 // Attachments
-                val attachments: MutableSet<Attachment> = mutableSetOf()
-                val attachmentFile = ResourceUtils.getFile("classpath:EDI-Fragebogen.docx")
+//                val attachments: MutableSet<Attachment> = mutableSetOf()
+//                val attachmentFile = ResourceUtils.getFile("classpath:EDI-Fragebogen.docx")
 
 //                repeat(random.nextInt(2)) {
 //                    val attachment = Attachment(lorem.name, ".docx",
 //                            attachmentFile.length(), attachmentFile.readBytes())
 //                    attachments.add(attachment)
 //                }
-                val attachmentMessageUser = users[random.nextInt(users.size)]
-                val attachmentMessage = AttachmentMessage(attachmentMessageUser,
-                        lorem.getWords(random.nextInt(10)), attachments)
+//                val attachmentMessageUser = users[random.nextInt(users.size)]
+//                val attachmentMessage = AttachmentMessage(attachmentMessageUser,
+//                        lorem.getWords(random.nextInt(10)), attachments)
                 messages.add(textMessage)
-                messages.add(attachmentMessage)
+//                messages.add(attachmentMessage)
             }
             val ediConnection = EdiConnection(customer, supplier)
             ediConnection.messages = messages
