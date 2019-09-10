@@ -82,7 +82,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
                         "  \"entityMap\": {}\n" +
                         "}"
                 val textMessage = TextMessage(textMessageUser,
-                        dummyText.replace("PLACEHOLDER", lorem.getWords(random.nextInt(10))))
+                        dummyText.replace("PLACEHOLDER", lorem.getWords(random.nextInt(10)+1)))
 
                 // Attachments
 //                val attachments: MutableSet<Attachment> = mutableSetOf()
