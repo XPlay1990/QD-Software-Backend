@@ -1,7 +1,7 @@
 package com.nicando.ediportal.common
 
 import com.nicando.ediportal.database.repositories.UserRepository
-import com.nicando.ediportal.exceptions.BadRequestException
+import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import com.nicando.ediportal.security.UserPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service

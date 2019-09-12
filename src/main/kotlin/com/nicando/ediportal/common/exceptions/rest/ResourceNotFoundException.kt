@@ -1,4 +1,4 @@
-package com.nicando.ediportal.exceptions
+package com.nicando.ediportal.common.exceptions.rest
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

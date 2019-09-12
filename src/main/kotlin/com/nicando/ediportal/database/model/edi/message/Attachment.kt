@@ -1,5 +1,6 @@
 package com.nicando.ediportal.database.model.edi.message
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -28,5 +29,6 @@ data class Attachment(
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     val id: Long = 0
 }

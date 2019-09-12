@@ -6,7 +6,7 @@ import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
-import com.nicando.ediportal.exceptions.ServerException
+import com.nicando.ediportal.common.exceptions.rest.ServerException
 import com.nicando.ediportal.logic.register.RegisterRequest
 import com.nicando.ediportal.security.JwtTokenProvider
 import org.springframework.http.HttpStatus

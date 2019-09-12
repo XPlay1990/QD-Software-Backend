@@ -1,7 +1,7 @@
 package com.nicando.ediportal.security
 
 import com.nicando.ediportal.database.repositories.UserRepository
-import com.nicando.ediportal.exceptions.ResourceNotFoundException
+import com.nicando.ediportal.common.exceptions.rest.ResourceNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

@@ -4,6 +4,7 @@ import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.message.Message
+import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.security.UserPrincipal
@@ -23,7 +24,7 @@ class EdiConnectionMessageService(private val ediConnectionRepository: EdiConnec
             logger.error("Tried to save Message as non-existent user!")
             throw IllegalStateException("Tried to save Message as non-existent user!")
         }
-        ediConnection.messages.add(Message(sender = user, text = message))
+        ediConnection.messages.add(TextMessage(sender = user, text = message))
 
         ediConnectionRepository.save(ediConnection)
     }

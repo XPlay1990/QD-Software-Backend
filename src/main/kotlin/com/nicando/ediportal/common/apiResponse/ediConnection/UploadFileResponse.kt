@@ -1,4 +1,4 @@
-package com.nicando.ediportal.rest.edi.messages
+package com.nicando.ediportal.common.apiResponse.ediConnection
 
 /**
  * @author : j_ada

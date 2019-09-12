@@ -6,7 +6,7 @@ import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.message.EdiConnectionMessageService
-import com.nicando.ediportal.exceptions.ForbiddenException
+import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory

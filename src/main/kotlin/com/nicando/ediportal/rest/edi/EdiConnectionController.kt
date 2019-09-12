@@ -10,7 +10,7 @@ import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.EdiStatus
 import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.exceptions.ForbiddenException
+import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory

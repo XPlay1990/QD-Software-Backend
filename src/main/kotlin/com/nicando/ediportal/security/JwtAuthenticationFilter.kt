@@ -1,6 +1,5 @@
 package com.nicando.ediportal.security
 
-import com.nicando.ediportal.exceptions.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

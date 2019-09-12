@@ -5,7 +5,7 @@ import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListR
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
-import com.nicando.ediportal.exceptions.BadRequestException
+import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page

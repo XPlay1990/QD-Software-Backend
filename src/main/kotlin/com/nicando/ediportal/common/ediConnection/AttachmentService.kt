@@ -1,5 +1,10 @@
-package com.nicando.ediportal.rest.edi.messages
+package com.nicando.ediportal.common.ediConnection
 
+import com.nicando.ediportal.common.apiResponse.AttachmentListResponse
+import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.database.model.edi.message.Attachment
+import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
+import com.nicando.ediportal.rest.edi.messages.FileStorageException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
@@ -8,6 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import java.io.FileNotFoundException
+import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -19,9 +25,13 @@ import java.nio.file.Paths
  **/
 
 @Service
-class FileStorageService() {
+class AttachmentService(private val ediConnectionRepository: EdiConnectionRepository) {
 
-    fun storeFile(directoryName: String, file: MultipartFile): String {
+    fun getFileList(ediConnectionId: Long): AttachmentListResponse {
+        return AttachmentListResponse(ediConnectionRepository.findById(ediConnectionId).get().attachments)
+    }
+
+    fun storeFile(directoryName: String, file: MultipartFile, ediconnectionId: Long): String {
         // Normalize file name
         val fileName = if (file.originalFilename.isNullOrBlank()) {
             "unnamed"
@@ -39,10 +49,18 @@ class FileStorageService() {
             val filePath = createAndGetFilePath(directoryName, fileName)
             Files.copy(file.inputStream, filePath)
 
+            val ediConnection: EdiConnection = ediConnectionRepository.findById(ediconnectionId).get()
+            var contentType = file.contentType
+            if (contentType == null) {
+                contentType = "unknown"
+            }
+            ediConnection.attachments.add(Attachment(fileName, contentType, file.size))
+            ediConnectionRepository.save(ediConnection)
+
             return fileName
         } catch (ex: FileAlreadyExistsException) {
             logger.error("Tried to upload a file that already existed")
-            throw FileStorageException(ex.toString(), ex)
+            throw FileStorageException("A file with that filename already exists!")
         }
     }
 

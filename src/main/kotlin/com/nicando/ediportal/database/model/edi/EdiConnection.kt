@@ -51,7 +51,7 @@ data class EdiConnection(
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
-    var attachments: MutableSet<Attachment>? = null
+    var attachments: MutableSet<Attachment> = mutableSetOf()
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])
