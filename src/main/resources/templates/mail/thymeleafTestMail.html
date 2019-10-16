@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    <span th:text="'Hi ' + ${name} + ','"></span>
+</p>
+<p th:if="${name.length() > 10}">
+    Wow! You've got a long name (more than 10 chars)!
+</p>
+<p>
+    <span th:text="${message}"></span>
+</p>
+<p>
+    <img src="../../banner.jpg" th:src="|cid:${footer}|" />
+<!--    <img src="../../banner.jpg" th:src="@{../../banner.jpg}"  alt="Abbino by Nicando"/>-->
+</p>
+<p>
+    Regards, <br/>
+    <em>Nicando Software GmbH</em>
+</p>
+</body>
+</html>

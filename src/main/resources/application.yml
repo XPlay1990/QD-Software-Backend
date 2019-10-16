@@ -49,17 +49,19 @@ spring:
       max-file-size: 550MB
       max-request-size: 600MB
       enabled: true
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: asdf
-    password: asdf
-    properties:
-      mail:
-        smpt:
-          auth: true
-          starttls:
-            enable: true
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: asdf
+#    password: asdf
+#    properties:
+#      mail:
+#        smpt:
+#          port: 25
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
 #  thymeleaf:
 
 logging:

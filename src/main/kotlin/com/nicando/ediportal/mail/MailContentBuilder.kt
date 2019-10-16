@@ -11,10 +11,12 @@ import org.thymeleaf.context.Context
 @Service
 class MailContentBuilder(private val templateEngine: TemplateEngine) {
 
-    fun build(message: String): String {
+    fun build(name: String, message: String): String {
         val context = Context()
+        context.setVariable("name", name)
         context.setVariable("message", message)
-        return templateEngine.process("mail.testMail", context)
+        context.setVariable("footer", "footer");
+        return templateEngine.process("mail/thymeleafTestMail", context)
     }
 
 }
