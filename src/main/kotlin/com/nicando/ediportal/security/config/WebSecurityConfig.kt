@@ -1,8 +1,10 @@
 package com.nicando.ediportal.security.config
 
+import com.nicando.ediportal.common.admin.SwitchUserHandler
 import com.nicando.ediportal.security.CustomUserDetailsService
 import com.nicando.ediportal.security.JwtAuthenticationEntryPoint
 import com.nicando.ediportal.security.JwtAuthenticationFilter
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
 
 
 /**
@@ -29,8 +34,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true
 )
-class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsService, private val unauthorizedHandler: JwtAuthenticationEntryPoint,
-                        private val jwtAuthenticationFilter: JwtAuthenticationFilter) : WebSecurityConfigurerAdapter() {
+class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsService,
+                        private val unauthorizedHandler: JwtAuthenticationEntryPoint,
+                        private val jwtAuthenticationFilter: JwtAuthenticationFilter,
+                        private val switchUserHandler: SwitchUserHandler) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     public override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
@@ -53,26 +60,23 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
     @Bean
     override fun userDetailsServiceBean(): UserDetailsService {
         try {
-            return super.userDetailsServiceBean()
+//            return super.userDetailsServiceBean()
+            return customUserDetailsService
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
     }
 
-//    @Bean
-//    fun switchUserFilter(): SwitchUserFilter {
-//        val filter = SwitchUserFilter()
-//        filter.setUserDetailsService(userDetailsServiceBean())
-//        filter.setUsernameParameter("username")
-//        filter.setSwitchUserUrl("/switchUser")
-//        filter.setExitUserUrl("/switchUser/exit")
-////        filter.setTargetUrl("/")
-//
-//        filter.setSuccessHandler(authenticationSuccessHandler);
-//        //filter.setFailureHandler(authenticationFailureHandler());
-//
-//        return filter
-//    }
+    @Bean
+    fun switchUserFilter(): SwitchUserFilter {
+        val filter = SwitchUserFilter()
+        filter.setUserDetailsService(customUserDetailsService)
+        filter.setSwitchUserUrl("/switchUser")
+        filter.setExitUserUrl("/switchUser/exit")
+        filter.setSuccessHandler(switchUserHandler)
+//        filter.setFailureHandler(authenticationFailureHandler())
+        return filter
+    }
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -87,6 +91,7 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .and()
                 .csrf()
                 .disable()
+                .addFilterAfter(switchUserFilter(), FilterSecurityInterceptor::class.java)
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
                 .and()

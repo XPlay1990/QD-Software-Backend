@@ -1,12 +1,15 @@
 package com.nicando.ediportal.common.admin
 
-import com.nicando.ediportal.security.CustomUserDetailsService
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.nicando.ediportal.rest.login.JwtAuthenticationResponse
+import com.nicando.ediportal.security.JwtTokenProvider
+import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 /**
@@ -15,17 +18,21 @@ import javax.servlet.http.HttpServletRequest
  **/
 @Service
 @PreAuthorize("hasRole('ROLE_ADMIN')||hasRole('ROLE_PREVIOUS_ADMINISTRATOR')")
-class AdminFunctionsService(private val customUserDetailsService: CustomUserDetailsService) {//: SwitchUserFilter() {
+class SwitchUserHandler(private val jwtTokenProvider: JwtTokenProvider) : AuthenticationSuccessHandler {
+    override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
+        val jwt = jwtTokenProvider.generateToken(authentication)
+        response.status = HttpServletResponse.SC_OK
+        response.contentType = MediaType.APPLICATION_JSON.toString()
+
+        val mapper = ObjectMapper()
+        response.writer.write(mapper.writeValueAsString(JwtAuthenticationResponse(jwt)))
+    }
 //    public override fun attemptSwitchUser(request: HttpServletRequest): Authentication? {
 //        val current = SecurityContextHolder.getContext().authentication
-//
-//        val switchUserFilter = SwitchUserFilter()
-//        switchUserFilter.setUserDetailsService(customUserDetailsService)
-////        switchUserFilter.
 //        // Put here all the checkings and initialization you want to check before switching.
+//
 //        return super.attemptSwitchUser(request);
 //    }
-//
 //
 //    public override fun attemptExitUser(request: HttpServletRequest?): Authentication {
 //        val current = SecurityContextHolder.getContext().authentication
