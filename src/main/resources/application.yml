@@ -71,6 +71,9 @@ logging:
     org.hibernate:
       SQL: DEBUG
     web: DEBUG
+  file:
+    name: logs/edi_portal.log
+#    path: logs/edi_portal.log
 #jwt:
 #  signing:
 #    key:
