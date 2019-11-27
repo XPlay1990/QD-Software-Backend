@@ -21,6 +21,11 @@ class AuthenticationInfoService(private val userRepository: UserRepository) {
         return thisUser.organization.id
     }
 
+    fun getOrgNameFromAuthentication(): String {
+        val thisUser = userRepository.findById(getUserIdFromAuthentication()).get()
+        return thisUser.organization.name
+    }
+
     fun getUsernameFromAuthentication(): String {
         return (SecurityContextHolder.getContext().authentication.principal as UserPrincipal).username
     }

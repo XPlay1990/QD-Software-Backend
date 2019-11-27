@@ -32,11 +32,11 @@ data class EdiConnection(
     @Enumerated(EnumType.STRING)
     var status: EdiStatus = EdiStatus.NEW
 
-    @JsonFormat(pattern="dd-MM-yyyy (HH:mm)")
+    @JsonFormat(pattern = "dd-MM-yyyy (HH:mm)")
     @CreationTimestamp
     var creationTime: LocalDateTime? = null
 
-    @JsonFormat(pattern="dd-MM-yyyy (HH:mm)")
+    @JsonFormat(pattern = "dd-MM-yyyy (HH:mm)")
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
 
@@ -65,12 +65,18 @@ data class EdiConnection(
     @OneToMany(cascade = [CascadeType.ALL])
     var devComments: MutableList<Message> = mutableListOf()
 
+    @JsonIgnore
     var readByCustomer: Boolean = false
+    @JsonIgnore
     var readBySupplier: Boolean = false
+    @JsonIgnore
     var readByNicando: Boolean = false
+
+    @Transient
+    var read: Boolean = false
 }
 
-enum class EdiStatus{
+enum class EdiStatus {
     NEW,
     DEVELOPMENT,
     WAITING_FOR_CUSTOMER,

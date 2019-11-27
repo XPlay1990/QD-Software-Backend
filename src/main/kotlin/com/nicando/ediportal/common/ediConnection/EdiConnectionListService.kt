@@ -33,6 +33,9 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         val ediConnectionsPage = ediConnectionRepository
                 .findAll(pageable)
 
+        val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+        isReadByUserOrg(ediConnectionsPage, organizationIdFromAuthentication)
+
         return buildPagedResponse(ediConnectionsPage)
     }
 
@@ -46,7 +49,25 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         val ediConnectionsPage = ediConnectionRepository
                 .findAllBySupplierIdOrCustomerId(organizationIdFromAuthentication, organizationIdFromAuthentication, pageable)
 
+        isReadByUserOrg(ediConnectionsPage, organizationIdFromAuthentication)
+
         return buildPagedResponse(ediConnectionsPage)
+    }
+
+    private fun isReadByUserOrg(ediConnectionsPage: Page<EdiConnection>, organizationIdFromAuthentication: Long) {
+        for (ediConnection in ediConnectionsPage.content) {
+            when {
+                authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
+                    ediConnection.read = ediConnection.readByNicando
+                }
+                organizationIdFromAuthentication == ediConnection.customer.id -> {
+                    ediConnection.read = ediConnection.readByCustomer
+                }
+                organizationIdFromAuthentication == ediConnection.supplier.id -> {
+                    ediConnection.read = ediConnection.readBySupplier
+                }
+            }
+        }
     }
 
     private fun buildPagedResponse(ediConnectionsPage: Page<EdiConnection>): EdiConnectionListResponse<EdiConnection> {
