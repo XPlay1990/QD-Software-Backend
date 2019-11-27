@@ -3,15 +3,16 @@ package com.nicando.ediportal.common.ediConnection
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
+import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
-import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 
 /**
@@ -21,8 +22,14 @@ import org.springframework.stereotype.Service
 class EdiConnectionListService(private val ediConnectionRepository: EdiConnectionRepository,
                                private val authenticationInfoService: AuthenticationInfoService) {
 
+    @Transactional
     fun findEdiConnection(id: Long): EdiConnectionResponse {
-        return EdiConnectionResponse(ediConnectionRepository.findById(id).get())
+        val ediConnection = ediConnectionRepository.findById(id).get()
+
+        val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+        setReadByOrg(ediConnection, organizationIdFromAuthentication)
+
+        return EdiConnectionResponse(ediConnection)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -34,7 +41,7 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
                 .findAll(pageable)
 
         val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
-        isReadByUserOrg(ediConnectionsPage, organizationIdFromAuthentication)
+        isReadByOrg(ediConnectionsPage, organizationIdFromAuthentication)
 
         return buildPagedResponse(ediConnectionsPage)
     }
@@ -49,12 +56,12 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         val ediConnectionsPage = ediConnectionRepository
                 .findAllBySupplierIdOrCustomerId(organizationIdFromAuthentication, organizationIdFromAuthentication, pageable)
 
-        isReadByUserOrg(ediConnectionsPage, organizationIdFromAuthentication)
+        isReadByOrg(ediConnectionsPage, organizationIdFromAuthentication)
 
         return buildPagedResponse(ediConnectionsPage)
     }
 
-    private fun isReadByUserOrg(ediConnectionsPage: Page<EdiConnection>, organizationIdFromAuthentication: Long) {
+    private fun isReadByOrg(ediConnectionsPage: Page<EdiConnection>, organizationIdFromAuthentication: Long) {
         for (ediConnection in ediConnectionsPage.content) {
             when {
                 authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
@@ -68,6 +75,21 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
                 }
             }
         }
+    }
+
+    private fun setReadByOrg(ediConnection: EdiConnection, organizationIdFromAuthentication: Long) {
+        when {
+            authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
+                ediConnection.readByNicando = true
+            }
+            organizationIdFromAuthentication == ediConnection.customer.id -> {
+                ediConnection.readByCustomer = true
+            }
+            organizationIdFromAuthentication == ediConnection.supplier.id -> {
+                ediConnection.readBySupplier = true
+            }
+        }
+        ediConnectionRepository.save(ediConnection)
     }
 
     private fun buildPagedResponse(ediConnectionsPage: Page<EdiConnection>): EdiConnectionListResponse<EdiConnection> {
