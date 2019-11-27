@@ -47,7 +47,7 @@ class UserController(private val userRepository: UserRepository,
     }
 
     @GetMapping("/me")
-//    @PreAuthorize("hasRole('ROLE_REGISTERED_USER')")
+    @PreAuthorize("hasRole('ROLE_REGISTERED_USER')")
     fun getCurrentUser(@CurrentUser currentUser: UserPrincipal): ResponseMessage {
 //        val roleStringList = mutableListOf<String>()
 //        currentUser.authorities.forEach { authority: SimpleGrantedAuthority ->

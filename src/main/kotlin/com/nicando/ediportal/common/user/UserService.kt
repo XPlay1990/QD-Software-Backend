@@ -16,7 +16,6 @@ class UserService(private val authenticationInfoService: AuthenticationInfoServi
                   private val userRepository: UserRepository,
                   private val organizationMemberRepository: OrganizationMemberRepository) {
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findUser(id: Long): User {
         logger.info("Getting User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return userRepository.findById(id).get()
