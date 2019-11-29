@@ -40,13 +40,24 @@ class EmailServiceImpl(private val emailSender: JavaMailSender, private val mail
         emailSender.send(message)
     }
 
-    fun sendEmailWithTemplate(to: String, subject: String, name: String, text: String) {
+//    fun sendEmailWithTemplate(to: String, subject: String, name: String, text: String) {
+//        logger.info("Sending Mail to $to")
+//        val mimeMessage = emailSender.createMimeMessage()
+//        val message = MimeMessageHelper(mimeMessage, true, "UTF-8")
+//        message.setTo(to)
+//        message.setSubject(subject)
+//        message.setText(mailContentBuilder.build(name, text), true)
+//        message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
+//        emailSender.send(mimeMessage)
+//    }
+
+    fun sendEmailWithTemplate(to: String, subject: String, templateName: String, context : MutableMap<String, String>) {
         logger.info("Sending Mail to $to")
         val mimeMessage = emailSender.createMimeMessage()
         val message = MimeMessageHelper(mimeMessage, true, "UTF-8")
         message.setTo(to)
         message.setSubject(subject)
-        message.setText(mailContentBuilder.build(name, text), true)
+        message.setText(mailContentBuilder.build(templateName, context), true)
         message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
         emailSender.send(mimeMessage)
     }
