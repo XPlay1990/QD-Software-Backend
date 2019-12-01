@@ -1,9 +1,9 @@
 package com.nicando.ediportal.common.ediConnection
 
-import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
-import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageResponse
+import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.EdiStatus
+import com.nicando.ediportal.database.model.edi.questions.Answer
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
@@ -14,7 +14,25 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRepository,
                            private val organizationRepository: OrganizationRepository,
-                           private val userRepository: UserRepository) {
+                           private val userRepository: UserRepository,
+                           private val authenticationInfoService: AuthenticationInfoService) {
+
+
+    @Transactional
+    fun findEdiConnection(id: Long): EdiConnection {
+        val ediConnection = ediConnectionRepository.findById(id).get()
+
+        val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+        setReadByOrg(ediConnection, organizationIdFromAuthentication)
+
+        return ediConnection
+    }
+
+    @Transactional
+    fun saveAnswers(ediConnection: EdiConnection, answers: MutableSet<Answer>) {
+        ediConnection.questionCatalog.answers = answers
+        ediConnectionRepository.save(ediConnection)
+    }
 
     @Transactional
     fun createEdiConnection(customerOrgId: Long, customerContactIdList: MutableList<Long>,
@@ -47,6 +65,21 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
         ediConnection.assignedDeveloper = developer
         ediConnection.status = EdiStatus.valueOf(statusName)
 
+        ediConnectionRepository.save(ediConnection)
+    }
+
+    private fun setReadByOrg(ediConnection: EdiConnection, organizationIdFromAuthentication: Long) {
+        when {
+            authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
+                ediConnection.readByNicando = true
+            }
+            organizationIdFromAuthentication == ediConnection.customer.id -> {
+                ediConnection.readByCustomer = true
+            }
+            organizationIdFromAuthentication == ediConnection.supplier.id -> {
+                ediConnection.readBySupplier = true
+            }
+        }
         ediConnectionRepository.save(ediConnection)
     }
 

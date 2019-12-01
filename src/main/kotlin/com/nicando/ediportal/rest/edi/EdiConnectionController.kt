@@ -1,16 +1,14 @@
 package com.nicando.ediportal.rest.edi
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.EdiConnectionAccessService
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
-import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionResponse
+import com.nicando.ediportal.common.ediConnection.EdiConnectionAccessService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.EdiStatus
 import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
@@ -47,14 +45,12 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
     }
 
     @GetMapping("/{id}")
-    fun getEdiConnection(request: HttpServletRequest, @PathVariable("id") ediConnectionId: Long): EdiConnectionResponse {
-        val foundEdiConnection = ediConnectionListService.findEdiConnection(ediConnectionId)
+    fun getEdiConnection(request: HttpServletRequest, @PathVariable("id") ediConnectionId: Long): EdiConnection {
+        val foundEdiConnection = ediConnectionService.findEdiConnection(ediConnectionId)
 
-        if (!ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection.content)) {
-            logger.warn("User ${authenticationInfoService.getUsernameFromAuthentication()} " +
-                    "tried to access Edi-Connection with ediConnectionId: $ediConnectionId which he is not allowed to!")
-            throw ForbiddenException("You are not allowed to view this Edi-Connection!")
-        }
+        ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection,
+                "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
+                        "tried to access Edi-Connection with ediConnectionId: $ediConnectionId which he is not allowed to!")
 
         return foundEdiConnection
     }

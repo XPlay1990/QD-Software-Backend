@@ -1,4 +1,4 @@
-package com.nicando.ediportal.database.model.edi.message
+package com.nicando.ediportal.database.model.edi
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.Entity

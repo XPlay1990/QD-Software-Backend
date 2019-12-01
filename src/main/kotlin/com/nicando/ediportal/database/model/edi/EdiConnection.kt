@@ -2,7 +2,6 @@ package com.nicando.ediportal.database.model.edi
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.nicando.ediportal.database.model.edi.message.Attachment
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.questions.QuestionCatalog
 import com.nicando.ediportal.database.model.organization.Organization
@@ -59,7 +58,7 @@ data class EdiConnection(
 
     @JsonIgnore
     @OneToOne(cascade = [CascadeType.ALL])
-    var questionCatalog: QuestionCatalog? = null
+    var questionCatalog: QuestionCatalog = QuestionCatalog()
 
     @JsonIgnore
     @OneToMany(cascade = [CascadeType.ALL])

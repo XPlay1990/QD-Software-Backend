@@ -1,12 +1,11 @@
 package com.nicando.ediportal.rest.edi.messages
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.EdiConnectionAccessService
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.message.EdiMessageListResponse
-import com.nicando.ediportal.common.ediConnection.EdiConnectionListService
+import com.nicando.ediportal.common.ediConnection.EdiConnectionAccessService
+import com.nicando.ediportal.common.ediConnection.EdiConnectionService
 import com.nicando.ediportal.common.ediConnection.message.EdiConnectionMessageService
-import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
 import org.slf4j.LoggerFactory
@@ -26,33 +25,31 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/edi_connection/{ediConnectionId}/messages")
 class EdiMessageController(private val ediConnectionAccessService: EdiConnectionAccessService,
-                           private val ediConnectionListService: EdiConnectionListService,
+                           private val ediConnectionService: EdiConnectionService,
                            private val authenticationInfoService: AuthenticationInfoService,
                            private val ediConnectionMessageService: EdiConnectionMessageService) {
 
     @PostMapping
     fun addMessage(request: HttpServletRequest, @CurrentUser currentUser: UserPrincipal, @PathVariable ediConnectionId: Long, @RequestBody message: String): ResponseEntity<ResponseMessage> {
-        val foundEdiConnection = ediConnectionListService.findEdiConnection(ediConnectionId)
+        val foundEdiConnection = ediConnectionService.findEdiConnection(ediConnectionId)
 
-        if (!ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection.content)) {
-            logger.warn("User ${authenticationInfoService.getUsernameFromAuthentication()} " +
-                    "tried to add Message to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
-            throw ForbiddenException("You are not allowed to access this Edi-Connection!")
-        }
-        ediConnectionMessageService.saveMessage(foundEdiConnection.content, message, currentUser)
+        ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection,
+                "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
+                        "tried to add Message to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
+
+        ediConnectionMessageService.saveMessage(foundEdiConnection, message, currentUser)
         return ResponseEntity.ok(ResponseMessage(true, "Successfully saved your Message!"))
     }
 
     @GetMapping
     fun getMessages(request: HttpServletRequest, @PathVariable ediConnectionId: Long): EdiMessageListResponse {
-        val foundEdiConnection = ediConnectionListService.findEdiConnection(ediConnectionId)
+        val foundEdiConnection = ediConnectionService.findEdiConnection(ediConnectionId)
 
-        if (!ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection.content)) {
-            logger.warn("User ${authenticationInfoService.getUsernameFromAuthentication()} " +
-                    "tried to get Message to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
-            throw ForbiddenException("You are not allowed to access this Edi-Connection!")
-        }
-        return ediConnectionMessageService.findEdiMessages(foundEdiConnection.content)
+        ediConnectionAccessService.hasUserAccessToEdiConnection(request, foundEdiConnection,
+                "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
+                        "tried to get Message to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
+
+        return ediConnectionMessageService.findEdiMessages(foundEdiConnection)
     }
 
     companion object { //static

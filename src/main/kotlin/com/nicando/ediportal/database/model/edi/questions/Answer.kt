@@ -7,12 +7,12 @@ import javax.persistence.*
  */
 @Entity
 data class Answer(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
-
         @ManyToOne
         val question: Question,
 
         var answer: String
-)
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+}

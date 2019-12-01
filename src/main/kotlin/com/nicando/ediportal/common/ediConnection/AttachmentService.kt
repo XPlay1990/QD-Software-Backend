@@ -2,7 +2,7 @@ package com.nicando.ediportal.common.ediConnection
 
 import com.nicando.ediportal.common.apiResponse.AttachmentListResponse
 import com.nicando.ediportal.database.model.edi.EdiConnection
-import com.nicando.ediportal.database.model.edi.message.Attachment
+import com.nicando.ediportal.database.model.edi.Attachment
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.rest.edi.messages.FileStorageException
 import org.slf4j.LoggerFactory

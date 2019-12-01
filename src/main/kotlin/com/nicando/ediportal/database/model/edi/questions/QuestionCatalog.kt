@@ -6,11 +6,11 @@ import javax.persistence.*
  * Created by Jan Adamczyk on 21.06.2019.
  */
 @Entity
-data class QuestionCatalog(
+class QuestionCatalog {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
+        val id: Long = 0
 
         @OneToMany(cascade = [CascadeType.ALL])
-        var answers: MutableSet<Answer>
-)
+        var answers: MutableSet<Answer> = mutableSetOf()
+}
