@@ -1,4 +1,4 @@
-package com.nicando.ediportal.database.model.edi.questions
+package com.nicando.ediportal.database.model.edi.questions.enums
 
 /**
  * @author : j_ada

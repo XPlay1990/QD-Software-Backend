@@ -33,9 +33,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
                      private val roleService: RoleService,
                      private val passwordEncoder: PasswordEncoder) {
     @PostMapping
-    @Transactional
-    fun createTest(): ResponseEntity<MutableList<EdiConnection>> {
-        val createdEdiConnections = mutableListOf<EdiConnection>()
+    fun createTest(): ResponseEntity.BodyBuilder {
 
         for (index in 0..30) {
             val supplierName = "Supplier_$index"
@@ -58,33 +56,42 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val suppliers = organizationRepository.findOrganizationsByNameLike("Supplier%")
         val users = userRepository.findAll()
 
-        repeat(30) {
-            val random = Random()
-            val customer = customers[random.nextInt(customers.size)]
-            val supplier = suppliers[random.nextInt(suppliers.size)]
+        repeat(1000) {
+            saveEdiConnection(customers, suppliers, users)
+        }
 
-            val messages = mutableListOf<Message>()
+        return ResponseEntity.ok()
+    }
 
-            repeat(random.nextInt(10)) {
-                val textMessageUser = users[random.nextInt(users.size)]
-                val dummyText = "{\n" +
-                        "  \"blocks\": [\n" +
-                        "    {\n" +
-                        "      \"key\": \"13de6\",\n" +
-                        "      \"text\": \"PLACEHOLDER\",\n" +
-                        "      \"type\": \"unstyled\",\n" +
-                        "      \"depth\": 0,\n" +
-                        "      \"inlineStyleRanges\": [],\n" +
-                        "      \"entityRanges\": [],\n" +
-                        "      \"data\": {}\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"entityMap\": {}\n" +
-                        "}"
-                val textMessage = TextMessage(textMessageUser,
-                        dummyText.replace("PLACEHOLDER", lorem.getWords(random.nextInt(10)+1)))
+    @Transactional
+    fun saveEdiConnection(customers: List<Organization>, suppliers: List<Organization>, users: List<User>) {
+        logger.debug("Creating Edi Connection")
+        val random = Random()
+        val customer = customers[random.nextInt(customers.size)]
+        val supplier = suppliers[random.nextInt(suppliers.size)]
 
-                // Attachments
+        val messages = mutableListOf<Message>()
+
+        repeat(random.nextInt(10)) {
+            val textMessageUser = users[random.nextInt(users.size)]
+            val dummyText = "{\n" +
+                    "  \"blocks\": [\n" +
+                    "    {\n" +
+                    "      \"key\": \"13de6\",\n" +
+                    "      \"text\": \"PLACEHOLDER\",\n" +
+                    "      \"type\": \"unstyled\",\n" +
+                    "      \"depth\": 0,\n" +
+                    "      \"inlineStyleRanges\": [],\n" +
+                    "      \"entityRanges\": [],\n" +
+                    "      \"data\": {}\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"entityMap\": {}\n" +
+                    "}"
+            val textMessage = TextMessage(textMessageUser,
+                    dummyText.replace("PLACEHOLDER", lorem.getWords(random.nextInt(10) + 1)))
+
+            // Attachments
 //                val attachments: MutableSet<Attachment> = mutableSetOf()
 //                val attachmentFile = ResourceUtils.getFile("classpath:EDI-Fragebogen.docx")
 
@@ -96,16 +103,13 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 //                val attachmentMessageUser = users[random.nextInt(users.size)]
 //                val attachmentMessage = AttachmentMessage(attachmentMessageUser,
 //                        lorem.getWords(random.nextInt(10)), attachments)
-                messages.add(textMessage)
+            messages.add(textMessage)
 //                messages.add(attachmentMessage)
-            }
-            val ediConnection = EdiConnection(customer, supplier)
-            ediConnection.messages = messages
-
-            createdEdiConnections.add(ediConnectionRepository.save(ediConnection))
         }
+        val ediConnection = EdiConnection(customer, supplier)
+        ediConnection.messages = messages
 
-        return ResponseEntity.ok(createdEdiConnections)
+        ediConnectionRepository.save(ediConnection)
     }
 
     @GetMapping

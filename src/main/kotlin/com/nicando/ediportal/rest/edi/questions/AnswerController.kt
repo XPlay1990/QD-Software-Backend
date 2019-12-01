@@ -4,9 +4,7 @@ import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.ediConnection.EdiConnectionAccessService
 import com.nicando.ediportal.common.ediConnection.EdiConnectionService
-import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.database.model.edi.questions.Answer
-import com.nicando.ediportal.database.model.edi.questions.TransferStandards
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -24,11 +22,11 @@ import javax.servlet.http.HttpServletRequest
  */
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_REGISTERED_USER')")
 @RestController
-@RequestMapping("/edi_connection/question/answer")
+@RequestMapping("/edi_connection/{id}/question/answer")
 class AnswerController(private val ediConnectionService: EdiConnectionService,
                        private val ediConnectionAccessService: EdiConnectionAccessService,
                        private val authenticationInfoService: AuthenticationInfoService) {
-    @GetMapping("/{id}")
+    @GetMapping
     fun getAnswers(@PathVariable("id") ediConnectionId: Long, request: HttpServletRequest): MutableSet<Answer> {
         val ediConnection = ediConnectionService.findEdiConnection(ediConnectionId)
         ediConnectionAccessService.hasUserAccessToEdiConnection(request, ediConnection,
@@ -39,7 +37,7 @@ class AnswerController(private val ediConnectionService: EdiConnectionService,
         return ediConnection.questionCatalog.answers
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     fun saveAnswers(@PathVariable("id") ediConnectionId: Long, @RequestBody answerList: MutableSet<Answer>, request: HttpServletRequest): ResponseMessage {
         val ediConnection = ediConnectionService.findEdiConnection(ediConnectionId)
         ediConnectionAccessService.hasUserAccessToEdiConnection(request, ediConnection,

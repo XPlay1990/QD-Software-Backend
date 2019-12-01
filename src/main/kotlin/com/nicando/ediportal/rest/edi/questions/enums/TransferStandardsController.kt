@@ -1,13 +1,12 @@
-package com.nicando.ediportal.rest.edi.questions
+package com.nicando.ediportal.rest.edi.questions.enums
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.database.model.edi.questions.TransferStandards
+import com.nicando.ediportal.database.model.edi.questions.enums.TransferStandards
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import javax.servlet.http.HttpServletRequest
 
 
 /**
@@ -23,8 +22,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/edi_connection/question/transferStandards")
 class TransferStandardsController(private val authenticationInfoService: AuthenticationInfoService) {
-
-    @GetMapping()
+    @GetMapping
     fun getTransferStandards(): Array<TransferStandards> {
         logger.info("Getting Transfer Standards for User ${authenticationInfoService.getUsernameFromAuthentication()}")
         return TransferStandards.values()
