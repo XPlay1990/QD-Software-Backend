@@ -65,7 +65,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
 
     @Transactional
     fun saveEdiConnection(customers: List<Organization>, suppliers: List<Organization>, users: List<User>) {
-        logger.debug("Creating Edi Connection")
+        logger.info("Creating Edi Connection")
         val random = Random()
         val customer = customers[random.nextInt(customers.size)]
         val supplier = suppliers[random.nextInt(suppliers.size)]
