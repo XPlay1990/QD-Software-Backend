@@ -22,7 +22,8 @@ class EdiConnectionAccessService(private val authenticationInfoService: Authenti
             if (ediConnection.customer.id != orgIdFromAuthentication && ediConnection.supplier.id != orgIdFromAuthentication) {
                 // User is not in Org with access to the connection
                 logger.warn(loggingString)
-                throw ForbiddenException("You are not allowed to access this Edi-Connection!")            }
+                throw ForbiddenException("You are not allowed to access this Edi-Connection!")
+            }
         }
         return true
     }
@@ -33,7 +34,8 @@ class EdiConnectionAccessService(private val authenticationInfoService: Authenti
             if (ediConnection.supplier.id != orgIdFromAuthentication) {
                 // User is not in Org with access to the connection
                 logger.warn(loggingString)
-                throw ForbiddenException("You are not allowed to access this Edi-Connection!")            }
+                throw ForbiddenException("You are not allowed to access this Edi-Connection!")
+            }
         }
         return true
     }
