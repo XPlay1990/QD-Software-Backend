@@ -41,7 +41,7 @@ class AnswerService(private val ediConnectionRepository: EdiConnectionRepository
     @Transactional
     fun saveAnswers(ediConnectionId: Long, answerResponse: MutableSet<AnswerResponse>, request: HttpServletRequest) {
         val ediConnection = ediConnectionRepository.findById(ediConnectionId).get()
-        ediConnectionAccessService.hasUserAccessToEdiConnection(request, ediConnection,
+        ediConnectionAccessService.isUserSupplierOfEdiConnection(request, ediConnection,
                 "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
                         "tried to save Answers to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
 

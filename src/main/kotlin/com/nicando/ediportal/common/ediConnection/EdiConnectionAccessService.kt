@@ -27,6 +27,17 @@ class EdiConnectionAccessService(private val authenticationInfoService: Authenti
         return true
     }
 
+    fun isUserSupplierOfEdiConnection(request: HttpServletRequest, ediConnection: EdiConnection, loggingString: String): Boolean {
+        val orgIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+        if (!request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
+            if (ediConnection.supplier.id != orgIdFromAuthentication) {
+                // User is not in Org with access to the connection
+                logger.warn(loggingString)
+                throw ForbiddenException("You are not allowed to access this Edi-Connection!")            }
+        }
+        return true
+    }
+
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
