@@ -1,10 +1,9 @@
 package com.nicando.ediportal.rest.edi.questions
 
 import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.common.apiResponse.AnswerResponse
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
-import com.nicando.ediportal.common.ediConnection.EdiConnectionAccessService
-import com.nicando.ediportal.common.ediConnection.EdiConnectionService
-import com.nicando.ediportal.database.model.edi.questions.Answer
+import com.nicando.ediportal.common.ediConnection.question.AnswerService
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -23,29 +22,16 @@ import javax.servlet.http.HttpServletRequest
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_REGISTERED_USER')")
 @RestController
 @RequestMapping("/edi_connection/{id}/question/answer")
-class AnswerController(private val ediConnectionService: EdiConnectionService,
-                       private val ediConnectionAccessService: EdiConnectionAccessService,
+class AnswerController(private val answerService:AnswerService,
                        private val authenticationInfoService: AuthenticationInfoService) {
     @GetMapping
-    fun getAnswers(@PathVariable("id") ediConnectionId: Long, request: HttpServletRequest): MutableSet<Answer> {
-        val ediConnection = ediConnectionService.findEdiConnection(ediConnectionId)
-        ediConnectionAccessService.hasUserAccessToEdiConnection(request, ediConnection,
-                "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
-                        "tried to get Answers of Edi-Connection with id: $ediConnectionId which he is not allowed to!")
-
-        logger.info("Getting Edi Connection answers for User ${authenticationInfoService.getUsernameFromAuthentication()}")
-        return ediConnection.questionCatalog.answers
+    fun getAnswers(@PathVariable("id") ediConnectionId: Long, request: HttpServletRequest): MutableSet<AnswerResponse> {
+        return answerService.getAnswers(ediConnectionId, request)
     }
 
-    @PostMapping
-    fun saveAnswers(@PathVariable("id") ediConnectionId: Long, @RequestBody answerList: MutableSet<Answer>, request: HttpServletRequest): ResponseMessage {
-        val ediConnection = ediConnectionService.findEdiConnection(ediConnectionId)
-        ediConnectionAccessService.hasUserAccessToEdiConnection(request, ediConnection,
-                "User ${authenticationInfoService.getUsernameFromAuthentication()} " +
-                        "tried to save Answers to Edi-Connection with id: $ediConnectionId which he is not allowed to!")
-
-        logger.info("Saving Answers for Ediconnection with id ${ediConnection.id} done by User ${authenticationInfoService.getUsernameFromAuthentication()}")
-        ediConnectionService.saveAnswers(ediConnection, answerList)
+    @PutMapping
+    fun saveAnswers(@PathVariable("id") ediConnectionId: Long, @RequestBody answerList: MutableSet<AnswerResponse>, request: HttpServletRequest): ResponseMessage {
+        answerService.saveAnswers(ediConnectionId, answerList, request)
         return ResponseMessage(true, "Successfully saved Answers.")
     }
 

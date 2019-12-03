@@ -3,7 +3,6 @@ package com.nicando.ediportal.common.ediConnection
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.EdiStatus
-import com.nicando.ediportal.database.model.edi.questions.Answer
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
@@ -17,7 +16,6 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
                            private val userRepository: UserRepository,
                            private val authenticationInfoService: AuthenticationInfoService) {
 
-
     @Transactional
     fun findEdiConnection(id: Long): EdiConnection {
         val ediConnection = ediConnectionRepository.findById(id).get()
@@ -26,12 +24,6 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
         setReadByOrg(ediConnection, organizationIdFromAuthentication)
 
         return ediConnection
-    }
-
-    @Transactional
-    fun saveAnswers(ediConnection: EdiConnection, answers: MutableSet<Answer>) {
-        ediConnection.questionCatalog.answers = answers
-        ediConnectionRepository.save(ediConnection)
     }
 
     @Transactional

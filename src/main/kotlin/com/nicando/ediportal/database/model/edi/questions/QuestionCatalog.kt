@@ -11,6 +11,6 @@ class QuestionCatalog {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0
 
-        @OneToMany(cascade = [CascadeType.ALL])
+        @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
         var answers: MutableSet<Answer> = mutableSetOf()
 }
