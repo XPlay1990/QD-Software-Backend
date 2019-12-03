@@ -3,10 +3,10 @@ package com.nicando.ediportal.common.ediConnection
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.nicando.ediportal.common.exceptions.rest.BadRequestException
+import com.nicando.ediportal.common.properties.AppProperties
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class EdiConnectionListService(private val ediConnectionRepository: EdiConnectionRepository,
-                               private val authenticationInfoService: AuthenticationInfoService) {
+                               private val authenticationInfoService: AuthenticationInfoService,
+                               appProperties: AppProperties) {
+
+    private val MAX_PAGE_SIZE: Int = Integer.valueOf(appProperties.constants.pageResponseMaxSize)
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findEdiConnectionsForAdmin(pageable: Pageable)
@@ -88,8 +91,5 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
 
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
-
-        @Value("\$app.constants.pageResponse.MAX_SIZE")
-        private val MAX_PAGE_SIZE: Int = 50
     }
 }

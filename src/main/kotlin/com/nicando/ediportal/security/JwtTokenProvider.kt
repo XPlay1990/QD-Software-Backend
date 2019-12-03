@@ -1,8 +1,8 @@
 package com.nicando.ediportal.security
 
+import com.nicando.ediportal.common.properties.AppProperties
 import io.jsonwebtoken.*
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.security.SignatureException
@@ -13,13 +13,11 @@ import java.util.*
  * Created by Jan Adamczyk on 25.06.2019.
  */
 @Component
-class JwtTokenProvider {
+class JwtTokenProvider(appProperties: AppProperties) {
 
-    @Value("\${app.jwtSecret}")
-    private val jwtSecret: String? = null
+    private val jwtSecret: String = appProperties.constants.jwtSecret
 
-    @Value("\${app.jwtExpirationInMs}")
-    private val jwtExpirationInMs: Int = 0
+    private val jwtExpirationInMs: Int = Integer.valueOf(appProperties.constants.jwtExpirationInMs)
 
     fun generateToken(authentication: Authentication): String {
 

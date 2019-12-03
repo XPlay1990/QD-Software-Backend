@@ -1,12 +1,12 @@
 package com.nicando.ediportal.common.ediConnection
 
 import com.nicando.ediportal.common.apiResponse.AttachmentListResponse
-import com.nicando.ediportal.database.model.edi.EdiConnection
+import com.nicando.ediportal.common.properties.AppProperties
 import com.nicando.ediportal.database.model.edi.Attachment
+import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
 import com.nicando.ediportal.rest.edi.messages.FileStorageException
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
 import org.springframework.stereotype.Service
@@ -25,7 +25,10 @@ import java.nio.file.Paths
  **/
 
 @Service
-class AttachmentService(private val ediConnectionRepository: EdiConnectionRepository) {
+class AttachmentService(private val ediConnectionRepository: EdiConnectionRepository,
+                        appProperties: AppProperties) {
+
+    private val UPLOAD_DIR: String = appProperties.constants.uploadDirectory
 
     fun getFileList(ediConnectionId: Long): AttachmentListResponse {
         return AttachmentListResponse(ediConnectionRepository.findById(ediConnectionId).get().attachments)
@@ -87,8 +90,5 @@ class AttachmentService(private val ediConnectionRepository: EdiConnectionReposi
 
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
-
-        @Value("\$app.constants.uploadDirectory")
-        private val UPLOAD_DIR: String = "./uploads"
     }
 }

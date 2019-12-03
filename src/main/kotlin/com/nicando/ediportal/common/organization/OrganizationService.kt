@@ -6,7 +6,6 @@ import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.organization.OrganizationMemberRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import java.util.*
@@ -49,8 +48,5 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
 
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
-
-        @Value("\$app.constants.pageResponse.MAX_SIZE")
-        private val MAX_PAGE_SIZE: Int = 50
     }
 }
