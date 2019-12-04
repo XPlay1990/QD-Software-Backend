@@ -4,7 +4,6 @@ import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.role.RoleName
-import com.nicando.ediportal.rest.edi.questions.AnswerController
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletRequest

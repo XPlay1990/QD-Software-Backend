@@ -6,6 +6,7 @@ import com.nicando.ediportal.database.model.role.Role
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -52,7 +53,7 @@ data class User(
     @ManyToMany(cascade = [CascadeType.ALL])
     var roles: MutableList<Role?> = mutableListOf()
 
-    var languageSetting: String? = null
+    var locale: Locale? = null
 
     var isActive: Boolean = true
 }
