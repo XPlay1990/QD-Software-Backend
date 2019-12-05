@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service
 class UserService(private val authenticationInfoService: AuthenticationInfoService,
                   private val userRepository: UserRepository) {
 
+    fun findAll(): MutableList<User> {
+        return userRepository.findAll()
+    }
+
     fun findUser(id: Long): User {
         logger.info("Getting User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return userRepository.findById(id).get()

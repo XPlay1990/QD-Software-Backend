@@ -1,9 +1,9 @@
 package com.nicando.ediportal.rest
 
+import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.user.UserService
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.payload.UserSummary
 import com.nicando.ediportal.security.CurrentUser
 import com.nicando.ediportal.security.UserPrincipal
@@ -20,18 +20,19 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userRepository: UserRepository,
+class UserController(private val authenticationInfoService: AuthenticationInfoService,
                      private val userService: UserService) {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getAllUsers(): ResponseMessage = ResponseMessage(true, userRepository.findAll())
+    fun getAllUsers(): ResponseMessage {
+        logger.info("Getting all users for User: ${authenticationInfoService.getUsernameFromAuthentication()}}")
+        return ResponseMessage(true, userService.findAll())
+    }
 
     @GetMapping
     fun getUserById(@RequestParam id: Long): ResponseEntity<User> {
-        return userRepository.findById(id).map { user ->
-            ResponseEntity.ok(user)
-        }.orElse(ResponseEntity.notFound().build())
+        return ResponseEntity.ok(userService.findUser(id))
     }
 
     //    @PostMapping
@@ -41,6 +42,13 @@ class UserController(private val userRepository: UserRepository,
 //    }
     @PostMapping("/{id}/password/reset")
     fun resetUserPassword(@CurrentUser currentUser: UserPrincipal, @PathVariable id: Long) {
+        logger.info("Request for password reset from User: ${currentUser.username}")
+//        user.resetPassword();
+        TODO("not implemented")
+    }
+
+    @PostMapping("/{id}/password/change")
+    fun changeUserPassword(@CurrentUser currentUser: UserPrincipal, @PathVariable id: Long) {
         logger.info("Request for password reset from User: ${currentUser.username}")
 //        user.resetPassword();
         TODO("not implemented")
