@@ -80,5 +80,6 @@ enum class EdiStatus {
     DEVELOPMENT,
     WAITING_FOR_CUSTOMER,
     WAITING_FOR_SUPPLIER,
+    TESTING,
     DONE
 }

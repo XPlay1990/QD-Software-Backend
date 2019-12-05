@@ -1,7 +1,7 @@
 package com.nicando.ediportal.common.ediConnection.question
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.apiResponse.AnswerResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.AnswerResponse
 import com.nicando.ediportal.common.ediConnection.EdiConnectionAccessService
 import com.nicando.ediportal.common.exceptions.rest.ForbiddenException
 import com.nicando.ediportal.database.model.edi.questions.Answer

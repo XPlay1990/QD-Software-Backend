@@ -1,6 +1,6 @@
 package com.nicando.ediportal.rest.edi
 
-import com.nicando.ediportal.common.apiResponse.AttachmentListResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.AttachmentListResponse
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.apiResponse.ediConnection.UploadFileResponse
 import com.nicando.ediportal.common.ediConnection.AttachmentService

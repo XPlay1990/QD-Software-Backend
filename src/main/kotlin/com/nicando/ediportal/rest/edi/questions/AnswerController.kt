@@ -1,7 +1,7 @@
 package com.nicando.ediportal.rest.edi.questions
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.apiResponse.AnswerResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.AnswerResponse
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.ediConnection.question.AnswerService
 import org.slf4j.LoggerFactory

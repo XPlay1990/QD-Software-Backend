@@ -1,12 +1,13 @@
 package com.nicando.ediportal.rest.edi.questions
 
 import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.common.apiResponse.ediConnection.QuestionResponse
 import com.nicando.ediportal.common.ediConnection.question.QuestionService
-import com.nicando.ediportal.database.model.edi.questions.Question
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 
@@ -25,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController
 class QuestionController(private val authenticationInfoService: AuthenticationInfoService,
                          private val questionService: QuestionService) {
     @GetMapping()
-    fun getQuestions(): MutableList<Question> {
-        logger.info("Getting all Edi-Questions for User ${authenticationInfoService.getUsernameFromAuthentication()}")
-        return questionService.getAllQuestions()
+    fun getQuestions(@RequestParam language: String): MutableList<QuestionResponse> {
+        logger.info("Getting all Edi-Questions for User ${authenticationInfoService.getUsernameFromAuthentication()}, Language: $language")
+        return questionService.getAllQuestions(language)
     }
 
     companion object { //static

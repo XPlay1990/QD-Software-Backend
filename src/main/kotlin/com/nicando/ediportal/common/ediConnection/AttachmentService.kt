@@ -1,6 +1,6 @@
 package com.nicando.ediportal.common.ediConnection
 
-import com.nicando.ediportal.common.apiResponse.AttachmentListResponse
+import com.nicando.ediportal.common.apiResponse.ediConnection.AttachmentListResponse
 import com.nicando.ediportal.common.properties.AppProperties
 import com.nicando.ediportal.database.model.edi.Attachment
 import com.nicando.ediportal.database.model.edi.EdiConnection
