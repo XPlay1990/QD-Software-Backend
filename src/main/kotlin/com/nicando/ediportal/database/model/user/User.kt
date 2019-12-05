@@ -55,5 +55,5 @@ data class User(
 
     var locale: Locale? = null
 
-    var isActive: Boolean = true
+    var isActive: Boolean = false
 }

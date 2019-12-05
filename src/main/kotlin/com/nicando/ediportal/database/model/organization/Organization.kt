@@ -46,11 +46,11 @@ data class Organization(
     var isCustomer: Boolean = false
 
     var isActive: Boolean = true
-        set(value: Boolean) {
-            if (!value) {
+        set(boolean) {
+            if (!boolean) {
                 //deactivate members if organization is set to inactive
                 members?.forEach { it.isActive = false }
             }
-            field = value
+            field = boolean
         }
 }

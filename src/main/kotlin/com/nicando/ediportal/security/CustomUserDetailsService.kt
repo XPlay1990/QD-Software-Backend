@@ -1,7 +1,6 @@
 package com.nicando.ediportal.security
 
 import com.nicando.ediportal.database.repositories.UserRepository
-import com.nicando.ediportal.common.exceptions.rest.ResourceNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -19,7 +18,7 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(usernameOrEmail: String): UserDetails {
         // Let people login with either username or email
-        val user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        val user = userRepository.findByIsActiveTrueAndUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 ?: throw UsernameNotFoundException("User not found with username or email : $usernameOrEmail")
 
         return UserPrincipal.create(user)
@@ -27,7 +26,7 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
 
     @Transactional
     fun loadUserById(id: Long): UserDetails {
-        val user = userRepository.findById(id).orElseThrow { ResourceNotFoundException("User", "id", id) }
+        val user = userRepository.findByIdAndIsActiveTrue(id).orElseThrow { UsernameNotFoundException("User not found with id : $id") }
 
         return UserPrincipal.create(user)
     }

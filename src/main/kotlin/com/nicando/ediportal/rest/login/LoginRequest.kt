@@ -5,10 +5,10 @@ import javax.validation.constraints.NotBlank
 /**
  * Created by Jan Adamczyk on 26.06.2019.
  */
-class LoginRequest {
-    @NotBlank
-    var usernameOrEmail: String? = null
+class LoginRequest(
+        @NotBlank
+        val usernameOrEmail: String,
 
-    @NotBlank
-    var password: String? = null
-}
+        @NotBlank
+        val password: String
+)
