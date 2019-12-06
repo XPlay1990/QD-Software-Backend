@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 /**
  * @author : j_ada
@@ -40,6 +41,6 @@ class EmailServiceImplTest() {
     @Test
     fun sendEmailWithTemplate() {
         emailServiceImpl.sendEmailWithTemplate("j_adamczyk@hotmail.com", "test",
-                "mail/thymeleafTestMail", mutableMapOf("name" to "Jan Adamczyk", "message" to "this is a testmail!"))
+                "mail/thymeleafTestMail", mutableMapOf("name" to "Jan Adamczyk", "message" to "this is a testmail!"), Locale.GERMANY)
     }
 }

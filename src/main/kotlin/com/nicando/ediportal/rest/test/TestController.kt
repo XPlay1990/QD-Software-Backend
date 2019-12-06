@@ -5,6 +5,7 @@ import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.TextMessage
 import com.nicando.ediportal.database.model.organization.Organization
 import com.nicando.ediportal.database.model.role.RoleName
+import com.nicando.ediportal.database.model.user.Gender
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.ediConnection.EdiConnectionRepository
@@ -34,13 +35,15 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
                      private val passwordEncoder: PasswordEncoder) {
     @PostMapping
     fun createTest(): ResponseEntity.BodyBuilder {
+        val random = Random()
 
         for (index in 0..30) {
             val supplierName = "Supplier_$index"
             val supplier = Organization(supplierName, 0, "test@testorg.de", null)
             val savedSupplier = organizationRepository.save(supplier)
-            val supplierUser = User("$supplierName-User", lorem.email,
-                    passwordEncoder.encode("test"), lorem.firstName, lorem.lastName, savedSupplier)
+            val supplierUser = User("$supplierName-User", lorem.email, lorem.firstName, lorem.lastName, savedSupplier,
+                    Gender.values()[random.nextInt(Gender.values().size)])
+            supplierUser.password = passwordEncoder.encode("test")
             supplierUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             userRepository.save(supplierUser)
         }
@@ -48,8 +51,10 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val customers = organizationRepository.findOrganizationsByNameNotLike("Supplier%")
         customers.forEach { customer ->
             val customerUser = User("${customer.name}-User", lorem.email,
-                    customer.name, lorem.firstName, lorem.lastName, customer)
+                    lorem.firstName, lorem.lastName, customer,
+                    Gender.values()[random.nextInt(Gender.values().size)])
             customerUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
+            customerUser.password = passwordEncoder.encode("test")
             userRepository.save(customerUser)
         }
 

@@ -27,17 +27,15 @@ data class User(
         @Email
         var email: String,
 
-        @NotBlank
-        @Size(min = 6, max = 100)
-        @JsonIgnore
-        var password: String,
-
         var firstName: String,
         var lastName: String,
 
         @ManyToOne
         @JoinColumn
-        var organization: Organization
+        var organization: Organization,
+
+        @Enumerated(EnumType.STRING)
+        var gender: Gender
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +51,18 @@ data class User(
     @ManyToMany(cascade = [CascadeType.ALL])
     var roles: MutableList<Role?> = mutableListOf()
 
-    var locale: Locale? = null
+    var locale: Locale = Locale.ENGLISH
 
     var isActive: Boolean = false
+
+    @NotBlank
+    @Size(min = 6, max = 100)
+    @JsonIgnore
+    var password: String = "NOT_ACTIVATED"
+}
+
+enum class Gender {
+    MALE,
+    FEMALE,
+    DIVERS
 }

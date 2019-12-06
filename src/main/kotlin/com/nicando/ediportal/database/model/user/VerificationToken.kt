@@ -11,21 +11,22 @@ import javax.persistence.*
  **/
 @Entity
 data class VerificationToken(
-        private val token: String,
-        private val expiryDate: Date,
+        val token: String,
 
-        @OneToOne(fetch = FetchType.EAGER)
+        @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST])
         @JoinColumn(nullable = false)
-        private val user: User
+        val user: User
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private val id: Long = 0
 
-    private fun calculateExpiryDate(expiryTimeInMinutes: Int): Date {
+    private val expiryDate: Date = calculateExpiryDate()
+
+    private fun calculateExpiryDate(): Date {
         val cal = Calendar.getInstance()
         cal.time = Timestamp(cal.time.time)
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes)
+        cal.add(Calendar.MINUTE, EXPIRATION)
         return Date(cal.time.time)
     }
 

@@ -21,7 +21,7 @@ data class UserPrincipal(val id: Long, private val username: String,
         return username
     }
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return password
     }
 

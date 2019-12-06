@@ -35,11 +35,6 @@ class UserController(private val authenticationInfoService: AuthenticationInfoSe
         return ResponseEntity.ok(userService.findUser(id))
     }
 
-    //    @PostMapping
-//    fun createUser(): ResponseEntity<User> {
-//        userRepository.save(user)
-//        return ResponseEntity.ok(user)
-//    }
     @PostMapping("/{id}/password/reset")
     fun resetUserPassword(@CurrentUser currentUser: UserPrincipal, @PathVariable id: Long) {
         logger.info("Request for password reset from User: ${currentUser.username}")

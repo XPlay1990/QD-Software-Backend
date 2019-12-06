@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Welcome to the Nicando Edi-Portal!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    <span th:text="'Welcome ' + ${FirstName} + ' ' + ${LastName} + ','"></span>
+</p>
+<br>
+<br>
+<p>
+    <span th:text="'You have been invited to the Nicando Edi-Portal.'"></span>
+</p>
+<p>
+    <span th:text="'Your username is: ' + ${UserName} + '.'"></span>
+</p>
+<br>
+<p>
+    <span th:text="'Please activate your account and set your Password with the following Link:'"></span>
+</p>
+<p>
+    <span th:text="${ServerUrl} + '/registration?token=' + ${VerificationToken}"></span>
+</p>
+<p>
+    <span th:text="'Note: This token will expire in 24h.'"></span>
+</p>
+
+<br>
+<p>
+    <img src='cid:footer' alt="Abbino by Nicando"/>
+</p>
+<p>
+    Regards, <br/>
+    <em>Nicando Software GmbH</em>
+</p>
+</body>
+</html>

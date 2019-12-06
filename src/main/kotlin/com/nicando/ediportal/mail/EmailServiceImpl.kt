@@ -1,5 +1,7 @@
 package com.nicando.ediportal.mail
 
+import com.nicando.ediportal.common.Server
+import com.nicando.ediportal.database.model.serverconfiguration.Mode
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource
@@ -8,13 +10,16 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.io.File
+import java.util.*
 
 
 /**
  * Created by Jan Adamczyk on 28.06.2019.
  */
 @Service
-class EmailServiceImpl(private val emailSender: JavaMailSender, private val mailContentBuilder: MailContentBuilder) {
+class EmailServiceImpl(private val emailSender: JavaMailSender,
+                       private val mailContentBuilder: MailContentBuilder,
+                       private val server: Server) {
     fun sendSimpleMessage(to: String, subject: String, text: String) {
         val message = SimpleMailMessage()
         message.setTo(to)
@@ -40,26 +45,52 @@ class EmailServiceImpl(private val emailSender: JavaMailSender, private val mail
         emailSender.send(message)
     }
 
-//    fun sendEmailWithTemplate(to: String, subject: String, name: String, text: String) {
-//        logger.info("Sending Mail to $to")
-//        val mimeMessage = emailSender.createMimeMessage()
-//        val message = MimeMessageHelper(mimeMessage, true, "UTF-8")
-//        message.setTo(to)
-//        message.setSubject(subject)
-//        message.setText(mailContentBuilder.build(name, text), true)
-//        message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
-//        emailSender.send(mimeMessage)
-//    }
+    fun sendEmailWithTemplate(to: String, subject: String, templateName: String, context: MutableMap<String, String>, locale: Locale) {
+        logger.info("Sending Mail of type $templateName in language ${locale.language} to $to")
 
-    fun sendEmailWithTemplate(to: String, subject: String, templateName: String, context : MutableMap<String, String>) {
-        logger.info("Sending Mail to $to")
+        addServerConfigurationToContext(context)
+        val localizedTemplateName: String = when (locale.language) {
+            "de" -> "${templateName}_${locale.language}"
+            else -> "${templateName}_en"
+        }
+
         val mimeMessage = emailSender.createMimeMessage()
         val message = MimeMessageHelper(mimeMessage, true, "UTF-8")
-        message.setTo(to)
-        message.setSubject(subject)
-        message.setText(mailContentBuilder.build(templateName, context), true)
+        setReceiverAndSubjectAccordingToServerMode(to, subject, message)
         message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
+        message.setText(mailContentBuilder.build(localizedTemplateName, context), true)
+
         emailSender.send(mimeMessage)
+    }
+
+    private fun addServerConfigurationToContext(context: MutableMap<String, String>) {
+        val serverConfiguration = server.getServerConfiguration()
+        context["ServerUrl"] = serverConfiguration.serverUrl
+        context["ServerFallBackEmail"] = serverConfiguration.fallBackEmail
+        context["ServerSystemName"] = serverConfiguration.systemName
+        context["ServerMode"] = serverConfiguration.mode.name
+    }
+
+    private fun setReceiverAndSubjectAccordingToServerMode(to: String, subject: String, message: MimeMessageHelper) {
+        // Important, so that Test server do not send Mails to Customer if not wanted!
+        val fallBackEmail = server.getServerConfiguration().fallBackEmail
+        val serverMode = server.getServerConfiguration().mode
+        val systemName = server.getServerConfiguration().systemName
+
+        when (serverMode) {
+            Mode.TEST_MAILS_TO_FALLBACK -> {
+                message.setTo(fallBackEmail)
+                message.setSubject("$systemName [${serverMode.name}] $subject")
+            }
+            Mode.TEST_MAILS_NORMAL -> {
+                message.setTo(to)
+                message.setSubject("$systemName [${serverMode.name}] $subject")
+            }
+            Mode.PRODUCTION -> {
+                message.setTo(to)
+                message.setSubject(subject)
+            }
+        }
     }
 
     companion object { //static
