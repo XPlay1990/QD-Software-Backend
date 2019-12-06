@@ -1,6 +1,6 @@
 package com.nicando.ediportal.mail
 
-import com.nicando.ediportal.common.Server
+import com.nicando.ediportal.common.ServerService
 import com.nicando.ediportal.database.model.serverconfiguration.Mode
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
@@ -19,7 +19,7 @@ import java.util.*
 @Service
 class EmailServiceImpl(private val emailSender: JavaMailSender,
                        private val mailContentBuilder: MailContentBuilder,
-                       private val server: Server) {
+                       private val serverService: ServerService) {
     fun sendSimpleMessage(to: String, subject: String, text: String) {
         val message = SimpleMailMessage()
         message.setTo(to)
@@ -64,7 +64,7 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
     }
 
     private fun addServerConfigurationToContext(context: MutableMap<String, String>) {
-        val serverConfiguration = server.getServerConfiguration()
+        val serverConfiguration = serverService.getServerConfiguration()
         context["ServerUrl"] = serverConfiguration.serverUrl
         context["ServerFallBackEmail"] = serverConfiguration.fallBackEmail
         context["ServerSystemName"] = serverConfiguration.systemName
@@ -73,9 +73,9 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
 
     private fun setReceiverAndSubjectAccordingToServerMode(to: String, subject: String, message: MimeMessageHelper) {
         // Important, so that Test server do not send Mails to Customer if not wanted!
-        val fallBackEmail = server.getServerConfiguration().fallBackEmail
-        val serverMode = server.getServerConfiguration().mode
-        val systemName = server.getServerConfiguration().systemName
+        val fallBackEmail = serverService.getServerConfiguration().fallBackEmail
+        val serverMode = serverService.getServerConfiguration().mode
+        val systemName = serverService.getServerConfiguration().systemName
 
         when (serverMode) {
             Mode.TEST_MAILS_TO_FALLBACK -> {

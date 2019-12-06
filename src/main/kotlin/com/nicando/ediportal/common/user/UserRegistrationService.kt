@@ -5,7 +5,7 @@ package com.nicando.ediportal.common.user
  * @since : 06.12.2019, Fr.
  **/
 
-import com.nicando.ediportal.common.Server
+import com.nicando.ediportal.common.ServerService
 import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
@@ -28,7 +28,7 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
                               private val verificationTokenRepository: VerificationTokenRepository,
                               private val emailServiceImpl: EmailServiceImpl,
                               private val passwordEncoder: PasswordEncoder,
-                              private val server: Server) {
+                              private val serverService: ServerService) {
 
     fun getUsernameByToken(verificationToken: String): String {
         return verificationTokenRepository.findByToken(verificationToken).user.username
@@ -57,7 +57,6 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
                 organizationRepository.findById(registrationRequest.organizationId).get(), registrationRequest.gender)
 
         user.locale = Locale(registrationRequest.language)
-        user.password = passwordEncoder.encode(user.password)
 
         val userRole = roleRepository.findByRoleName(RoleName.ROLE_REGISTERED_USER)
                 ?: throw BadRequestException("User Role not set.")

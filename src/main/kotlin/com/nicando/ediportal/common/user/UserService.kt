@@ -1,22 +1,16 @@
 package com.nicando.ediportal.common.user
 
 import com.nicando.ediportal.common.AuthenticationInfoService
-import com.nicando.ediportal.common.Server
-import com.nicando.ediportal.common.exceptions.rest.BadRequestException
-import com.nicando.ediportal.database.model.role.RoleName
+import com.nicando.ediportal.common.ServerService
 import com.nicando.ediportal.database.model.user.User
-import com.nicando.ediportal.database.model.user.VerificationToken
 import com.nicando.ediportal.database.repositories.RoleRepository
 import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.VerificationTokenRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
-import com.nicando.ediportal.logic.register.RegistrationRequest
 import com.nicando.ediportal.mail.EmailServiceImpl
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
  * Created by Jan Adamczyk on 15.07.2019.
@@ -29,7 +23,7 @@ class UserService(private val authenticationInfoService: AuthenticationInfoServi
                   private val verificationTokenRepository: VerificationTokenRepository,
                   private val emailServiceImpl: EmailServiceImpl,
                   private val passwordEncoder: PasswordEncoder,
-                  private val server:Server) {
+                  private val serverService:ServerService) {
 
     fun findAll(): MutableList<User> {
         return userRepository.findAll()

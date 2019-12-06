@@ -41,6 +41,9 @@ class EmailServiceImplTest() {
     @Test
     fun sendEmailWithTemplate() {
         emailServiceImpl.sendEmailWithTemplate("j_adamczyk@hotmail.com", "test",
-                "mail/thymeleafTestMail", mutableMapOf("name" to "Jan Adamczyk", "message" to "this is a testmail!"), Locale.GERMANY)
+                "mail/registration/registrationToken",
+                mutableMapOf("FirstName" to "user.firstName", "LastName" to "user.lastName", "UserName" to "user.username",
+                        "Gender" to "user.gender.name", "VerificationToken" to "verificationToken.token"),
+                Locale.ENGLISH)
     }
 }
