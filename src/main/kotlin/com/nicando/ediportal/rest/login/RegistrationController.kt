@@ -7,6 +7,7 @@ import com.nicando.ediportal.logic.register.RegistrationRequest
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -19,6 +20,7 @@ import javax.validation.Valid
 class RegistrationController(private val userService: UserService, private val userRegistrationService: UserRegistrationService) {
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun registerUser(@Valid @RequestBody registrationRequest: RegistrationRequest): ResponseEntity<*> {
         logger.info("Trying to register new User with username: ${registrationRequest.username}")
         if (userService.existsUserWithUsername(registrationRequest.username)) {
