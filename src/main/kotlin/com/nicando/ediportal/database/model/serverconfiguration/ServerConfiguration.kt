@@ -31,5 +31,6 @@ data class ServerConfiguration(
 enum class Mode {
     TEST_MAILS_TO_FALLBACK,
     TEST_MAILS_NORMAL,
+    TEST_MAILS_NONE,
     PRODUCTION
 }

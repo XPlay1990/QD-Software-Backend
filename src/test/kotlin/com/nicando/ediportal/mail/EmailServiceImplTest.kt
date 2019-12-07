@@ -43,7 +43,7 @@ class EmailServiceImplTest() {
         emailServiceImpl.sendEmailWithTemplate("j_adamczyk@hotmail.com", "test",
                 "mail/registration/registrationToken",
                 mutableMapOf("FirstName" to "user.firstName", "LastName" to "user.lastName", "UserName" to "user.username",
-                        "Gender" to "user.gender.name", "VerificationToken" to "verificationToken.token"),
+                        "Gender" to "user.gender.name", "VerificationToken" to "verificationToken.token", "ExpirationHours" to 48.toString()),
                 Locale.ENGLISH)
     }
 }

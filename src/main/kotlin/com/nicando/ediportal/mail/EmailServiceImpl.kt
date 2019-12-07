@@ -88,6 +88,10 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
                 message.setTo(to)
                 message.setSubject("$systemName [${serverMode.name}] $subject")
             }
+            Mode.TEST_MAILS_NONE -> {
+                message.setTo("none")
+                message.setSubject("$systemName [${serverMode.name}] $subject")
+            }
             Mode.PRODUCTION -> {
                 message.setTo(to)
                 message.setSubject(subject)
