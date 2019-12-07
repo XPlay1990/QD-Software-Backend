@@ -23,6 +23,14 @@ data class VerificationToken(
 
     private val expiryDate: Date = calculateExpiryDate()
 
+    fun isExpired(): Boolean {
+        return (expiryDate < Date())
+    }
+
+    fun getExpirationHours(): Int {
+        return EXPIRATION_HOURS
+    }
+
     private fun calculateExpiryDate(): Date {
         val cal = Calendar.getInstance()
         cal.time = Timestamp(cal.time.time)
@@ -31,6 +39,7 @@ data class VerificationToken(
     }
 
     companion object {
-        private const val EXPIRATION = 60 * 24
+        private const val EXPIRATION_HOURS = 48
+        private const val EXPIRATION = 60 * EXPIRATION_HOURS
     }
 }

@@ -101,6 +101,8 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
+                .antMatchers("/registration/activation")
+                .permitAll()
                 .antMatchers("/error")
                 .permitAll()
                 .antMatchers("/switchUser").hasRole("ADMIN")

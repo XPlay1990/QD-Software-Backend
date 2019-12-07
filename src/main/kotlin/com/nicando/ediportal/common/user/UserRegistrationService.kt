@@ -6,11 +6,13 @@ package com.nicando.ediportal.common.user
  **/
 
 import com.nicando.ediportal.common.ServerService
+import com.nicando.ediportal.common.exceptions.registration.RegistrationTokenExpiredException
 import com.nicando.ediportal.common.exceptions.rest.BadRequestException
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.model.user.VerificationToken
 import com.nicando.ediportal.database.repositories.RoleRepository
+import com.nicando.ediportal.database.repositories.UserRepository
 import com.nicando.ediportal.database.repositories.VerificationTokenRepository
 import com.nicando.ediportal.database.repositories.organization.OrganizationRepository
 import com.nicando.ediportal.logic.register.RegistrationRequest
@@ -26,12 +28,32 @@ import java.util.*
 class UserRegistrationService(private val organizationRepository: OrganizationRepository,
                               private val roleRepository: RoleRepository,
                               private val verificationTokenRepository: VerificationTokenRepository,
+                              private val userRepository: UserRepository,
                               private val emailServiceImpl: EmailServiceImpl,
                               private val passwordEncoder: PasswordEncoder,
                               private val serverService: ServerService) {
 
-    fun getUsernameByToken(verificationToken: String): String {
-        return verificationTokenRepository.findByToken(verificationToken).user.username
+    fun getUsernameByToken(token: String): String {
+        val registrationToken = verificationTokenRepository.findByToken(token)
+                ?: throw RegistrationTokenExpiredException("Token already expired!")
+        return registrationToken.user.username
+    }
+
+    @Transactional
+    fun activateUser(password: String, token: String) {
+        val verificationToken = verificationTokenRepository.findByToken(token)
+                ?: throw RegistrationTokenExpiredException("Token already expired!")
+        if (verificationToken.isExpired()) {
+            //TODO: dont throw exception, return something useful
+            throw RegistrationTokenExpiredException("Token already expired! Please contact the Nicando Support.")
+        }
+
+        val user = verificationToken.user
+        user.isActive = true
+        user.password = passwordEncoder.encode(password)
+        userRepository.save(user)
+
+        verificationTokenRepository.delete(verificationToken)
     }
 
     @Transactional
@@ -48,7 +70,7 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
         val user = verificationToken.user
         return mutableMapOf("FirstName" to user.firstName, "LastName" to user.lastName, "UserName" to user.username,
                 "Gender" to user.gender.name,
-                "VerificationToken" to verificationToken.token)
+                "VerificationToken" to verificationToken.token, "ExpirationHours" to verificationToken.getExpirationHours().toString())
     }
 
     private fun buildUserFromRegistrationRequest(registrationRequest: RegistrationRequest): User {
@@ -61,7 +83,7 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
         val userRole = roleRepository.findByRoleName(RoleName.ROLE_REGISTERED_USER)
                 ?: throw BadRequestException("User Role not set.")
 
-        user.roles = mutableListOf(userRole)
+        user.roles = mutableSetOf(userRole)
         return user
     }
 

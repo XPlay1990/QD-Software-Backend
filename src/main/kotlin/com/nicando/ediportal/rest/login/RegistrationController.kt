@@ -38,17 +38,23 @@ class RegistrationController(private val userService: UserService, private val u
         return ResponseEntity.ok().body<Any>(ResponseMessage(true, "User registered successfully"))
     }
 
-    @GetMapping
-    fun prepareActivationByToken(@RequestParam verificationToken: String): String {
-        return userRegistrationService.getUsernameByToken(verificationToken)
+    @GetMapping("/activation")
+    fun prepareActivationByToken(@RequestParam token: String): ResponseMessage {
+        return ResponseMessage(true, userRegistrationService.getUsernameByToken(token))
     }
 
-    @PutMapping
-    fun activateUserByToken(@RequestBody password: String) {
-
+    @PutMapping("/activation")
+    fun activateUserByToken(@RequestBody activationRequest: ActivationRequest): ResponseMessage {
+        userRegistrationService.activateUser(activationRequest.password, activationRequest.token)
+        return ResponseMessage(true, "Successfully activated!")
     }
 
     companion object { //static
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }
+
+class ActivationRequest(
+        val token: String,
+        val password: String
+)

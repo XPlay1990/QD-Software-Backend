@@ -48,8 +48,8 @@ data class User(
     var updateTime: LocalDateTime? = null
 
     @JsonIgnore
-    @ManyToMany(cascade = [CascadeType.ALL])
-    var roles: MutableList<Role?> = mutableListOf()
+    @ManyToMany
+    var roles: MutableSet<Role?> = mutableSetOf()
 
     var locale: Locale = Locale.ENGLISH
 

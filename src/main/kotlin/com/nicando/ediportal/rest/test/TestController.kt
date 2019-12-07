@@ -15,6 +15,7 @@ import com.thedeanda.lorem.Lorem
 import com.thedeanda.lorem.LoremIpsum
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.scheduling.annotation.Async
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
@@ -44,7 +45,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             val supplierUser = User("$supplierName-User", lorem.email, lorem.firstName, lorem.lastName, savedSupplier,
                     Gender.values()[random.nextInt(Gender.values().size)])
             supplierUser.password = passwordEncoder.encode("test")
-            supplierUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
+            supplierUser.roles = mutableSetOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             userRepository.save(supplierUser)
         }
 
@@ -53,7 +54,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             val customerUser = User("${customer.name}-User", lorem.email,
                     lorem.firstName, lorem.lastName, customer,
                     Gender.values()[random.nextInt(Gender.values().size)])
-            customerUser.roles = mutableListOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
+            customerUser.roles = mutableSetOf(roleService.findRoleByName(RoleName.ROLE_REGISTERED_USER))
             customerUser.password = passwordEncoder.encode("test")
             userRepository.save(customerUser)
         }
@@ -69,6 +70,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
     }
 
     @Transactional
+    @Async
     fun saveEdiConnection(customers: List<Organization>, suppliers: List<Organization>, users: List<User>) {
         logger.info("Creating Edi Connection")
         val random = Random()

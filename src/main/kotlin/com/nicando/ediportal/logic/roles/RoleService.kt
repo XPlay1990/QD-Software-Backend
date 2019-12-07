@@ -20,7 +20,7 @@ class RoleService(private val userRepository: UserRepository, private val roleRe
         if (user.roles.contains(roleToAssign)) {
             throw IllegalStateException("Role already assigned!")
         } else {
-            user.roles = mutableListOf(roleToAssign)
+            user.roles = mutableSetOf(roleToAssign)
         }
     }
 

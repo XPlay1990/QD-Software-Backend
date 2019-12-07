@@ -21,10 +21,10 @@
     <span th:text="'Bitte aktivieren Sie Ihren Account und erstellen Sie ein Passwort mit dem folgenden Link:'"></span>
 </p>
 <p>
-    <a th:href="@{${ServerUrl} + '/registration?token=' + ${VerificationToken}}"><span th:text="@{${ServerUrl} + '/registration?token=' + ${VerificationToken}}"></span></a>
+    <a th:href="@{${ServerUrl} + '/registration/activation?token=' + ${VerificationToken}}"><span th:text="@{${ServerUrl} + '/registration/activation?token=' + ${VerificationToken}}"></span></a>
 </p>
 <p>
-    <span th:text="'Bitte beachten Sie, dass dieses Token nur 24 Stunden gültig ist.'"></span>
+    <span th:text="'Bitte beachten Sie, dass dieses Token nur ' + ${ExpirationHours} + ' Stunden gültig ist.'"></span>
 </p>
 
 <br>
