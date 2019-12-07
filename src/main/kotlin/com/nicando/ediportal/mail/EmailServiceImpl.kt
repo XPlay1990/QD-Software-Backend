@@ -57,8 +57,10 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
         val mimeMessage = emailSender.createMimeMessage()
         val message = MimeMessageHelper(mimeMessage, true, "UTF-8")
         setReceiverAndSubjectAccordingToServerMode(to, subject, message)
-        message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
         message.setText(mailContentBuilder.build(localizedTemplateName, context), true)
+
+        // HAS TO BE THE LAST LINE!
+        message.addInline("footer", ClassPathResource("banner.jpg"), "image/jpg");
 
         emailSender.send(mimeMessage)
     }
