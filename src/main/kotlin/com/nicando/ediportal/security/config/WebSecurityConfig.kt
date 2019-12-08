@@ -6,6 +6,7 @@ import com.nicando.ediportal.security.JwtAuthenticationEntryPoint
 import com.nicando.ediportal.security.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.BeanIds
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
+import org.springframework.web.cors.CorsConfiguration
 
 
 /**
@@ -78,17 +80,16 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
+        http.cors().configurationSource { CorsConfiguration().applyPermitDefaultValues() }
+
         http
+                .csrf().disable()
                 .logout()
                 .logoutUrl("/auth/logout")
                 .logoutSuccessUrl("/auth/login")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
         http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
                 .addFilterAfter(switchUserFilter(), FilterSecurityInterceptor::class.java)
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
@@ -105,6 +106,7 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
                 .permitAll()
                 .antMatchers("/error")
                 .permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/switchUser").hasRole("ADMIN")
 //                .antMatchers("/switchUser/exit").hasRole("PREVIOUS_ADMINISTRATOR")
                 .anyRequest()

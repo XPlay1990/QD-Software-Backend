@@ -1,5 +1,6 @@
 package com.nicando.ediportal.rest.test
 
+import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.database.model.edi.EdiConnection
 import com.nicando.ediportal.database.model.edi.message.Message
 import com.nicando.ediportal.database.model.edi.message.TextMessage
@@ -35,7 +36,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
                      private val roleService: RoleService,
                      private val passwordEncoder: PasswordEncoder) {
     @PostMapping
-    fun createTest(): ResponseEntity.BodyBuilder {
+    fun createTest(): ResponseMessage {
         val random = Random()
 
         for (index in 0..30) {
@@ -66,7 +67,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
             saveEdiConnection(customers, suppliers, users)
         }
 
-        return ResponseEntity.ok()
+        return ResponseMessage(true, "Success")
     }
 
     @Transactional

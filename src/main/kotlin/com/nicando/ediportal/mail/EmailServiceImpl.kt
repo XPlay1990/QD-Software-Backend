@@ -67,7 +67,8 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
 
     private fun addServerConfigurationToContext(context: MutableMap<String, String>) {
         val serverConfiguration = serverService.getServerConfiguration()
-        context["ServerUrl"] = serverConfiguration.serverUrl
+        context["ServerBackEndUrl"] = serverConfiguration.serverBackendUrl
+        context["ServerFrontEndUrl"] = serverConfiguration.serverFrontEndUrl
         context["ServerFallBackEmail"] = serverConfiguration.fallBackEmail
         context["ServerSystemName"] = serverConfiguration.systemName
         context["ServerMode"] = serverConfiguration.mode.name

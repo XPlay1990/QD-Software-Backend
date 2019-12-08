@@ -14,7 +14,10 @@ import javax.validation.constraints.NotBlank
 @Entity
 data class ServerConfiguration(
         @NotBlank
-        val serverUrl: String,
+        val serverFrontEndUrl: String,
+
+        @NotBlank
+        val serverBackendUrl: String,
 
         val systemName: String,
 
