@@ -1,14 +1,12 @@
 package com.nicando.ediportal.rest.roles
 
 import com.nicando.ediportal.common.AuthenticationInfoService
+import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.logic.roles.RoleService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by Jan Adamczyk on 21.05.2019.
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @PreAuthorize("hasRole('ROLE_ADMIN')") //TODO: Role_assigner role?
 @RestController
-@RequestMapping("/addrole")
+@RequestMapping("/role")
 class RoleController(private val roleService: RoleService, private val authenticationInfoService: AuthenticationInfoService) {
 
     @PutMapping
@@ -34,6 +32,12 @@ class RoleController(private val roleService: RoleService, private val authentic
         val successMessage = "Successfully assigned Role $roleId to user $userId!"
         logger.info(successMessage)
         return ResponseEntity.ok(successMessage)
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
+    fun getAllRoles(): Array<RoleName> {
+        return roleService.getAllRoles()
     }
 
     companion object { //static

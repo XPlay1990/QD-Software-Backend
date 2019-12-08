@@ -25,8 +25,12 @@ class RoleService(private val userRepository: UserRepository, private val roleRe
     }
 
     @Transactional
-    fun findRoleByName(roleName: RoleName): Role? {
+    fun findRoleByName(roleName: RoleName): Role {
 //        return roleRepository.findByRoleName(roleName) ?: return roleRepository.save(Role(roleName))
         return roleRepository.findByRoleName(roleName)
+    }
+
+    fun getAllRoles(): Array<RoleName> {
+        return RoleName.values()
     }
 }

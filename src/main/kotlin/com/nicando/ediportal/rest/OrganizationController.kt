@@ -30,10 +30,11 @@ class OrganizationController(private val organizationService: OrganizationServic
     }
 
     @GetMapping("/all")
-    fun getAllOrganizations() {
-        //TODO: IMPLEMENT
+    fun getAllOrganizations(): List<Organization> {
+        return organizationService.findAllOrgs()
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/members")
     fun getAllMembers(@PathVariable id: Long): List<User>? {
         return organizationService.findAllOrganizationMembers(id)
@@ -45,11 +46,13 @@ class OrganizationController(private val organizationService: OrganizationServic
         return organizationService.findAllDevelopers()
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers")
     fun getAllCustomers(): List<Organization> {
         return organizationService.findAllCustomerOrgs()
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/suppliers")
     fun getAllSuppliers(): List<Organization> {
         return organizationService.findAllSupplierOrgs()

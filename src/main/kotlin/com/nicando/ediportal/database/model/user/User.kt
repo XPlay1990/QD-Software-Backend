@@ -49,7 +49,7 @@ data class User(
 
     @JsonIgnore
     @ManyToMany
-    var roles: MutableSet<Role?> = mutableSetOf()
+    var roles: MutableSet<Role> = mutableSetOf()
 
     var locale: Locale = Locale.ENGLISH
 

@@ -7,7 +7,7 @@ package com.nicando.ediportal.common.user
 
 import com.nicando.ediportal.common.ServerService
 import com.nicando.ediportal.common.exceptions.registration.RegistrationTokenExpiredException
-import com.nicando.ediportal.common.exceptions.rest.BadRequestException
+import com.nicando.ediportal.database.model.role.Role
 import com.nicando.ediportal.database.model.role.RoleName
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.database.model.user.VerificationToken
@@ -80,10 +80,18 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
 
         user.locale = Locale(registrationRequest.language)
 
-        val userRole = roleRepository.findByRoleName(RoleName.ROLE_REGISTERED_USER)
-                ?: throw BadRequestException("User Role not set.")
+        val registeredUserRole = roleRepository.findByRoleName(RoleName.ROLE_REGISTERED_USER)
 
-        user.roles = mutableSetOf(userRole)
+        val addedRolesList = mutableSetOf<Role>()
+        registrationRequest.roles.forEach { roleNameString ->
+            val role = roleRepository.findByRoleName(RoleName.valueOf(roleNameString))
+            addedRolesList.add(role)
+        }
+        if (!addedRolesList.contains(registeredUserRole)) {
+            addedRolesList.add(registeredUserRole)
+        }
+
+        user.roles = addedRolesList
         return user
     }
 

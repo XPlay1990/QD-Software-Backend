@@ -17,12 +17,12 @@ import java.util.*
 class LocaleController() {
 
     @GetMapping("/languages")
-    fun getLanguages(): MutableList<String> {
+    fun getLanguages(): MutableList<LocalizedLanguageMapping> {
         val isoLanguages = Locale.getISOLanguages()
-        val languageList = mutableListOf<String>()
+        val languageList = mutableListOf<LocalizedLanguageMapping>()
         isoLanguages.forEach { language ->
             val locale = Locale(language)
-            languageList.add(locale.getDisplayLanguage(locale))
+            languageList.add(LocalizedLanguageMapping(locale.language, locale.getDisplayLanguage(locale)))
         }
         return languageList
     }
@@ -42,3 +42,8 @@ class LocaleController() {
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }
+
+class LocalizedLanguageMapping(
+        val isoLanguage: String,
+        val localizedLanguage: String
+)

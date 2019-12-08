@@ -22,6 +22,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
 import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 /**
@@ -80,7 +81,12 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.cors().configurationSource { CorsConfiguration().applyPermitDefaultValues() }
+        // CROSS ORIGIN CONFIG
+        val corsConfiguration = CorsConfiguration()
+        corsConfiguration.allowedOrigins = mutableListOf("*")
+        corsConfiguration.allowedHeaders = mutableListOf("*")
+        corsConfiguration.allowedMethods = mutableListOf("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
+        http.cors().configurationSource { corsConfiguration }
 
         http
                 .csrf().disable()

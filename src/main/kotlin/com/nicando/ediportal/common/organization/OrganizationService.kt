@@ -18,32 +18,35 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
                           private val organizationRepository: OrganizationRepository,
                           private val organizationMemberRepository: OrganizationMemberRepository) {
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findOrganizationById(id: Long): Optional<Organization> {
         return organizationRepository.findById(id)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllDevelopers(): List<User>? {
         logger.info("Getting all Developers for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationName("Nicando")
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllOrganizationMembers(id: Long): List<User>? {
         logger.info("Getting all members from Organization with Id $id for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationId(id)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllCustomerOrgs(): List<Organization> {
         logger.info("Getting all Customer-organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationRepository.findAllByIsCustomerTrueAndIsActiveTrueOrderByName()
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun findAllSupplierOrgs(): List<Organization> {
         logger.info("Getting all Customer-organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationRepository.findAllByIsCustomerFalseAndIsActiveTrueOrderByName()
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun findAllOrgs(): List<Organization> {
+        logger.info("Getting all organizations for user: ${authenticationInfoService.getUsernameFromAuthentication()}")
+        return organizationRepository.findAll()
     }
 
     companion object { //static

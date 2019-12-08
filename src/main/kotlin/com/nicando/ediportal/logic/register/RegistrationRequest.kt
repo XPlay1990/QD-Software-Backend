@@ -14,6 +14,9 @@ class RegistrationRequest(
         val username: String,
 
         @NotBlank
+        val roles: MutableList<String>,
+
+        @NotBlank
         @Size(max = 40)
         @Email
         val email: String,

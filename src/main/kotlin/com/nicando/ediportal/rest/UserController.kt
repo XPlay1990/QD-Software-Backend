@@ -3,6 +3,7 @@ package com.nicando.ediportal.rest
 import com.nicando.ediportal.common.AuthenticationInfoService
 import com.nicando.ediportal.common.apiResponse.ResponseMessage
 import com.nicando.ediportal.common.user.UserService
+import com.nicando.ediportal.database.model.user.Gender
 import com.nicando.ediportal.database.model.user.User
 import com.nicando.ediportal.payload.UserSummary
 import com.nicando.ediportal.security.CurrentUser
@@ -67,6 +68,16 @@ class UserController(private val authenticationInfoService: AuthenticationInfoSe
             roleStringList.add(authority.authority)
         }
         return UserSummary(currentUser.id, currentUser.username, roleStringList)
+    }
+
+    @GetMapping("/genders")
+    fun getAllGenders(): Array<Gender> {
+        return Gender.values()
+    }
+
+    @GetMapping("/checkUsernameAvailability")
+    fun checkUsernameAvailability(@RequestParam username:String): Boolean {
+        return !userService.existsUserWithUsername(username)
     }
 
     companion object { //static
