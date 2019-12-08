@@ -63,7 +63,7 @@ class TestController(private val ediConnectionRepository: EdiConnectionRepositor
         val suppliers = organizationRepository.findOrganizationsByNameLike("Supplier%")
         val users = userRepository.findAll()
 
-        repeat(1000) {
+        repeat(100) {
             saveEdiConnection(customers, suppliers, users)
         }
 

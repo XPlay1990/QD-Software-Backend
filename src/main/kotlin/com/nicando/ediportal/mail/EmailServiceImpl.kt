@@ -76,24 +76,29 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
 
     private fun setReceiverAndSubjectAccordingToServerMode(to: String, subject: String, message: MimeMessageHelper) {
         // Important, so that Test server do not send Mails to Customer if not wanted!
-        val fallBackEmail = serverService.getServerConfiguration().fallBackEmail
-        val serverMode = serverService.getServerConfiguration().mode
-        val systemName = serverService.getServerConfiguration().systemName
+        val serverConfiguration = serverService.getServerConfiguration()
+        val fallBackEmail = serverConfiguration.fallBackEmail
+        val serverMode = serverConfiguration.mode
+        val systemName = serverConfiguration.systemName
 
         when (serverMode) {
             Mode.TEST_MAILS_TO_FALLBACK -> {
+                message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo(fallBackEmail)
                 message.setSubject("$systemName [${serverMode.name}] $subject")
             }
             Mode.TEST_MAILS_NORMAL -> {
+                message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo(to)
                 message.setSubject("$systemName [${serverMode.name}] $subject")
             }
             Mode.TEST_MAILS_NONE -> {
+                message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo("none")
                 message.setSubject("$systemName [${serverMode.name}] $subject")
             }
             Mode.PRODUCTION -> {
+                message.setFrom("${serverConfiguration.systemName}@nicando.de")
                 message.setTo(to)
                 message.setSubject(subject)
             }
