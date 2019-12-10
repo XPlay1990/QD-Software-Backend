@@ -1,7 +1,7 @@
 package com.nicando.ediportal.mail
 
-import com.nicando.ediportal.common.ServerService
-import com.nicando.ediportal.database.model.serverconfiguration.Mode
+import com.nicando.ediportal.server.service.ServerService
+import com.nicando.ediportal.server.database.model.Mode
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource

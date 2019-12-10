@@ -4,7 +4,7 @@ package com.nicando.ediportal.security
  * Created by Jan Adamczyk on 26.06.2019.
  */
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.nicando.ediportal.database.model.user.User
+import com.nicando.ediportal.user.database.model.User
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.stream.Collectors

@@ -1,6 +1,6 @@
 package com.nicando.ediportal.security.config
 
-import com.nicando.ediportal.common.admin.SwitchUserHandler
+import com.nicando.ediportal.user.admin.SwitchUserService
 import com.nicando.ediportal.security.CustomUserDetailsService
 import com.nicando.ediportal.security.JwtAuthenticationEntryPoint
 import com.nicando.ediportal.security.JwtAuthenticationFilter
@@ -22,7 +22,6 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter
 import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 /**
@@ -38,7 +37,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsService,
                         private val unauthorizedHandler: JwtAuthenticationEntryPoint,
                         private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-                        private val switchUserHandler: SwitchUserHandler) : WebSecurityConfigurerAdapter() {
+                        private val switchUserService: SwitchUserService) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     public override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
@@ -74,7 +73,7 @@ class WebSecurityConfig(private val customUserDetailsService: CustomUserDetailsS
         filter.setUserDetailsService(customUserDetailsService)
         filter.setSwitchUserUrl("/switchUser")
         filter.setExitUserUrl("/switchUser/exit")
-        filter.setSuccessHandler(switchUserHandler)
+        filter.setSuccessHandler(switchUserService)
 //        filter.setFailureHandler(authenticationFailureHandler())
         return filter
     }

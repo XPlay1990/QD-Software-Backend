@@ -1,6 +1,6 @@
 package com.nicando.ediportal.common.apiResponse.ediConnection
 
-import com.nicando.ediportal.database.model.edi.Attachment
+import com.nicando.ediportal.edi.database.model.Attachment
 
 
 /**

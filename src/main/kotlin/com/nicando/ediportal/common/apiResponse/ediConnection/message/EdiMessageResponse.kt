@@ -1,6 +1,6 @@
 package com.nicando.ediportal.common.apiResponse.ediConnection.message
 
-import com.nicando.ediportal.database.model.edi.message.Message
+import com.nicando.ediportal.edi.database.model.message.Message
 
 /**
  * @author : j_ada

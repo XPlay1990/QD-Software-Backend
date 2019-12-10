@@ -1,6 +1,6 @@
 package com.nicando.ediportal.security
 
-import com.nicando.ediportal.database.repositories.UserRepository
+import com.nicando.ediportal.user.database.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
