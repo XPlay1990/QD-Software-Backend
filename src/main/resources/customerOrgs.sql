@@ -1,38 +1,36 @@
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-    VALUE ('Lüdenscheid', 'Germany', '80-82', '58507', 'Brockhauser Weg');
-
+    VALUE ('Berlin', 'Germany', '1', '12169', 'Customer Street');
 INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
                                , address_id)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'ERCO',
-           (SELECT id FROM address where street = 'Brockhauser Weg' and house_number = '80-82'));
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 1',
+           (SELECT id FROM address where street = 'Customer street' and house_number = '1'));
 
 INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'GARDENA');
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 2');
 
 INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Harro Höfliger');
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 3');
 
 INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'KEUCO');
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 4');
 
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-    VALUE ('Kreuzwertheim', 'Germany', '2', '97892', 'Frankenstraße');
-
+    VALUE ('Berlin', 'Germany', '1', '12169', 'Alexanderplatz');
 INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
                                , address_id)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Kurtz-Ersa',
-           (SELECT id FROM address where street = 'Frankenstraße' and house_number = '2'));
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 5',
+           (SELECT id FROM address where street = 'Alexanderplatz' and house_number = '1'));
 
 INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Vahle');
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 6');
 
 INSERT IGNORE INTO organization(creation_time, fall_back_email, identifier_key, is_active, is_customer, name)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Vaillant');
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 7');
 
 INSERT IGNORE INTO address(city, country, house_number, postcode, street)
-    VALUE ('Mainburg', 'Germany', '1', '84048', 'Industriestraße');
+    VALUE ('Pirmasens', 'Germany', '12', '66955', 'Straße');
 
 INSERT IGNORE INTO organization( creation_time, fall_back_email, identifier_key, is_active, is_customer, name
                                , address_id)
-    VALUE (NOW(), 'tmp@nicando.de', 0, true, true, 'Wolf',
-           (SELECT id FROM address where street = 'Industriestraße' and house_number = '1'));
+    VALUE (NOW(), 'tmp@qd-software.de', 0, true, true, 'Customer 8',
+           (SELECT id FROM address where street = 'Straße' and house_number = '12'));
