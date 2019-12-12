@@ -69,7 +69,7 @@ data class EdiConnection(
     @JsonIgnore
     var readBySupplier: Boolean = false
     @JsonIgnore
-    var readByNicando: Boolean = false
+    var readByQDSoftware: Boolean = false
 
     @Transient
     var read: Boolean = false

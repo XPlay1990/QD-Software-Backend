@@ -45,7 +45,7 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
                 ?: throw RegistrationTokenExpiredException("Token already expired!")
         if (verificationToken.isExpired()) {
             //TODO: dont throw exception, return something useful
-            throw RegistrationTokenExpiredException("Token already expired! Please contact the Nicando Support.")
+            throw RegistrationTokenExpiredException("Token already expired! Please contact the QD Software Support.")
         }
 
         val user = verificationToken.user
@@ -62,7 +62,7 @@ class UserRegistrationService(private val organizationRepository: OrganizationRe
         val verificationToken = VerificationToken(UUID.randomUUID().toString(), user)
         verificationTokenRepository.save(verificationToken)
 
-        emailServiceImpl.sendEmailWithTemplate(user.email, "Welcome to the Nicando Edi-Portal!", "mail/registration/registrationToken",
+        emailServiceImpl.sendEmailWithTemplate(user.email, "Welcome to the QD Software Portal!", "mail/registration/registrationToken",
                 createRegisterUserContext(verificationToken), user.locale)
     }
 

@@ -21,13 +21,13 @@ spring:
   jpa:
     #    show-sql: true
     hibernate:
-      ddl-auto: create #create-drop
+      ddl-auto: validate #create-drop
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://localhost:3307/edi_portal?serverTimezone=UTC #&useSSL=false
     username: root
     password: Psmcg4t1PElyyKs3VHVF]
-    initialization-mode: always
+    initialization-mode: never
     data: classpath*:roles.sql, classpath*:qd_software.sql, classpath*:questionCatalogue.sql, classpath*:customerOrgs.sql
   #  flyway:
   #    locations: classpath:db/migration

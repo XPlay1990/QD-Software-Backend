@@ -31,5 +31,5 @@ open class Message(
 
     open var readByCustomer: Boolean = false
     open var readBySupplier: Boolean = false
-    open var readByNicando: Boolean = false
+    open var readByQDSoftware: Boolean = false
 }

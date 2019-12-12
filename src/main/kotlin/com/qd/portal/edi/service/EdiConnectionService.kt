@@ -50,8 +50,8 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
 
         val developer = assignedDeveloperId?.let { userRepository.findById(it).get() }
         if (developer != null) {
-            if (developer.organization.name != "Nicando") {
-                throw IllegalStateException("Tried to set Developer from other Organization than Nicando")
+            if (developer.organization.name != "QD Software") {
+                throw IllegalStateException("Tried to set Developer from other Organization than QD Software")
             }
         }
         ediConnection.assignedDeveloper = developer
@@ -62,8 +62,8 @@ class EdiConnectionService(private val ediConnectionRepository: EdiConnectionRep
 
     private fun setReadByOrg(ediConnection: EdiConnection, organizationIdFromAuthentication: Long) {
         when {
-            authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
-                ediConnection.readByNicando = true
+            authenticationInfoService.getOrgNameFromAuthentication() == "QD Software" -> {
+                ediConnection.readByQDSoftware = true
             }
             organizationIdFromAuthentication == ediConnection.customer.id -> {
                 ediConnection.readByCustomer = true

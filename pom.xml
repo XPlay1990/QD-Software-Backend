@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repositories -->
     </parent>
 
-    <groupId>com.nicando</groupId>
+    <groupId>com.qd</groupId>
     <artifactId>QD_Software_Portal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>QD Software Portal</name>

@@ -55,8 +55,8 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
     private fun isReadByOrg(ediConnectionsPage: Page<EdiConnection>, organizationIdFromAuthentication: Long) {
         for (ediConnection in ediConnectionsPage.content) {
             when {
-                authenticationInfoService.getOrgNameFromAuthentication() == "Nicando" -> {
-                    ediConnection.read = ediConnection.readByNicando
+                authenticationInfoService.getOrgNameFromAuthentication() == "QD Software" -> {
+                    ediConnection.read = ediConnection.readByQDSoftware
                 }
                 organizationIdFromAuthentication == ediConnection.customer.id -> {
                     ediConnection.read = ediConnection.readByCustomer
