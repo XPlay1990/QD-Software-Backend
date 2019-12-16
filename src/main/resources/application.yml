@@ -17,15 +17,15 @@ management:
 #        include: "*"
 spring:
   application:
-    name: ediportal
+    name: QD_Software_Portal
   jpa:
     #    show-sql: true
     hibernate:
       ddl-auto: validate #create-drop
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://localhost:3307/edi_portal?serverTimezone=UTC #&useSSL=false
-    username: root
+    url: jdbc:mysql://localhost:3306/qd_software_portal?serverTimezone=UTC #&useSSL=false
+    username: qd_software
     password: Psmcg4t1PElyyKs3VHVF]
     initialization-mode: never
     data: classpath*:roles.sql, classpath*:qd_software.sql, classpath*:questionCatalogue.sql, classpath*:customerOrgs.sql
@@ -72,7 +72,7 @@ logging:
       SQL: DEBUG
     web: DEBUG
   file:
-    name: logs/edi_portal.log
+    name: logs/qd_software.log
 #    path: logs/edi_portal.log
 #jwt:
 #  signing:
