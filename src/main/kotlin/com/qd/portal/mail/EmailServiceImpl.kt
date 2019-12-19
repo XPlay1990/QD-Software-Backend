@@ -1,7 +1,7 @@
 package com.qd.portal.mail
 
-import com.qd.portal.server.service.ServerService
 import com.qd.portal.server.database.model.Mode
+import com.qd.portal.server.service.ServerService
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource
@@ -85,20 +85,20 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
             Mode.TEST_MAILS_TO_FALLBACK -> {
                 message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo(fallBackEmail)
-                message.setSubject("$systemName [${serverMode.name}] $subject")
+                message.setSubject("[$systemName] $subject")
             }
             Mode.TEST_MAILS_NORMAL -> {
                 message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo(to)
-                message.setSubject("$systemName [${serverMode.name}] $subject")
+                message.setSubject("[$systemName] $subject")
             }
             Mode.TEST_MAILS_NONE -> {
                 message.setFrom(serverConfiguration.fallBackEmail)
                 message.setTo("none")
-                message.setSubject("$systemName [${serverMode.name}] $subject")
+                message.setSubject("[$systemName] $subject")
             }
             Mode.PRODUCTION -> {
-                message.setFrom("${serverConfiguration.systemName}@qd-software.de")
+                message.setFrom("${systemName.trim()}@qd-software.de")
                 message.setTo(to)
                 message.setSubject(subject)
             }
