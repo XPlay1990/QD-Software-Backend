@@ -30,7 +30,7 @@ class EmailServiceImplTest() {
 
     @Test
     fun sendSimpleMessage() {
-        emailServiceImpl.sendSimpleMessage("j_adamczyk@hotmail.com", "test", "This is a test Mail!")
+//        emailServiceImpl.sendSimpleMessage("j_adamczyk@hotmail.com", "test", "This is a test Mail!")
     }
 
     @Test
