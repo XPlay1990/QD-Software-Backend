@@ -1,2 +1,2 @@
-# Edi-Portal
-Edi-Portal backend
+# QD-Portal
+QD-Portal backend
