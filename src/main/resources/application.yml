@@ -32,9 +32,9 @@ spring:
   #  flyway:
   #    locations: classpath:db/migration
   #    url: jdbc:mysql://localhost:3306?serverTimezone=UTC&useSSL=false
-  #    user: ediportal
+  #    user: qd_software
   #    password: pw
-  #    schemas: ediportal
+  #    schemas: qd_software
   #  h2:
   #    console:
   #      enabled: true
@@ -69,11 +69,11 @@ logging:
     root:
       info #debug
     org.hibernate:
-      SQL: DEBUG
-    web: DEBUG
+      SQL: warn
+    web: debug
   file:
     name: logs/qd_software.log
-#    path: logs/edi_portal.log
+#    path: logs/qd_software.log
 #jwt:
 #  signing:
 #    key:
