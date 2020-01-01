@@ -1,5 +1,5 @@
 INSERT IGNORE INTO question(question_de, question_en)
-VALUES ('Sind Sie bereits an unsere Abbino Plattform angebunden?', 'Are you already connected to our Abbino Platform?');
+VALUES ('Sind Sie bereits an unsere Plattform angebunden?', 'Are you already connected to our Platform?');
 
 INSERT IGNORE INTO question(question_de, question_en)
 VALUES ('Welche Austauschformate unterstützen Sie?',

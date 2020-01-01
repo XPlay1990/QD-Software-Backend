@@ -2,15 +2,16 @@ package com.qd.portal
 
 import com.qd.portal.common.apiResponse.ResponseMessage
 import com.qd.portal.edi.database.model.EdiConnection
+import com.qd.portal.edi.database.model.EdiStatus
 import com.qd.portal.edi.database.model.message.Message
 import com.qd.portal.edi.database.model.message.TextMessage
+import com.qd.portal.edi.database.repository.EdiConnectionRepository
 import com.qd.portal.organization.database.model.Organization
-import com.qd.portal.user.database.model.RoleName
+import com.qd.portal.organization.database.repository.OrganizationRepository
 import com.qd.portal.user.database.model.Gender
+import com.qd.portal.user.database.model.RoleName
 import com.qd.portal.user.database.model.User
 import com.qd.portal.user.database.repository.UserRepository
-import com.qd.portal.edi.database.repository.EdiConnectionRepository
-import com.qd.portal.organization.database.repository.OrganizationRepository
 import com.qd.portal.user.service.roles.RoleService
 import com.thedeanda.lorem.Lorem
 import com.thedeanda.lorem.LoremIpsum
@@ -115,6 +116,8 @@ class TestDataGenerator(private val ediConnectionRepository: EdiConnectionReposi
 //                messages.add(attachmentMessage)
         }
         val ediConnection = EdiConnection(customer, supplier)
+        val states = EdiStatus.values()
+        ediConnection.status = states.get(random.nextInt(states.size))
         ediConnection.messages = messages
 
         ediConnectionRepository.save(ediConnection)
