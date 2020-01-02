@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse
  **/
 @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_REGISTERED_USER')")
 @RestController
-@RequestMapping("/edi_connections/excel")
+@RequestMapping("/edi_connection/excel")
 class ExcelController(private val excelService: ExcelService) {
 
     @GetMapping

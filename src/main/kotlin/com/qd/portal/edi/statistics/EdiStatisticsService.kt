@@ -22,20 +22,24 @@ class EdiStatisticsService(private val statisticsRepository: EdiStatisticsReposi
             } else {
                 val findOrganizationById = organizationService.findMyOrganization()
 
-                statistics[status] = statisticsRepository.countByStatusAndCustomerOrSupplier(status,findOrganizationById, findOrganizationById)
+                statistics[status] = statisticsRepository.countByStatusAndCustomerOrSupplier(status, findOrganizationById, findOrganizationById)
             }
         }
         return statistics
     }
 
-    fun getCustomerStatistics(): MutableMap<String, Int> {
+    fun getCustomerStatistics(isAdmin: Boolean): MutableMap<String, Int> {
         logger.info("Getting Customer Statistics")
 
         val statistics = mutableMapOf<String, Int>()
-        val allCustomerOrgs = organizationService.findAllCustomerOrgs()
-
-        allCustomerOrgs.forEach { customer ->
-            statistics[customer.name] = statisticsRepository.countDistinctByCustomer(customer)
+        if (isAdmin) {
+            val allCustomerOrgs = organizationService.findAllCustomerOrgs()
+            allCustomerOrgs.forEach { customer ->
+                statistics[customer.name] = statisticsRepository.countDistinctByCustomer(customer)
+            }
+        } else {
+            val myOrganization = organizationService.findMyOrganization()
+            statistics[myOrganization.name] = statisticsRepository.countDistinctByCustomer(myOrganization)
         }
         return statistics
     }

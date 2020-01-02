@@ -1,16 +1,15 @@
 package com.qd.portal.excel
 
 import com.qd.portal.edi.service.EdiConnectionListService
-import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.Row
+import com.qd.portal.edi.statistics.EdiStatisticsService
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
 import org.apache.poi.xddf.usermodel.*
 import org.apache.poi.xddf.usermodel.chart.*
 import org.apache.poi.xssf.usermodel.*
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import java.io.FileOutputStream
 
 
 /**
@@ -18,18 +17,23 @@ import java.io.FileOutputStream
  * @since : 02.01.2020, Do.
  **/
 @Service
-class ExcelService(private val ediConnectionListService: EdiConnectionListService) {
+class ExcelService(private val ediConnectionListService: EdiConnectionListService,
+                   private val ediStatisticsService: EdiStatisticsService) {
 
     fun createEdiConnectionsExcelRepresentation(isAdmin: Boolean): XSSFWorkbook {
+        logger.info("Creating Excel file")
+
         val xssfWorkbook = XSSFWorkbook()
         createTable(xssfWorkbook, isAdmin)
-        createStatisticGraphs(xssfWorkbook, isAdmin)
+        createStatisticStatusChart(xssfWorkbook, isAdmin)
 
-        FileOutputStream("EdiConnections.xlsx").use { fileOut -> xssfWorkbook.write(fileOut) }
+//        FileOutputStream("EdiConnections.xlsx").use { fileOut -> xssfWorkbook.write(fileOut) }
+        logger.info("Creating Excel file finished")
         return xssfWorkbook
     }
 
     fun createTable(xssfWorkbook: XSSFWorkbook, isAdmin: Boolean) {
+        logger.info("Creating Excel table")
         // get table data
         val allEdiConnections = ediConnectionListService.findAllEdiConnections(isAdmin)
 
@@ -70,6 +74,7 @@ class ExcelService(private val ediConnectionListService: EdiConnectionListServic
         table.columns.forEach { tableColumn ->
             sheet.autoSizeColumn(tableColumn.columnIndex)
         }
+        logger.info("Creating Excel table finished")
     }
 
     private fun createRow(sheet: XSSFSheet, rowIndex: Int, values: MutableList<String>) {
@@ -80,56 +85,52 @@ class ExcelService(private val ediConnectionListService: EdiConnectionListServic
         }
     }
 
-    fun createStatisticGraphs(xssfWorkbook: XSSFWorkbook, isAdmin: Boolean) {
-        logger.info("Creating Excel file")
+    fun createStatisticStatusChart(xssfWorkbook: XSSFWorkbook, isAdmin: Boolean) {
+        logger.info("Creating Excel status chart")
         val sheet = xssfWorkbook.createSheet("Statistics");
-        val NUM_OF_ROWS = 3;
-        val NUM_OF_COLUMNS = 10;
 
-        // Create a row and put some cells in it. Rows are 0 based.
-        var row: Row;
-        var cell: Cell
-        for (rowIndex in 0..NUM_OF_ROWS) {
-            row = sheet.createRow(rowIndex);
-            for (colIndex in 0..NUM_OF_COLUMNS) {
-                cell = row.createCell(colIndex);
-                cell.setCellValue(colIndex * (rowIndex + 1.0));
-            }
+        // Get Status Data
+        val statusStatistics = ediStatisticsService.getStatusStatistics(isAdmin)
+        val statusRow = sheet.createRow(0);
+        val valueRow = sheet.createRow(1);
+        statusStatistics.entries.forEachIndexed { colIndex, statusStatistic ->
+            statusRow.createCell(colIndex).setCellValue(statusStatistic.key.toString())
+            valueRow.createCell(colIndex).setCellValue(statusStatistic.value.toDouble())
         }
 
         val drawing: XSSFDrawing = sheet.createDrawingPatriarch()
-        val anchor: XSSFClientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15) as XSSFClientAnchor
+        val anchor: XSSFClientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 25, 40) as XSSFClientAnchor
 
         val chart: XSSFChart = drawing.createChart(anchor)
+        chart.setTitleText("Status statistics")
         val legend: XDDFChartLegend = chart.orAddLegend
-        legend.position = LegendPosition.TOP_RIGHT
+        legend.position = LegendPosition.RIGHT
 
-        val bottomAxis: XDDFValueAxis = chart.createValueAxis(AxisPosition.BOTTOM)
-        bottomAxis.setTitle("x")
+        val bottomAxis: XDDFCategoryAxis = chart.createCategoryAxis(AxisPosition.BOTTOM)
+        bottomAxis.setTitle("status")
+
         val leftAxis: XDDFValueAxis = chart.createValueAxis(AxisPosition.LEFT);
-        leftAxis.setTitle("y");
-        leftAxis.crosses = AxisCrosses.AUTO_ZERO;
+        leftAxis.setTitle("#");
+        leftAxis.crosses = AxisCrosses.AUTO_ZERO
+        // category axis crosses the value axis between the strokes and not midpoint the strokes
+        leftAxis.crossBetween = AxisCrossBetween.BETWEEN;
 
-        val xs: XDDFDataSource<Double> = XDDFDataSourcesFactory.fromNumericCellRange(
-                sheet, CellRangeAddress(0, 0, 0, NUM_OF_COLUMNS - 1))
-        val ys1: XDDFNumericalDataSource<Double> = XDDFDataSourcesFactory.fromNumericCellRange(
-                sheet, CellRangeAddress(1, 1, 0, NUM_OF_COLUMNS - 1))
-        val ys2: XDDFNumericalDataSource<Double> = XDDFDataSourcesFactory.fromNumericCellRange(
-                sheet, CellRangeAddress(2, 2, 0, NUM_OF_COLUMNS - 1))
+        val xs = XDDFDataSourcesFactory.fromStringCellRange(sheet,
+                CellRangeAddress(0, 0, 0, statusStatistics.size - 1))
+        val ys: XDDFNumericalDataSource<Double> = XDDFDataSourcesFactory.fromNumericCellRange(
+                sheet, CellRangeAddress(1, 1, 0, statusStatistics.size - 1))
 
 
-        val data: XDDFScatterChartData = chart.createData(ChartTypes.SCATTER, bottomAxis, leftAxis) as XDDFScatterChartData
-        val series1: XDDFScatterChartData.Series = data.addSeries(xs, ys1) as XDDFScatterChartData.Series
-        series1.setTitle("2x", null)
-        series1.isSmooth = false
-        val series2: XDDFScatterChartData.Series = data.addSeries(xs, ys2) as XDDFScatterChartData.Series
-        series2.setTitle("3x", null)
-        chart.plot(data);
+        val data: XDDFBarChartData = chart.createData(ChartTypes.BAR, bottomAxis, leftAxis) as XDDFBarChartData
+        val series1: XDDFBarChartData.Series = data.addSeries(xs, ys) as XDDFBarChartData.Series
+        series1.setTitle("status", null)
+//        series1.isSmooth = false
+        data.barDirection = BarDirection.COL
+        chart.plot(data)
 
         solidLineSeries(data, 0, PresetColor.CHARTREUSE);
-        solidLineSeries(data, 1, PresetColor.TURQUOISE);
 
-        // Write the output to a file
+        logger.info("Creating Excel status chart finished")
     }
 
     private fun solidLineSeries(data: XDDFChartData, index: Int, color: PresetColor) {

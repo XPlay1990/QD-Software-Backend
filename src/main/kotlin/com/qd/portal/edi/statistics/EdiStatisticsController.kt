@@ -23,7 +23,7 @@ class EdiStatisticsController(private val stateStatisticsService: EdiStatisticsS
     }
 
     @GetMapping("/customer")
-    fun getCustomerStatistics(): MutableMap<String, Int> {
-        return stateStatisticsService.getCustomerStatistics()
+    fun getCustomerStatistics(request: HttpServletRequest): MutableMap<String, Int> {
+        return stateStatisticsService.getCustomerStatistics(request.isUserInRole(RoleName.ROLE_ADMIN.toString()))
     }
 }
