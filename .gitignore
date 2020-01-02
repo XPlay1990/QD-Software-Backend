@@ -33,3 +33,4 @@ HELP.md
 *.http
 /uploads/
 logs
+*.xlsx

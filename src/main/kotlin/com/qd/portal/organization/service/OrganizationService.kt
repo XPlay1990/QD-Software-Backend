@@ -23,6 +23,10 @@ class OrganizationService(private val authenticationInfoService: AuthenticationI
         return organizationRepository.findById(id)
     }
 
+    fun findMyOrganization(): Organization {
+        return organizationRepository.findById(authenticationInfoService.getOrgIdFromAuthentication()).get()
+    }
+
     fun findAllDevelopers(): List<User>? {
         logger.info("Getting all Developers for User: ${authenticationInfoService.getUsernameFromAuthentication()}")
         return organizationMemberRepository.findAllByOrganizationName("QD Software")

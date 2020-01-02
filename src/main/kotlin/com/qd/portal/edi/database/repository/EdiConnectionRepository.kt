@@ -21,4 +21,6 @@ interface EdiConnectionRepository : JpaRepository<EdiConnection, Long> {
 
     //React Listing
     fun findAllBySupplierIdOrCustomerId(supplier_id: Long, customer_id: Long, pageable: Pageable): Page<EdiConnection>
+
+    fun findAllBySupplierIdOrCustomerId(supplier_id: Long, customer_id: Long): MutableList<EdiConnection>
 }

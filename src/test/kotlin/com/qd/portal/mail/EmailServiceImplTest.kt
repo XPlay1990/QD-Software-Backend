@@ -15,7 +15,7 @@ import java.util.*
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class EmailServiceImplTest() {
+class EmailServiceImplTest {
 
     @Autowired
     lateinit var emailServiceImpl: EmailServiceImpl

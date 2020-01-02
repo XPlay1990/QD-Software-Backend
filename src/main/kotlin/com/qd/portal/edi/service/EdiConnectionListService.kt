@@ -1,16 +1,18 @@
 package com.qd.portal.edi.service
 
-import com.qd.portal.user.service.AuthenticationInfoService
 import com.qd.portal.common.apiResponse.ediConnection.EdiConnectionListResponse
 import com.qd.portal.common.exceptions.rest.BadRequestException
 import com.qd.portal.common.properties.AppProperties
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.repository.EdiConnectionRepository
+import com.qd.portal.user.database.model.RoleName
+import com.qd.portal.user.service.AuthenticationInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
+import javax.servlet.http.HttpServletRequest
 
 
 /**
@@ -23,10 +25,18 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
 
     private val MAX_PAGE_SIZE: Int = Integer.valueOf(appProperties.constants.pageResponseMaxSize)
 
+    fun findEdiConnectionsPage(pageable: Pageable, isAdmin: Boolean): EdiConnectionListResponse<EdiConnection> {
+        return if (isAdmin) {
+            findEdiConnectionsPageForAdmin(pageable)
+        } else {
+            findEdiConnectionsPageForUser(pageable)
+        }
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun findEdiConnectionsForAdmin(pageable: Pageable)
+    fun findEdiConnectionsPageForAdmin(pageable: Pageable)
             : EdiConnectionListResponse<EdiConnection> {
-        logger.info("Getting all Edi-Connections for Admin user.")
+        logger.info("Getting Edi-Connections page for Admin user.")
 
         val ediConnectionsPage = ediConnectionRepository
                 .findAll(pageable)
@@ -37,10 +47,10 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         return buildPagedResponse(ediConnectionsPage)
     }
 
-    fun findEdiConnectionsForUser(pageable: Pageable)
+    fun findEdiConnectionsPageForUser(pageable: Pageable)
             : EdiConnectionListResponse<EdiConnection> {
         val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
-        logger.info("Getting all Edi-Connections for Organization with Id: $organizationIdFromAuthentication")
+        logger.info("Getting Edi-Connections page for Organization with Id: $organizationIdFromAuthentication")
 
         validatePageNumberAndSize(pageable.pageNumber, pageable.pageSize)
 
@@ -50,6 +60,15 @@ class EdiConnectionListService(private val ediConnectionRepository: EdiConnectio
         isReadByOrg(ediConnectionsPage, organizationIdFromAuthentication)
 
         return buildPagedResponse(ediConnectionsPage)
+    }
+
+    fun findAllEdiConnections(isAdmin: Boolean): MutableList<EdiConnection> {
+        return if (isAdmin) {
+            ediConnectionRepository.findAll()
+        } else {
+            val organizationIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+            ediConnectionRepository.findAllBySupplierIdOrCustomerId(organizationIdFromAuthentication, organizationIdFromAuthentication)
+        }
     }
 
     private fun isReadByOrg(ediConnectionsPage: Page<EdiConnection>, organizationIdFromAuthentication: Long) {

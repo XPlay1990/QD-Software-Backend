@@ -1,16 +1,16 @@
 package com.qd.portal.edi.rest
 
-import com.qd.portal.user.service.AuthenticationInfoService
 import com.qd.portal.common.apiResponse.ResponseMessage
 import com.qd.portal.common.apiResponse.ediConnection.EdiConnectionListResponse
+import com.qd.portal.edi.database.model.EdiConnection
+import com.qd.portal.edi.database.model.EdiStatus
 import com.qd.portal.edi.service.EdiConnectionAccessService
 import com.qd.portal.edi.service.EdiConnectionListService
 import com.qd.portal.edi.service.EdiConnectionService
-import com.qd.portal.edi.database.model.EdiConnection
-import com.qd.portal.edi.database.model.EdiStatus
-import com.qd.portal.user.database.model.RoleName
 import com.qd.portal.security.CurrentUser
 import com.qd.portal.security.UserPrincipal
+import com.qd.portal.user.database.model.RoleName
+import com.qd.portal.user.service.AuthenticationInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -60,11 +60,7 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
                           @PageableDefault(size = 10, sort = ["updateTime"]) pageable: Pageable): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 
-        if (request.isUserInRole(RoleName.ROLE_ADMIN.toString())) {
-            return ediConnectionListService.findEdiConnectionsForAdmin(pageable)
-        }
-
-        return ediConnectionListService.findEdiConnectionsForUser(pageable)
+        return ediConnectionListService.findEdiConnectionsPage(pageable, request.isUserInRole(RoleName.ROLE_ADMIN.toString()))
     }
 
 

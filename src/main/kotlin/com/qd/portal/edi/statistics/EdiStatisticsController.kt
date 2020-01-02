@@ -1,10 +1,12 @@
 package com.qd.portal.edi.statistics
 
 import com.qd.portal.edi.database.model.EdiStatus
+import com.qd.portal.user.database.model.RoleName
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.servlet.http.HttpServletRequest
 
 /**
  * @author : j_ada
@@ -16,7 +18,12 @@ import org.springframework.web.bind.annotation.RestController
 class EdiStatisticsController(private val stateStatisticsService: EdiStatisticsService) {
 
     @GetMapping("/state")
-    fun getStateStatistics(): MutableMap<EdiStatus, Int> {
-        return stateStatisticsService.getStatusStatistics()
+    fun getStateStatistics(request: HttpServletRequest): MutableMap<EdiStatus, Int> {
+        return stateStatisticsService.getStatusStatistics(request.isUserInRole(RoleName.ROLE_ADMIN.toString()))
+    }
+
+    @GetMapping("/customer")
+    fun getCustomerStatistics(): MutableMap<String, Int> {
+        return stateStatisticsService.getCustomerStatistics()
     }
 }

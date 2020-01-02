@@ -1,10 +1,11 @@
 package com.qd.portal.edi.rest
 
-import com.qd.portal.common.apiResponse.ediConnection.AttachmentListResponse
 import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.apiResponse.ediConnection.AttachmentListResponse
 import com.qd.portal.common.apiResponse.ediConnection.UploadFileResponse
 import com.qd.portal.edi.service.AttachmentService
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.io.IOException
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 /**
@@ -57,7 +59,8 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 //    }
 
     @GetMapping("/download/{fileName:.+}")
-    fun downloadFile(@PathVariable ediConnectionId: Long, @PathVariable fileName: String, request: HttpServletRequest): ResponseEntity<Resource> {
+    fun downloadFile(@PathVariable ediConnectionId: Long, @PathVariable fileName: String,
+                     request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<Resource> {
         // Load file as Resource
         val resource = attachmentService.loadFileAsResource("$EDICONNECTIONFOLDER/$ediConnectionId", fileName)
 
@@ -78,13 +81,12 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 
         val headers = HttpHeaders()
         headers.contentDisposition = contentDisposition
-//        headers.accessControlExposeHeaders = mutableListOf(HttpHeaders.CONTENT_DISPOSITION)
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.parseMediaType(contentType))
                 .contentLength(resource.contentLength())
-                .body(resource)
+                .body(InputStreamResource(resource.inputStream))
     }
 
     companion object {
