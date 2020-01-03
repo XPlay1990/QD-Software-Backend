@@ -5,14 +5,8 @@ import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
-import org.springframework.http.ContentDisposition
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
-import java.nio.file.Path
-import java.nio.file.Paths
-import javax.servlet.http.HttpServletRequest
 
 
 /**
@@ -34,8 +28,9 @@ class PdfGenerator {
         contentStream.showText("Hello World")
         contentStream.endText()
 
-        val path: Path = Paths.get(ClassLoader.getSystemResource("banner.png").toURI())
-        val image = PDImageXObject.createFromFile(path.toAbsolutePath().toString(), document)
+
+        val image = PDImageXObject.createFromByteArray(document,
+                ClassPathResource("banner.png").inputStream.readAllBytes(), "banner")
         contentStream.drawImage(image, 0f, 0f)
         contentStream.close()
 
