@@ -5,14 +5,12 @@ import com.qd.portal.common.exceptions.rest.BadRequestException
 import com.qd.portal.common.properties.AppProperties
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.repository.EdiConnectionRepository
-import com.qd.portal.user.database.model.RoleName
 import com.qd.portal.user.service.AuthenticationInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
-import javax.servlet.http.HttpServletRequest
 
 
 /**
