@@ -21,6 +21,7 @@ class ExcelController(private val excelService: ExcelService) {
     @GetMapping
     fun getEdiConnectionsExcelFile(request: HttpServletRequest, response: HttpServletResponse) {
         response.addHeader("Content-disposition", "attachment;filename=EdiConnections.xslx");
+        response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         excelService.createEdiConnectionsExcelRepresentation(request.isUserInRole(RoleName.ROLE_ADMIN.toString()))
                 .use { xssfWorkbook ->

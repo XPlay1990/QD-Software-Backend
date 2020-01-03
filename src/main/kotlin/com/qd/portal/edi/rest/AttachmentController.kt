@@ -81,6 +81,7 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 
         val headers = HttpHeaders()
         headers.contentDisposition = contentDisposition
+        headers.accessControlExposeHeaders = mutableListOf("content-disposition")
 
         return ResponseEntity.ok()
                 .headers(headers)

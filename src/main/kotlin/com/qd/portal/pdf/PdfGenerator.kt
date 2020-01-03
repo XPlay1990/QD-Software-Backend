@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest
 
 @Service
 class PdfGenerator {
-    fun generatePdf(request: HttpServletRequest): ResponseEntity<PDDocument> {
+    fun generatePdf(): PDDocument {
         val document = PDDocument()
         val page = PDPage()
         document.addPage(page)
@@ -39,26 +39,26 @@ class PdfGenerator {
         contentStream.drawImage(image, 0f, 0f)
         contentStream.close()
 
-        document.save("pdfBoxHelloWorld.pdf")
-        document.close()
+//        document.save("pdfBoxHelloWorld.pdf")
+//        document.close()
 
-        return generateResponse(document)
+        return document
     }
 
-    private fun generateResponse(document: PDDocument): ResponseEntity<PDDocument> {
-        var contentType = MediaType.APPLICATION_PDF.toString()
-        // Fallback to the default content type if type could not be determined
-        val contentDisposition = ContentDisposition.builder("inline")
-                .filename("yourpdf.pdf")
-                .build()
-
-        val headers = HttpHeaders()
-        headers.contentDisposition = contentDisposition
-//        headers.accessControlExposeHeaders = mutableListOf(HttpHeaders.CONTENT_DISPOSITION)
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.parseMediaType(contentType))
-                .body(document)
-    }
+//    private fun generateResponse(document: PDDocument): ResponseEntity<PDDocument> {
+//        var contentType = MediaType.APPLICATION_PDF.toString()
+//        // Fallback to the default content type if type could not be determined
+//        val contentDisposition = ContentDisposition.builder("inline")
+//                .filename("yourpdf.pdf")
+//                .build()
+//
+//        val headers = HttpHeaders()
+//        headers.contentDisposition = contentDisposition
+////        headers.accessControlExposeHeaders = mutableListOf(HttpHeaders.CONTENT_DISPOSITION)
+//
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .body(document)
+//    }
 }
