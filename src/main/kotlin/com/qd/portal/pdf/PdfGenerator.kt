@@ -1,5 +1,6 @@
 package com.qd.portal.pdf
 
+import org.apache.pdfbox.io.IOUtils
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
@@ -29,8 +30,8 @@ class PdfGenerator {
         contentStream.endText()
 
 
-        val image = PDImageXObject.createFromByteArray(document,
-                ClassPathResource("banner.png").inputStream.readAllBytes(), "banner")
+        val targetArray = IOUtils.toByteArray(ClassPathResource("banner.png").inputStream)
+        val image = PDImageXObject.createFromByteArray(document, targetArray, "banner")
         contentStream.drawImage(image, 0f, 0f)
         contentStream.close()
 
