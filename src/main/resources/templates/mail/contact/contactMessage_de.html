@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Neue Kontaktnachricht</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    <span th:text="'Neue Kontaktnachricht von: ' + ${fullName}"></span>
+</p>
+<br>
+<p>
+    <span th:text="'Kontakt Email: '  + ${email}"></span>
+</p>
+<p>
+    <span th:text="'Nachricht: '  + ${message}"></span>
+</p>
+<br>
+<p>
+    <img src='cid:footer' alt="QD Software"/>
+</p>
+<p>
+    Viele Grüße, <br/>
+    <em>QD Software GmbH</em>
+</p>
+</body>
+</html>
