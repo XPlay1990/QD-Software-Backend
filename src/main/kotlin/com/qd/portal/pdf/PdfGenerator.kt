@@ -30,8 +30,8 @@ class PdfGenerator {
         contentStream.endText()
 
 
-        val targetArray = IOUtils.toByteArray(ClassPathResource("banner.png").inputStream)
-        val image = PDImageXObject.createFromByteArray(document, targetArray, "banner")
+        val targetArray = IOUtils.toByteArray(ClassPathResource("Logo.png").inputStream)
+        val image = PDImageXObject.createFromByteArray(document, targetArray, "Logo")
         contentStream.drawImage(image, 0f, 0f)
         contentStream.close()
 

@@ -60,7 +60,7 @@ class EmailServiceImpl(private val emailSender: JavaMailSender,
         message.setText(mailContentBuilder.build(localizedTemplateName, context), true)
 
         // HAS TO BE THE LAST LINE!
-        message.addInline("footer", ClassPathResource("banner.png"), "image/png");
+        message.addInline("footer", ClassPathResource("Logo.png"), "image/png");
 
         emailSender.send(mimeMessage)
     }
