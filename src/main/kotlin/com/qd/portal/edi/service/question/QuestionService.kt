@@ -15,7 +15,7 @@ class QuestionService(private val questionRepository: QuestionRepository,
         val questions = questionRepository.findAll()
         val questionsLocalized = mutableListOf<QuestionResponse>()
         for (question in questions) {
-            if (language == "de") {
+            if (language == "de" || language == "de-DE") {
                 questionsLocalized.add(QuestionResponse(question.id, question.question_de))
             } else {
                 questionsLocalized.add(QuestionResponse(question.id, question.question_en))
