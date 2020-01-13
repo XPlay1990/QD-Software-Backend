@@ -5,7 +5,7 @@ import com.qd.portal.common.properties.AppProperties
 import com.qd.portal.edi.database.model.Attachment
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.repository.EdiConnectionRepository
-import com.qd.portal.edi.rest.messages.FileStorageException
+import com.qd.portal.common.exceptions.attachments.FileStorageException
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource

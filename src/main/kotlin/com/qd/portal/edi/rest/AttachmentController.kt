@@ -35,19 +35,15 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 
     @PostMapping("/upload")
     fun uploadFile(@PathVariable ediConnectionId: Long, @RequestParam("file") file: MultipartFile): ResponseMessage {
-        return try {
-            val fileName = attachmentService.storeFile("$EDICONNECTIONFOLDER/$ediConnectionId", file, ediConnectionId)
+        val fileName = attachmentService.storeFile("$EDICONNECTIONFOLDER/$ediConnectionId", file, ediConnectionId)
 
-            val fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/$ediConnectionId/")
-                    .path(fileName)
-                    .toUriString()
+        val fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/$ediConnectionId/")
+                .path(fileName)
+                .toUriString()
 
-            ResponseMessage(true, UploadFileResponse(fileName, fileDownloadUri,
-                    file.contentType, file.size))
-        } catch (ex: Exception) {
-            ResponseMessage(false, ex.message.toString())
-        }
+        return ResponseMessage(true, UploadFileResponse(fileName, fileDownloadUri,
+                file.contentType, file.size))
     }
 
 //    @PostMapping("/edi_connection/uploadMultipleFiles/{ediConnectionId}")
