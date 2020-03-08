@@ -1,7 +1,7 @@
 package com.qd.portal.real_estate.database.model.maintenance
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.qd.portal.user.database.model.User
+import com.qd.portal.real_estate.database.model.userRepresentation.UserRepresentation
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate
@@ -16,15 +16,9 @@ import javax.persistence.*
 @Entity
 data class MaintenanceObjects(
         var name: String,
-        var type: String,
-        var lastMaintenance: LocalDate,
-        var maintenancePeriod: Period,
-
-        @OneToMany
-        var plannedNextMaintenance: MutableList<PlannedMaintenance>?,
-
-        @ManyToMany
-        var possibleServiceProviderList: MutableList<User>?
+        var type: String, // TODO: maybe enumerize
+        var lastMaintenanceDate: LocalDate?,
+        var maintenancePeriod: Period
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +31,13 @@ data class MaintenanceObjects(
     @JsonFormat(pattern = "dd-MM-yyyy (HH:mm)")
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
+
+    @OneToMany
+    var pastMaintenance: MutableList<PastMaintenance> = mutableListOf()
+
+    @OneToMany
+    var plannedNextMaintenance: MutableList<PlannedMaintenance>? = mutableListOf()
+
+    @ManyToMany
+    var possibleServiceProviderList: MutableList<UserRepresentation>? = mutableListOf()
 }

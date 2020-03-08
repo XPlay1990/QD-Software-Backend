@@ -1,11 +1,9 @@
-package com.qd.portal.real_estate.database.model.maintenance
+package com.qd.portal.real_estate.database.model.userRepresentation
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.qd.portal.edi.database.model.Attachment
-import com.qd.portal.real_estate.database.model.userRepresentation.UserRepresentation
+import com.qd.portal.organization.database.model.Organization
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -14,12 +12,13 @@ import javax.persistence.*
  * @since : 14.01.2020, Di.
  **/
 @Entity
-data class PlannedMaintenance(
-        var plannedDate: LocalDate?,
-        var plannedCosts: Int,
-
-        @OneToMany
-        var assignedServiceProviderList: MutableList<UserRepresentation>
+class UserRepresentation(
+        // Can be a persisted representation of a registered user,
+        // or some extern contacts that are not part of the system
+        var name: String,
+        var email: String,
+        @ManyToOne
+        var organization: Organization?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +31,4 @@ data class PlannedMaintenance(
     @JsonFormat(pattern = "dd-MM-yyyy (HH:mm)")
     @UpdateTimestamp
     var updateTime: LocalDateTime? = null
-
-    @OneToMany
-    var attachmentList: MutableList<Attachment> = mutableListOf()
 }

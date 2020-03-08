@@ -3,6 +3,7 @@ package com.qd.portal.real_estate.database.model.maintenance
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.qd.portal.edi.database.model.Attachment
 import com.qd.portal.organization.database.model.Organization
+import com.qd.portal.real_estate.database.model.userRepresentation.UserRepresentation
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate
@@ -18,10 +19,8 @@ class PastMaintenance(
         var date: LocalDate,
         var costs: Int,
 
-        var serviceProviderName: String,
-        var serviceProviderEmail: String,
-        @ManyToOne
-        var serviceProviderOrganization: Organization?
+        @OneToMany
+        var serviceProviderList: MutableList<UserRepresentation>
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

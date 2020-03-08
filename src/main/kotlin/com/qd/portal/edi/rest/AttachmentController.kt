@@ -4,6 +4,7 @@ import com.qd.portal.common.apiResponse.ResponseMessage
 import com.qd.portal.common.apiResponse.ediConnection.AttachmentListResponse
 import com.qd.portal.common.apiResponse.ediConnection.UploadFileResponse
 import com.qd.portal.edi.service.AttachmentService
+import com.qd.portal.user.service.AuthenticationInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
@@ -26,7 +27,8 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/edi_connection/{ediConnectionId}/attachment")
-class AttachmentController(private val attachmentService: AttachmentService) {
+class AttachmentController(private val attachmentService: AttachmentService,
+                           private val authenticationInfoService: AuthenticationInfoService) {
 
     @GetMapping
     fun getFileList(@PathVariable ediConnectionId: Long): AttachmentListResponse {
@@ -35,7 +37,13 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 
     @PostMapping("/upload")
     fun uploadFile(@PathVariable ediConnectionId: Long, @RequestParam("file") file: MultipartFile): ResponseMessage {
-        val fileName = attachmentService.storeFile("$EDICONNECTIONFOLDER/$ediConnectionId", file, ediConnectionId)
+        val userNameFromAuthentication = authenticationInfoService.getUsernameFromAuthentication()
+        val orgIdFromAuthentication = authenticationInfoService.getOrgIdFromAuthentication()
+        // TODO: has rights to upload?
+
+        val fileName =
+                attachmentService.storeFile("$EDICONNECTIONFOLDER/$ediConnectionId",
+                        file, ediConnectionId, userNameFromAuthentication, orgIdFromAuthentication)
 
         val fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/$ediConnectionId/")

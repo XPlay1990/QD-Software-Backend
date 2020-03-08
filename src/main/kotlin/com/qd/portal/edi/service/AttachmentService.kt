@@ -6,6 +6,8 @@ import com.qd.portal.edi.database.model.Attachment
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.repository.EdiConnectionRepository
 import com.qd.portal.common.exceptions.attachments.FileStorageException
+import com.qd.portal.organization.database.repository.OrganizationRepository
+import com.qd.portal.user.database.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
@@ -26,6 +28,8 @@ import java.nio.file.Paths
 
 @Service
 class AttachmentService(private val ediConnectionRepository: EdiConnectionRepository,
+                        private val userRepository: UserRepository,
+                        private val organizationRepository: OrganizationRepository,
                         appProperties: AppProperties) {
 
     private val UPLOAD_DIR: String = appProperties.constants.uploadDirectory
@@ -34,7 +38,10 @@ class AttachmentService(private val ediConnectionRepository: EdiConnectionReposi
         return AttachmentListResponse(ediConnectionRepository.findById(ediConnectionId).get().attachments)
     }
 
-    fun storeFile(directoryName: String, file: MultipartFile, ediconnectionId: Long): String {
+    fun storeFile(directoryName: String, file: MultipartFile, ediconnectionId: Long,
+                  uploadingUser:String, uploadingOrgId:Long): String {
+        val uploadingOrg= organizationRepository.findById(uploadingOrgId).get()
+
         // Normalize file name
         val fileName = if (file.originalFilename.isNullOrBlank()) {
             "unnamed"
@@ -57,7 +64,7 @@ class AttachmentService(private val ediConnectionRepository: EdiConnectionReposi
             if (contentType == null) {
                 contentType = "unknown"
             }
-            ediConnection.attachments.add(Attachment(fileName, contentType, file.size))
+            ediConnection.attachments.add(Attachment(fileName, contentType, file.size, uploadingUser, uploadingOrg))
             ediConnectionRepository.save(ediConnection)
 
             return fileName

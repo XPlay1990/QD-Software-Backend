@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class EdiPortalApplication
+class QDPortalApplication
 
 fun main(args: Array<String>) {
-    runApplication<EdiPortalApplication>(*args)
+    runApplication<QDPortalApplication>(*args)
 }

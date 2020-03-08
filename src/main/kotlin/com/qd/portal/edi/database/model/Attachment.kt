@@ -21,7 +21,6 @@ data class Attachment(
         var fileSize: Long,
 
         var uploaderName: String?,
-        var uploaderEmail: String?,
         @ManyToOne
         var uploaderOrg: Organization?
 
