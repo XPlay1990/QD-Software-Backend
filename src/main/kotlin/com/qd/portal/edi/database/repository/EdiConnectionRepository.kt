@@ -5,6 +5,7 @@ import com.qd.portal.excel.EdiConnectionProjection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository
  * Created by Jan Adamczyk on 21.06.2019.
  */
 @Repository
-interface EdiConnectionRepository : JpaRepository<EdiConnection, Long> {
+interface EdiConnectionRepository : JpaRepository<EdiConnection, Long>, JpaSpecificationExecutor<EdiConnection> {
     fun findEdiConnectionsByCustomerId(customerId: Long)
     fun findEdiConnectionsBySupplierId(supplierId: Long)
 

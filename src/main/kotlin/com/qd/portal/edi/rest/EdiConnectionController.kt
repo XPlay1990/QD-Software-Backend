@@ -13,6 +13,7 @@ import com.qd.portal.user.database.model.RoleName
 import com.qd.portal.user.service.AuthenticationInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -57,6 +58,7 @@ class EdiConnectionController(private val ediConnectionListService: EdiConnectio
 
     @GetMapping(produces = ["application/json"])
     fun getEdiConnections(@CurrentUser currentUser: UserPrincipal, request: HttpServletRequest,
+                          @RequestParam search:String?,
                           @PageableDefault(size = 10, sort = ["updateTime"]) pageable: Pageable): EdiConnectionListResponse<EdiConnection> {
         logger.info("getEdiConnection Request by User: ${currentUser.username}")
 

@@ -1,30 +1,30 @@
 package com.qd.portal.mail
 
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
 /**
  * @author : j_ada
  * @since : 16.10.2019, Mi.
  */
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class EmailServiceImplTest {
 
     @Autowired
     lateinit var emailServiceImpl: EmailServiceImpl
 
-    @Before
+    @BeforeAll
     fun setUp() {
     }
 
-    @After
+    @AfterAll
     fun tearDown() {
     }
 
