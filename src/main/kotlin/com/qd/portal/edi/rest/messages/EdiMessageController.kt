@@ -1,8 +1,8 @@
 package com.qd.portal.edi.rest.messages
 
 import com.qd.portal.user.service.AuthenticationInfoService
-import com.qd.portal.common.apiResponse.ResponseMessage
-import com.qd.portal.common.apiResponse.ediConnection.message.EdiMessageListResponse
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ediConnection.message.EdiMessageListResponse
 import com.qd.portal.edi.service.EdiConnectionAccessService
 import com.qd.portal.edi.service.EdiConnectionService
 import com.qd.portal.edi.service.message.EdiConnectionMessageService

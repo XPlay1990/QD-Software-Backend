@@ -1,6 +1,6 @@
 package com.qd.portal.edi.service
 
-import com.qd.portal.common.apiResponse.ediConnection.AttachmentListResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.AttachmentListResponse
 import com.qd.portal.common.properties.AppProperties
 import com.qd.portal.edi.database.model.Attachment
 import com.qd.portal.edi.database.model.EdiConnection

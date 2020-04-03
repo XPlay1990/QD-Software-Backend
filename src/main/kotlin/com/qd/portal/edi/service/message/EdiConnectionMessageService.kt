@@ -1,7 +1,7 @@
 package com.qd.portal.edi.service.message
 
-import com.qd.portal.common.apiResponse.ediConnection.message.EdiMessageListResponse
-import com.qd.portal.common.apiResponse.ediConnection.message.EdiMessageResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.message.EdiMessageListResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.message.EdiMessageResponse
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.model.message.TextMessage
 import com.qd.portal.user.database.repository.UserRepository

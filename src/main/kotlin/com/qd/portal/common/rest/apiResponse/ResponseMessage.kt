@@ -1,4 +1,4 @@
-package com.qd.portal.common.apiResponse
+package com.qd.portal.common.rest.apiResponse
 
 /**
  * Created by Jan Adamczyk on 26.06.2019.

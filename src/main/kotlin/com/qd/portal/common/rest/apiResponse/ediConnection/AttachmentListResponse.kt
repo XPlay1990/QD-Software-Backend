@@ -1,4 +1,4 @@
-package com.qd.portal.common.apiResponse.ediConnection
+package com.qd.portal.common.rest.apiResponse.ediConnection
 
 import com.qd.portal.edi.database.model.Attachment
 

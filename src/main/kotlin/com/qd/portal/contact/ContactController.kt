@@ -1,6 +1,6 @@
 package com.qd.portal.contact
 
-import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
 import com.qd.portal.mail.EmailServiceImpl
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

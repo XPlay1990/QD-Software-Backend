@@ -1,6 +1,6 @@
 package com.qd.portal.user.rest.login
 
-import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
 import com.qd.portal.user.service.registration.UserRegistrationService
 import com.qd.portal.user.service.UserService
 import com.qd.portal.user.rest.api.RegistrationRequest

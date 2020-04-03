@@ -1,6 +1,6 @@
 package com.qd.portal
 
-import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.model.EdiStatus
 import com.qd.portal.edi.database.model.message.Message

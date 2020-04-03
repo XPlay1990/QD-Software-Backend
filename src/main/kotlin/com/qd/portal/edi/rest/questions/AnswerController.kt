@@ -1,8 +1,8 @@
 package com.qd.portal.edi.rest.questions
 
 import com.qd.portal.user.service.AuthenticationInfoService
-import com.qd.portal.common.apiResponse.ediConnection.AnswerResponse
-import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ediConnection.AnswerResponse
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
 import com.qd.portal.edi.service.question.AnswerService
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize

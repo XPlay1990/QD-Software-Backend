@@ -1,7 +1,7 @@
 package com.qd.portal.user.rest
 
 import com.qd.portal.user.service.AuthenticationInfoService
-import com.qd.portal.common.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
 import com.qd.portal.user.service.UserService
 import com.qd.portal.user.database.model.Gender
 import com.qd.portal.user.database.model.User

@@ -1,4 +1,4 @@
-package com.qd.portal.common.apiResponse.ediConnection
+package com.qd.portal.common.rest.apiResponse.ediConnection
 
 /**
  * Created by Jan Adamczyk on 16.07.2019.

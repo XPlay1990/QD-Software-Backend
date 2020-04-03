@@ -1,7 +1,7 @@
 package com.qd.portal.edi.service.question
 
 import com.qd.portal.user.service.AuthenticationInfoService
-import com.qd.portal.common.apiResponse.ediConnection.AnswerResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.AnswerResponse
 import com.qd.portal.edi.service.EdiConnectionAccessService
 import com.qd.portal.common.exceptions.rest.ForbiddenException
 import com.qd.portal.edi.database.model.questions.Answer

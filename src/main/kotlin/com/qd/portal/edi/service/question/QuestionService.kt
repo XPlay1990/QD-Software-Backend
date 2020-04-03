@@ -1,7 +1,7 @@
 package com.qd.portal.edi.service.question
 
 import com.qd.portal.user.service.AuthenticationInfoService
-import com.qd.portal.common.apiResponse.ediConnection.QuestionResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.QuestionResponse
 import com.qd.portal.edi.database.repository.question.QuestionRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

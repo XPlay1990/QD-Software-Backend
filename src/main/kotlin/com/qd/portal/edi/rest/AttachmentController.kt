@@ -1,8 +1,8 @@
 package com.qd.portal.edi.rest
 
-import com.qd.portal.common.apiResponse.ResponseMessage
-import com.qd.portal.common.apiResponse.ediConnection.AttachmentListResponse
-import com.qd.portal.common.apiResponse.ediConnection.UploadFileResponse
+import com.qd.portal.common.rest.apiResponse.ResponseMessage
+import com.qd.portal.common.rest.apiResponse.ediConnection.AttachmentListResponse
+import com.qd.portal.common.rest.apiResponse.ediConnection.UploadFileResponse
 import com.qd.portal.edi.service.AttachmentService
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource

@@ -1,5 +1,6 @@
 package com.qd.portal.edi.rest
 
+import com.qd.portal.common.rest.SearchCriteria
 import com.qd.portal.edi.database.model.EdiConnection
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.*
@@ -9,37 +10,45 @@ import javax.persistence.criteria.*
  * @since : 02.04.2020, Do.
  **/
 class EdiSpecification(
-        private val criteria: SearchCriteria
+        private val searchCriteriaList: List<SearchCriteria>
 ) : Specification<EdiConnection> {
     override fun toPredicate(root: Root<EdiConnection>, query: CriteriaQuery<*>, builder: CriteriaBuilder): Predicate? {
-        val searchKeys = criteria.key.split(".")
-        var path = root.get<Any>(searchKeys[0])
-        searchKeys.forEachIndexed { index, searchKey ->
-            if (index != 0) {
-                path = path.get(searchKey)
-            }
-        }
-        when (criteria.operation) {
-            ">" -> {
-                return builder.greaterThanOrEqualTo(path as Path<String>, criteria.value.toString())
-            }
-            "<" -> {
-                return builder.lessThanOrEqualTo(path as Path<String>, criteria.value.toString())
-            }
-            ":" -> {
-                return if (path.javaType === String::class.java) {
-                    builder.like(path as Path<String>, "%" + criteria.value + "%")
-                } else {
-                    builder.equal(path, criteria.value);
+
+        if (searchCriteriaList.isEmpty()) {
+            return null
+        } else {
+            val predicateList = ArrayList<Predicate>()
+            searchCriteriaList.forEach { searchCriteria ->
+                val searchKeys = searchCriteria.key.split(".")
+                var path = root.get<Any>(searchKeys[0])
+                searchKeys.forEachIndexed { index, searchKey ->
+                    if (index != 0) {
+                        path = path.get(searchKey)
+                    }
+                }
+                when (searchCriteria.operation) {
+                    ">" -> {
+                        predicateList.add(builder.greaterThanOrEqualTo(path as Path<String>, searchCriteria.value.toString()))
+                    }
+                    "<" -> {
+                        predicateList.add(builder.lessThanOrEqualTo(path as Path<String>, searchCriteria.value.toString()))
+                    }
+                    ":" -> {
+                        if (path.javaType === String::class.java) {
+                            predicateList.add(builder.like(path as Path<String>, "%" + searchCriteria.value + "%"))
+                        } else {
+                            predicateList.add(builder.equal(path, searchCriteria.value))
+                        }
+                    }
                 }
             }
-            else -> return null
+            var result = predicateList[0]
+            predicateList.forEachIndexed { index, predicate ->
+                if (index > 0) {
+                    result = builder.and(result, predicate)
+                }
+            }
+            return result
         }
     }
 }
-
-data class SearchCriteria(
-        val key: String,
-        val operation: String,
-        val value: Any
-)

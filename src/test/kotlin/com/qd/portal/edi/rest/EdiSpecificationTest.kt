@@ -1,5 +1,6 @@
 package com.qd.portal.edi.rest
 
+import com.qd.portal.common.rest.SearchCriteria
 import com.qd.portal.edi.database.model.EdiConnection
 import com.qd.portal.edi.database.repository.EdiConnectionRepository
 import com.qd.portal.organization.database.repository.OrganizationRepository
@@ -43,7 +44,9 @@ class EdiSpecificationTest {
 
     @Test
     fun customerIsOrg1() {
-        val spec = EdiSpecification(SearchCriteria("customer.name", ":", organizationRepository.findById(1).get().name))
+        val searchCriteriaList = ArrayList<SearchCriteria>()
+        searchCriteriaList.add(SearchCriteria("customer.name", ":", organizationRepository.findById(1).get().name))
+        val spec = EdiSpecification(searchCriteriaList)
         val results: List<EdiConnection> = ediConnectionRepository.findAll(spec)
 
         assertTrue(results.contains(ediConnectionOne))

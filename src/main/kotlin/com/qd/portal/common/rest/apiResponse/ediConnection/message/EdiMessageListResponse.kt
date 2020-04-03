@@ -1,4 +1,4 @@
-package com.qd.portal.common.apiResponse.ediConnection.message
+package com.qd.portal.common.rest.apiResponse.ediConnection.message
 
 /**
  * @author : j_ada
