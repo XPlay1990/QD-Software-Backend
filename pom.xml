@@ -38,7 +38,7 @@
                 </property>
             </activation>
             <properties>
-                <revision>${baseRevision}-${env.BUILD_NUMBER}-${releaseMode}</revision>
+                <revision>${baseRevision}-${releaseMode}</revision>
             </properties>
         </profile>
     </profiles>
