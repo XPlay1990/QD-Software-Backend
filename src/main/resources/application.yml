@@ -25,8 +25,8 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://localhost:3306/qd_software_portal?serverTimezone=UTC #&useSSL=false
-    username: qd_software
-    password: Psmcg4t1PElyyKs3VHVF]
+    username: username
+    password: password
     initialization-mode: never
     data: classpath*:roles.sql, classpath*:qd_software.sql, classpath*:questionCatalogue.sql, classpath*:customerOrgs.sql
   #  flyway:
