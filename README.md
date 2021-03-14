@@ -4,6 +4,11 @@ QD-Portal backend
 
 http://qd-software.de
 
+<br/>
+Docker image with
+
+>mvnw spring-boot:build-image
+
 Spring Boot, Kotlin, JWT
 
 <table>
