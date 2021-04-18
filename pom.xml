@@ -175,6 +175,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+<!--                        add fonts to docker openjdk-->
+                        <builder>paketobuildpacks/builder:full</builder>
+                        <name>xplay/${project.artifactId}:latest</name>
+                    </image>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>

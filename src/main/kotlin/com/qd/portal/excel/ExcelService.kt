@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service
  * @since : 02.01.2020, Do.
  **/
 @Service
-class ExcelService(private val ediConnectionListService: EdiConnectionListService,
-                   private val ediStatisticsService: EdiStatisticsService) {
+class ExcelService(
+    private val ediConnectionListService: EdiConnectionListService,
+    private val ediStatisticsService: EdiStatisticsService
+) {
 
     fun createEdiConnectionsExcelRepresentation(isAdmin: Boolean): XSSFWorkbook {
         logger.info("Creating Excel file")
@@ -41,7 +43,8 @@ class ExcelService(private val ediConnectionListService: EdiConnectionListServic
         // Set which area the table should be placed in
 
         val reference = xssfWorkbook.creationHelper.createAreaReference(
-                CellReference(0, 0), CellReference(allEdiConnections.size + 1, 4))
+            CellReference(0, 0), CellReference(allEdiConnections.size + 1, 4)
+        )
         // Create
         val table = sheet.createTable(reference)
         table.name = "EdiConnections"
@@ -61,14 +64,18 @@ class ExcelService(private val ediConnectionListService: EdiConnectionListServic
         createRow(sheet, 0, mutableListOf("Kunde", "Lieferant", "Status", "Entwickler", "Zuletzt geändert"))
         allEdiConnections.forEachIndexed { index, ediConnection ->
             val developerName =
-                    if (ediConnection.assignedDeveloper != null) {
-                        "${ediConnection.assignedDeveloper!!.firstName} ${ediConnection.assignedDeveloper!!.lastName}"
-                    } else {
-                        "X"
-                    }
-            createRow(sheet, index + 1, mutableListOf(ediConnection.customer.name, ediConnection.supplier.name,
+                if (ediConnection.assignedDeveloper != null) {
+                    "${ediConnection.assignedDeveloper!!.firstName} ${ediConnection.assignedDeveloper!!.lastName}"
+                } else {
+                    "X"
+                }
+            createRow(
+                sheet, index + 1, mutableListOf(
+                    ediConnection.customer.name, ediConnection.supplier.name,
                     ediConnection.status.name, developerName,
-                    ediConnection.updateTime.toString()))
+                    ediConnection.updateTime.toString()
+                )
+            )
         }
 
         table.columns.forEach { tableColumn ->
@@ -115,10 +122,13 @@ class ExcelService(private val ediConnectionListService: EdiConnectionListServic
         // category axis crosses the value axis between the strokes and not midpoint the strokes
         leftAxis.crossBetween = AxisCrossBetween.BETWEEN;
 
-        val xs = XDDFDataSourcesFactory.fromStringCellRange(sheet,
-                CellRangeAddress(0, 0, 0, statusStatistics.size - 1))
+        val xs = XDDFDataSourcesFactory.fromStringCellRange(
+            sheet,
+            CellRangeAddress(0, 0, 0, statusStatistics.size - 1)
+        )
         val ys: XDDFNumericalDataSource<Double> = XDDFDataSourcesFactory.fromNumericCellRange(
-                sheet, CellRangeAddress(1, 1, 0, statusStatistics.size - 1))
+            sheet, CellRangeAddress(1, 1, 0, statusStatistics.size - 1)
+        )
 
 
         val data: XDDFBarChartData = chart.createData(ChartTypes.BAR, bottomAxis, leftAxis) as XDDFBarChartData
